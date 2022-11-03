@@ -1,10 +1,21 @@
 plugins {
     id 'java'
 }
-
+tasks.withType(JavaCompile){
+    options.encoding = "UTF-8"
+}
 group 'org.network'
 version '1.0-SNAPSHOT'
-
+sourceSets {
+    main {
+        java {
+            srcDirs= ["src/main/java"]
+        }
+        resources {
+            srcDirs= ["src/main/resources"]
+        }
+    }
+}
 repositories {
     mavenCentral()
 }

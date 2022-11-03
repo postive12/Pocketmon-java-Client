@@ -2,10 +2,11 @@ package org.network.packet;
 
 public enum PacketType {
     USER_DEFAULT(0),
-    USER_COMMAND(1),
-    USER_INPUT(2),
-    USER_CHAT(3),
-    SERVER_DEFAULT(100);
+    USER_ACCOUNT(100),
+    USER_CHAT(200),
+    USER_BATTLE(300),
+    USER_MOVE(500),
+    SERVER_DEFAULT(1000);
     private final int environments;
 
     PacketType(int environments){

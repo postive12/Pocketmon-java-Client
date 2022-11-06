@@ -1,42 +1,63 @@
 package org.network;
 
+import org.network.panel.BackgroundPanel;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class LoginFrame extends JFrame {
     private static final long serialVersionUID = 1L;
-    private JPanel contentPane;
+    private JLayeredPane contentPane;
     private JTextField loginTextField;
     private JTextField passwordTextField;
     private JButton signInBtn;
     private JButton loginBtn;
     public LoginFrame(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setBounds(100, 100, 338, 440);
-        contentPane = new JPanel();
+        setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
+        setResizable(false);
+        contentPane = new JLayeredPane();
         contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
         setContentPane(contentPane);
         contentPane.setLayout(null);
 
-        JLabel lblNewLabel = new JLabel("Login");
-        lblNewLabel.setBounds(20, 20, 60, 30);
-        contentPane.add(lblNewLabel);
+        BackgroundPanel backgroundPanel = new BackgroundPanel("backgrounds/pokenet_normal.png");
+        backgroundPanel.setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
+        backgroundPanel.setLocation(0,0);
+        contentPane.add(backgroundPanel,0);
+
+        int padding = 50;
+        BackgroundPanel loginBackground = new BackgroundPanel("ui/speechbox.png");
+        loginBackground.setSize(340,200);
+        loginBackground.setLocation(WindowConfig.WIDTH - loginBackground.getWidth() - padding ,WindowConfig.HEIGHT - loginBackground.getHeight() - padding);
+        contentPane.add(loginBackground,0);
+
+
+
+        JLabel loginLabel = new JLabel("Login");
+        loginLabel.setLocation(loginBackground.getX() + 20,loginBackground.getY() + 20);
+        loginLabel.setSize(60,30);
+        contentPane.add(loginLabel, 0);
 
         loginTextField = new JTextField();
         loginTextField.setHorizontalAlignment(SwingConstants.CENTER);
-        loginTextField.setBounds(120, 20, 200, 30);
-        contentPane.add(loginTextField);
+        loginTextField.setLocation(loginBackground.getX() + 120,loginBackground.getY() + 20);
+        loginTextField.setSize(200,30);
+        contentPane.add(loginTextField,0);
 
-        JLabel lblPassword = new JLabel("Password");
-        lblPassword.setBounds(20, 60, 60, 30);
-        contentPane.add(lblPassword);
+        JLabel passwordLabel = new JLabel("Password");
+        passwordLabel.setLocation(loginBackground.getX() + 20,loginBackground.getY() + 60);
+        passwordLabel.setSize(60,30);
+        contentPane.add(passwordLabel,0);
 
         passwordTextField = new JTextField();
         passwordTextField.setHorizontalAlignment(SwingConstants.CENTER);
-        passwordTextField.setBounds(120, 60, 200, 30);
-        contentPane.add(passwordTextField);
+        passwordTextField.setLocation(loginBackground.getX() + 120,loginBackground.getY() + 60);
+        passwordTextField.setSize(200,30);
+        contentPane.add(passwordTextField,0);
 
         signInBtn = new JButton();
         signInBtn.setBounds(20, 100, 300, 30);
@@ -47,9 +68,10 @@ public class LoginFrame extends JFrame {
         loginBtn.setBounds(20, 140, 300, 30);
         loginBtn.setText("로그인");
         contentPane.add(loginBtn);
-        setVisible(true);
-    }
 
+        setVisible(true);
+
+    }
     public void setUserSocket(UserSocket userSocket) {
         signInBtn.addActionListener(new ActionListener() {
             @Override

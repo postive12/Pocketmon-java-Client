@@ -27,7 +27,7 @@ public class startFrame extends JFrame{
             headerLabel.setText("포켓몬");
             contentpane.add(headerLabel, BorderLayout.NORTH);
             //이미지 레이블
-            ImageIcon ii= new ImageIcon(this.getClass().getResource("org/network/pocket.gif"));
+            ImageIcon ii= new ImageIcon(this.getClass().getResource("pocket.gif"));
             imageLabel.setIcon(ii);
             contentpane.add(imageLabel,java.awt.BorderLayout.CENTER);
             this.setLocationRelativeTo(null);

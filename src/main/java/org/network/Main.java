@@ -8,6 +8,5 @@ public class Main {
     {
         LoginFrame loginFrame = new LoginFrame();
         loginFrame.setUserSocket(new UserSocket());
-
     }
 }

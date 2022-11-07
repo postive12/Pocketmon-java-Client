@@ -1,5 +1,7 @@
 package org.network;
 
+import org.network.gameframes.GameFrame;
+import org.network.gameframes.LoginFrame;
 import org.network.packet.LoginPacket;
 import org.network.packet.LoginPacketType;
 
@@ -54,8 +56,18 @@ public class UserSocket extends Thread{
                     e.printStackTrace();
                     break;
                 }
-                if (obcm == null)
+                if (obcm == null) {
                     break;
+                }
+                if (obcm instanceof LoginPacket loginPacket){
+                    if (loginPacket.loginPacketType==LoginPacketType.LOGIN_ACCEPT){
+                        LoginFrame.current.close();
+                        new GameFrame();
+                    }
+                    else {
+                        LoginFrame.current.setLoginLog(loginPacket);
+                    }
+                }
             } catch (IOException e) {
                 try {
                     ois.close();

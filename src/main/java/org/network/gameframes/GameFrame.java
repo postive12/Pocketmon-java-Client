@@ -7,18 +7,45 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameFrame extends JFrame implements Runnable{
-    private JLayeredPane gameLayer = new JLayeredPane();
-    private GameCanvas gameCanvas;
+    private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
+    private JSplitPane gameFrameMainPanel = new JSplitPane();
+    private JSplitPane gameServerInfoPanel = new JSplitPane();
+
+    private JPanel userListPanel = new JPanel();//유저 리스트 패널
+    private JPanel userChatPanel = new JPanel();//유저 채팅 패널
+    private GameCanvas gameCanvas;//게임 캔버스
     public GameFrame(){
+        
+        //좌우 나누기 패널
+        gameFrameMainPanel = new JSplitPane();
+        getContentPane().add(gameFrameMainPanel,BorderLayout.CENTER);
+        gameFrameMainPanel.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        gameFrameMainPanel.setDividerLocation((WindowConfig.WIDTH/3)*2);
+        gameFrameMainPanel.setEnabled(false);
+        setContentPane(gameFrameMainPanel);
+
+        //상하단 나누기 패널
+        gameServerInfoPanel = new JSplitPane();
+        gameServerInfoPanel.setOrientation(JSplitPane.VERTICAL_SPLIT);
+        gameServerInfoPanel.setDividerLocation((WindowConfig.HEIGHT/4));
+        gameServerInfoPanel.setTopComponent(userListPanel);
+        gameServerInfoPanel.setBottomComponent(userChatPanel);
+        gameServerInfoPanel.setEnabled(false);
+        gameFrameMainPanel.setRightComponent(gameServerInfoPanel);
+
+        userListPanel.setBackground(Color.black);
+        userChatPanel.setBackground(Color.blue);
+        initUserChatPanel();
+        
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
         setResizable(false);
         gameLayer.setLayout(null);
-        gameLayer.setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
-        setContentPane(gameLayer);
+        gameFrameMainPanel.setLeftComponent(gameLayer);
 
         gameCanvas = new GameCanvas();
-        gameCanvas.setBounds(0,0,WindowConfig.WIDTH,WindowConfig.HEIGHT);
+        gameCanvas.setBounds(0,0,gameLayer.getWidth(),gameLayer.getHeight());
         gameLayer.add(gameCanvas,JLayeredPane.FRAME_CONTENT_LAYER);
         gameCanvas.repaint();
 
@@ -30,12 +57,15 @@ public class GameFrame extends JFrame implements Runnable{
         mainWork.run();
 
     }
-
+    //유저 채팅 패널 초기화
+    private void initUserChatPanel() {
+        //userChatPanel
+    }
     @Override
     public void run() {
         while (true){
             gameCanvas.repaint();
-            System.out.println("Painting");
+            //System.out.println("Painting");
         }
     }
 

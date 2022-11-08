@@ -4,6 +4,7 @@ import org.network.gameframes.GameFrame;
 import org.network.gameframes.LoginFrame;
 import org.network.packet.LoginPacket;
 import org.network.packet.LoginPacketType;
+import org.network.packet.UserChatPacket;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -59,6 +60,7 @@ public class UserSocket extends Thread{
                 if (obcm == null) {
                     break;
                 }
+                //로그인 패킷 처리
                 if (obcm instanceof LoginPacket loginPacket){
                     if (loginPacket.loginPacketType==LoginPacketType.LOGIN_ACCEPT){
                         LoginFrame.current.close();
@@ -67,6 +69,10 @@ public class UserSocket extends Thread{
                     else {
                         LoginFrame.current.setLoginLog(loginPacket);
                     }
+                }
+                //유저 채팅 패킷 처리
+                if (obcm instanceof UserChatPacket chatPacket){
+                    
                 }
             } catch (IOException e) {
                 try {

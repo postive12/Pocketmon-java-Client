@@ -4,7 +4,11 @@ import org.network.Main;
 import org.network.WindowConfig;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import java.awt.*;
+
+import static javax.swing.SwingConstants.SOUTH;
 
 public class GameFrame extends JFrame implements Runnable{
     private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
@@ -34,7 +38,8 @@ public class GameFrame extends JFrame implements Runnable{
         gameFrameMainPanel.setRightComponent(gameServerInfoPanel);
 
         userListPanel.setBackground(Color.black);
-        userChatPanel.setBackground(Color.blue);
+
+        userChatPanel.setBackground(Color.white);
         initUserChatPanel();
         
 
@@ -57,9 +62,49 @@ public class GameFrame extends JFrame implements Runnable{
         mainWork.run();
 
     }
+    private JTextField txtInput;
+    private JTextPane textArea;
+    private JButton btnSend;
+    private JLabel lblUserName;
+    private JButton imgBtn;
     //유저 채팅 패널 초기화
     private void initUserChatPanel() {
         //userChatPanel
+        userChatPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        //userChatPanel.add(new JButton("보내기"),"west");
+        //userChatPanel.add(new JButton("채팅창"),"center");
+        JScrollPane scrollPane = new JScrollPane();
+        //scrollPane.setBounds(12, 10, 352, 471);
+        userChatPanel.add(scrollPane);
+
+        textArea = new JTextPane();
+        textArea.setEditable(true);
+        textArea.setFont(new Font("굴림체", Font.PLAIN, 14));
+        scrollPane.setViewportView(textArea);
+
+        txtInput = new JTextField();
+        //txtInput.setBounds(74, 489, 209, 40);
+        userChatPanel.add(txtInput);
+        txtInput.setColumns(10);
+
+        btnSend = new JButton("Send");
+        btnSend.setFont(new Font("굴림", Font.PLAIN, 14));
+        //btnSend.setBounds(295, 489, 69, 40);
+        userChatPanel.add(btnSend);
+
+        lblUserName = new JLabel("Name");
+        lblUserName.setBorder(new LineBorder(new Color(0, 0, 0)));
+        lblUserName.setBackground(Color.WHITE);
+        lblUserName.setFont(new Font("굴림", Font.BOLD, 14));
+        lblUserName.setHorizontalAlignment(SwingConstants.CENTER);
+        //lblUserName.setBounds(12, 539, 62, 40);
+        userChatPanel.add(lblUserName);
+        setVisible(true);
+
+        imgBtn = new JButton("+");
+        imgBtn.setFont(new Font("굴림", Font.PLAIN, 16));
+        //imgBtn.setBounds(12, 489, 50, 40);
+        userChatPanel.add(imgBtn);
     }
     @Override
     public void run() {
@@ -88,8 +133,6 @@ public class GameFrame extends JFrame implements Runnable{
             g.drawImage(img,0,0,WindowConfig.WIDTH,WindowConfig.HEIGHT,this);
         }
         public void update(Graphics g){
-
-
             if(gc==null) return;
             dblpaint();//오프스크린 버퍼에 그리기
             g.drawImage(dblbuff,0,0,this);//오프스크린 버퍼를 메인화면에 그린다.

@@ -82,7 +82,7 @@ public class GameFrame extends JFrame implements Runnable{
         userChatPanel.setLayout(null);
 
         txtInput = new JTextField();
-        txtInput.setBounds(100,420,180,40);
+        txtInput.setBounds(100,420,200,40);
         userChatPanel.add(txtInput);
         txtInput.setColumns(10);
 
@@ -96,9 +96,8 @@ public class GameFrame extends JFrame implements Runnable{
         lblUserName.setBackground(Color.WHITE);
         lblUserName.setFont(new Font("굴림", Font.BOLD, 14));
         lblUserName.setHorizontalAlignment(SwingConstants.CENTER);
-        lblUserName.setBounds(2, 420, 60, 40);
+        lblUserName.setBounds(10, 420, 70, 40);
         userChatPanel.add(lblUserName);
-        setVisible(true);
 
     }
     @Override

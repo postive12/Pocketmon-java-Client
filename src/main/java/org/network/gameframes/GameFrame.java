@@ -94,7 +94,7 @@ public class GameFrame extends JFrame{
 
 
     // 화면에 출력
-    public void AppendText(String msg) {
+    public static void AppendText(String msg) {
         msg = msg.trim(); // 앞뒤 blank와 \n을 제거한다.
         StyledDocument doc = textArea.getStyledDocument();
         SimpleAttributeSet left = new SimpleAttributeSet();

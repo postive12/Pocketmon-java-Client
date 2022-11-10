@@ -88,7 +88,9 @@ public class UserSocket extends Thread{
                 }
                 //유저 채팅 패킷 처리
                 if (obcm instanceof UserChatPacket chatPacket){
-                    GameFrame.AppendTextR(chatPacket.chat);
+                    if (!chatPacket.username.equals(UserData.username)){
+                        GameFrame.AppendText(chatPacket.chat);
+                    }
                 }
 
             } catch (IOException e) {

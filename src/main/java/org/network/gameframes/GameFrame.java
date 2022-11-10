@@ -1,7 +1,10 @@
 package org.network.gameframes;
 
 import org.network.Main;
+import org.network.UserData;
+import org.network.UserSocket;
 import org.network.WindowConfig;
+import org.network.packet.UserChatPacket;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -74,9 +77,6 @@ public class GameFrame extends JFrame implements Runnable{
         testButton.setBounds(300,300,300,300);
         gameLayer.add(testButton);
         setVisible(true);
-        Thread mainWork = new Thread(this);
-        mainWork.run();
-
     }
 
 
@@ -100,7 +100,7 @@ public class GameFrame extends JFrame implements Runnable{
         //textArea.replaceSelection("\n");
 
     }
-    public void AppendTextR(String msg) {
+    public static void AppendTextR(String msg) {
         msg = msg.trim(); // 앞뒤 blank와 \n을 제거한다.
         StyledDocument doc = textArea.getStyledDocument();
         SimpleAttributeSet right = new SimpleAttributeSet();
@@ -120,7 +120,7 @@ public class GameFrame extends JFrame implements Runnable{
     }
 
     private JTextField txtInput;
-    private JTextPane textArea;
+    private static JTextPane textArea;
     private JButton btnSend;
     private JLabel lblUserName;
     private JButton imgBtn;
@@ -187,24 +187,19 @@ public class GameFrame extends JFrame implements Runnable{
                 String msg = null;
                 msg = String.format(" %s\n", txtInput.getText());
                 AppendTextR(msg);
+                UserChatPacket chatPacket = new UserChatPacket(
+                        UserData.id,
+                        UserData.username,
+                        msg,
+                        "-ALL-"
+                );
+                UserSocket.getInstance().sendObject(chatPacket);
                 txtInput.setText(""); // 메세지를 보내고 나면 메세지 쓰는창을 비운다.
                 txtInput.requestFocus(); // 메세지를 보내고 커서를 다시 텍스트 필드로 위치시킨다
 
             }
         }
     }
-    // Server Message를 수신해서 화면에 표시
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public void run() {
         while (true){

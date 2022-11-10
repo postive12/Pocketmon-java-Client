@@ -12,11 +12,13 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class UserSocket extends Thread{
+    private static UserSocket current;
     private static final int BUF_LEN = 128; // Windows 처럼 BUF_LEN 을 정의
     private Socket socket; // 연결소켓
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     public UserSocket(){
+        current = this;
         try {
             socket = new Socket("127.0.0.1", 30000);
             oos = new ObjectOutputStream(socket.getOutputStream());
@@ -26,6 +28,9 @@ public class UserSocket extends Thread{
         } catch (NumberFormatException | IOException e) {
             e.printStackTrace();
         }
+    }
+    public static UserSocket getInstance(){
+        return current;
     }
     public void Login(String username,String password){
         LoginPacket loginPacket = new LoginPacket(
@@ -47,40 +52,54 @@ public class UserSocket extends Thread{
     }
     public void run() {
         while (true) {
+            System.out.println("Alive");
             try {
                 Object obcm = null;
-                String msg = null;
+                //String msg = null;
                 try {
                     obcm = ois.readObject();
                 } catch (ClassNotFoundException e) {
-                    // TODO Auto-generated catch block
+                    System.out.println("Class not founded");
                     e.printStackTrace();
                     break;
                 }
                 if (obcm == null) {
+                    System.out.println("Null object received");
                     break;
                 }
+                System.out.println("packet received");
                 //로그인 패킷 처리
                 if (obcm instanceof LoginPacket loginPacket){
+                    System.out.println("Login packet received");
                     if (loginPacket.loginPacketType==LoginPacketType.LOGIN_ACCEPT){
-                        LoginFrame.current.close();
-                        new GameFrame();
+                        try{
+                            LoginFrame.current.close();
+                            UserData.username = loginPacket.username;
+                            UserData.id = loginPacket.id;
+                            new GameFrame();
+                        }
+                        catch (Exception e){
+                            System.out.println("Error occur but alive");
+                        }
                     }
                     else {
                         LoginFrame.current.setLoginLog(loginPacket);
                     }
                 }
                 //유저 채팅 패킷 처리
-                if (obcm instanceof UserChatPacket chatPacket){
-                    
+
+                else if (obcm instanceof UserChatPacket chatPacket){
+                    GameFrame.AppendTextR(chatPacket.chat);
                 }
             } catch (IOException e) {
+                System.out.println("Error Client exited");
                 try {
                     ois.close();
                     oos.close();
                     socket.close();
                     break;
                 } catch (Exception ee) {
+                    System.out.println("Error Client exited");
                     break;
                 } // catch문 끝
             } // 바깥 catch문끝

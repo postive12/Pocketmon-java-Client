@@ -6,7 +6,15 @@ import org.network.WindowConfig;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.*;
+import java.net.Socket;
 
 import static javax.swing.SwingConstants.BOTTOM;
 import static javax.swing.SwingConstants.SOUTH;
@@ -15,7 +23,15 @@ public class GameFrame extends JFrame implements Runnable{
     private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
     private JSplitPane gameFrameMainPanel = new JSplitPane();
     private JSplitPane gameServerInfoPanel = new JSplitPane();
+    private static final int BUF_LEN = 128;
+    private Socket socket; // 연결소켓
+    private InputStream is;
+    private OutputStream os;
+    private DataInputStream dis;
+    private DataOutputStream dos;
 
+    private ObjectInputStream ois;
+    private ObjectOutputStream oos;
     private JPanel userListPanel = new JPanel();//유저 리스트 패널
     private JPanel userChatPanel = new JPanel();//유저 채팅 패널
     private GameCanvas gameCanvas;//게임 캔버스
@@ -41,7 +57,7 @@ public class GameFrame extends JFrame implements Runnable{
 
         userChatPanel.setBackground(Color.white);
         initUserChatPanel();
-        
+
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
@@ -62,6 +78,47 @@ public class GameFrame extends JFrame implements Runnable{
         mainWork.run();
 
     }
+
+
+
+    // 화면에 출력
+    public void AppendText(String msg) {
+        msg = msg.trim(); // 앞뒤 blank와 \n을 제거한다.
+        StyledDocument doc = textArea.getStyledDocument();
+        SimpleAttributeSet left = new SimpleAttributeSet();
+        StyleConstants.setAlignment(left, StyleConstants.ALIGN_LEFT);
+        StyleConstants.setForeground(left, Color.BLACK);
+        doc.setParagraphAttributes(doc.getLength(), 1, left, false);
+        try {
+            doc.insertString(doc.getLength(), msg+"\n", left );
+        } catch (BadLocationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        int len = textArea.getDocument().getLength();
+        textArea.setCaretPosition(len);
+        //textArea.replaceSelection("\n");
+
+    }
+    public void AppendTextR(String msg) {
+        msg = msg.trim(); // 앞뒤 blank와 \n을 제거한다.
+        StyledDocument doc = textArea.getStyledDocument();
+        SimpleAttributeSet right = new SimpleAttributeSet();
+        StyleConstants.setAlignment(right, StyleConstants.ALIGN_RIGHT);
+        StyleConstants.setForeground(right, Color.BLUE);
+        doc.setParagraphAttributes(doc.getLength(), 1, right, false);
+        try {
+            doc.insertString(doc.getLength(),msg+"\n", right );
+        } catch (BadLocationException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        int len = textArea.getDocument().getLength();
+        textArea.setCaretPosition(len);
+        //textArea.replaceSelection("\n");
+
+    }
+
     private JTextField txtInput;
     private JTextPane textArea;
     private JButton btnSend;
@@ -99,7 +156,55 @@ public class GameFrame extends JFrame implements Runnable{
         lblUserName.setBounds(10, 420, 70, 40);
         userChatPanel.add(lblUserName);
 
+
+        TextSendAction action = new TextSendAction();
+        btnSend.addActionListener(action);
+        txtInput.addActionListener(action);
+        txtInput.requestFocus();
     }
+    public byte[] MakePacket(String msg) {
+        byte[] packet = new byte[BUF_LEN];
+        byte[] bb = null;
+        int i;
+        for (i = 0; i < BUF_LEN; i++)
+            packet[i] = 0;
+        try {
+            bb = msg.getBytes("euc-kr");
+        } catch (UnsupportedEncodingException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            System.exit(0);
+        }
+        for (i = 0; i < bb.length; i++)
+            packet[i] = bb[i];
+        return packet;
+    }
+    class TextSendAction implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            // Send button을 누르거나 메시지 입력하고 Enter key 치면
+            if (e.getSource() == btnSend || e.getSource() == txtInput) {
+                String msg = null;
+                msg = String.format(" %s\n", txtInput.getText());
+                AppendTextR(msg);
+                txtInput.setText(""); // 메세지를 보내고 나면 메세지 쓰는창을 비운다.
+                txtInput.requestFocus(); // 메세지를 보내고 커서를 다시 텍스트 필드로 위치시킨다
+
+            }
+        }
+    }
+    // Server Message를 수신해서 화면에 표시
+
+
+
+
+
+
+
+
+
+
+
     @Override
     public void run() {
         while (true){

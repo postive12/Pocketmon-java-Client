@@ -80,13 +80,15 @@ public class GameFrame extends JFrame{
     }
 
     private void userListPanel() {
-        JScrollPane scrollPane = new JScrollPane();
+
+        DefaultListModel model=new DefaultListModel();
+        JList<String> currentUserList = new JList<String>((ListModel<String>) model);
+        JScrollPane scrollPane = new JScrollPane(currentUserList);
+
         scrollPane.setBounds(1, 1, 401, 180);
         userListPanel.add(scrollPane);
-        textArea = new JTextPane();
-        textArea.setEditable(true);
-        textArea.setFont(new Font("굴림체", Font.PLAIN, 14));
-        scrollPane.setViewportView(textArea);
+        model.addElement("문자열");
+
 
         userListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         userListPanel.setLayout(null);

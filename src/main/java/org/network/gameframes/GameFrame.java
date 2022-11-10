@@ -8,6 +8,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+import static javax.swing.SwingConstants.BOTTOM;
 import static javax.swing.SwingConstants.SOUTH;
 
 public class GameFrame extends JFrame implements Runnable{
@@ -22,7 +23,6 @@ public class GameFrame extends JFrame implements Runnable{
         
         //좌우 나누기 패널
         gameFrameMainPanel = new JSplitPane();
-        getContentPane().add(gameFrameMainPanel,BorderLayout.CENTER);
         gameFrameMainPanel.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
         gameFrameMainPanel.setDividerLocation((WindowConfig.WIDTH/3)*2);
         gameFrameMainPanel.setEnabled(false);
@@ -70,41 +70,36 @@ public class GameFrame extends JFrame implements Runnable{
     //유저 채팅 패널 초기화
     private void initUserChatPanel() {
         //userChatPanel
-        userChatPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-        //userChatPanel.add(new JButton("보내기"),"west");
-        //userChatPanel.add(new JButton("채팅창"),"center");
         JScrollPane scrollPane = new JScrollPane();
-        //scrollPane.setBounds(12, 10, 352, 471);
+        scrollPane.setBounds(11, 10, 380, 370);
         userChatPanel.add(scrollPane);
-
         textArea = new JTextPane();
         textArea.setEditable(true);
         textArea.setFont(new Font("굴림체", Font.PLAIN, 14));
         scrollPane.setViewportView(textArea);
 
+        userChatPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        userChatPanel.setLayout(null);
+
         txtInput = new JTextField();
-        //txtInput.setBounds(74, 489, 209, 40);
+        txtInput.setBounds(100,420,180,40);
         userChatPanel.add(txtInput);
         txtInput.setColumns(10);
 
-        btnSend = new JButton("Send");
+        btnSend = new JButton("전송");
         btnSend.setFont(new Font("굴림", Font.PLAIN, 14));
-        //btnSend.setBounds(295, 489, 69, 40);
+        btnSend.setBounds(320, 420, 70, 40);
         userChatPanel.add(btnSend);
 
-        lblUserName = new JLabel("Name");
+        lblUserName = new JLabel("이름");
         lblUserName.setBorder(new LineBorder(new Color(0, 0, 0)));
         lblUserName.setBackground(Color.WHITE);
         lblUserName.setFont(new Font("굴림", Font.BOLD, 14));
         lblUserName.setHorizontalAlignment(SwingConstants.CENTER);
-        //lblUserName.setBounds(12, 539, 62, 40);
+        lblUserName.setBounds(2, 420, 60, 40);
         userChatPanel.add(lblUserName);
         setVisible(true);
 
-        imgBtn = new JButton("+");
-        imgBtn.setFont(new Font("굴림", Font.PLAIN, 16));
-        //imgBtn.setBounds(12, 489, 50, 40);
-        userChatPanel.add(imgBtn);
     }
     @Override
     public void run() {

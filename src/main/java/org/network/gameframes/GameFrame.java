@@ -174,23 +174,6 @@ public class GameFrame extends JFrame{
         txtInput.addActionListener(action);
         txtInput.requestFocus();
     }
-    public byte[] MakePacket(String msg) {
-        byte[] packet = new byte[BUF_LEN];
-        byte[] bb = null;
-        int i;
-        for (i = 0; i < BUF_LEN; i++)
-            packet[i] = 0;
-        try {
-            bb = msg.getBytes("euc-kr");
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            System.exit(0);
-        }
-        for (i = 0; i < bb.length; i++)
-            packet[i] = bb[i];
-        return packet;
-    }
     class TextSendAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

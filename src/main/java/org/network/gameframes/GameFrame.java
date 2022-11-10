@@ -53,8 +53,8 @@ public class GameFrame extends JFrame implements Runnable{
         gameServerInfoPanel.setEnabled(false);
         gameFrameMainPanel.setRightComponent(gameServerInfoPanel);
 
-        userListPanel.setBackground(Color.black);
-
+        userListPanel.setBackground(Color.white);
+        userListPanel();
         userChatPanel.setBackground(Color.white);
         initUserChatPanel();
 
@@ -79,6 +79,18 @@ public class GameFrame extends JFrame implements Runnable{
 
     }
 
+    private void userListPanel() {
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(1, 1, 401, 180);
+        userListPanel.add(scrollPane);
+        textArea = new JTextPane();
+        textArea.setEditable(true);
+        textArea.setFont(new Font("굴림체", Font.PLAIN, 14));
+        scrollPane.setViewportView(textArea);
+
+        userListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+        userListPanel.setLayout(null);
+    }
 
 
     // 화면에 출력
@@ -193,7 +205,6 @@ public class GameFrame extends JFrame implements Runnable{
             }
         }
     }
-    // Server Message를 수신해서 화면에 표시
 
 
 

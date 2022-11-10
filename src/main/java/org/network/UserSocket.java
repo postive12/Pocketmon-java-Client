@@ -72,8 +72,9 @@ public class UserSocket extends Thread{
                 }
                 //유저 채팅 패킷 처리
                 if (obcm instanceof UserChatPacket chatPacket){
-                    
+
                 }
+
             } catch (IOException e) {
                 try {
                     ois.close();

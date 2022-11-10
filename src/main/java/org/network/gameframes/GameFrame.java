@@ -4,6 +4,10 @@ import org.network.Main;
 import org.network.UserData;
 import org.network.UserSocket;
 import org.network.WindowConfig;
+import org.network.gamecore.GameCanvas;
+import org.network.gamecore.GameInputKeyListener;
+import org.network.gamecore.GameThread;
+import org.network.gamecore.Input;
 import org.network.packet.UserChatPacket;
 
 import javax.swing.*;
@@ -14,6 +18,9 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -22,24 +29,19 @@ import java.net.Socket;
 import static javax.swing.SwingConstants.BOTTOM;
 import static javax.swing.SwingConstants.SOUTH;
 
-public class GameFrame extends JFrame implements Runnable{
+public class GameFrame extends JFrame{
     private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
     private JSplitPane gameFrameMainPanel = new JSplitPane();
     private JSplitPane gameServerInfoPanel = new JSplitPane();
-    private static final int BUF_LEN = 128;
-    private Socket socket; // 연결소켓
-    private InputStream is;
-    private OutputStream os;
-    private DataInputStream dis;
-    private DataOutputStream dos;
 
-    private ObjectInputStream ois;
-    private ObjectOutputStream oos;
     private JPanel userListPanel = new JPanel();//유저 리스트 패널
     private JPanel userChatPanel = new JPanel();//유저 채팅 패널
     private GameCanvas gameCanvas;//게임 캔버스
+    private GameThread gameThread;
     public GameFrame(){
-        
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
+        setResizable(false);
         //좌우 나누기 패널
         gameFrameMainPanel = new JSplitPane();
         gameFrameMainPanel.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
@@ -62,21 +64,19 @@ public class GameFrame extends JFrame implements Runnable{
         initUserChatPanel();
 
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
-        setResizable(false);
-        gameLayer.setLayout(null);
+        gameLayer.setBackground(Color.CYAN);
+        gameLayer.setSize((WindowConfig.WIDTH/3)*2,(WindowConfig.HEIGHT));
         gameFrameMainPanel.setLeftComponent(gameLayer);
 
-        gameCanvas = new GameCanvas();
+        gameCanvas = new GameCanvas(this);
         gameCanvas.setBounds(0,0,gameLayer.getWidth(),gameLayer.getHeight());
         gameLayer.add(gameCanvas,JLayeredPane.FRAME_CONTENT_LAYER);
         gameCanvas.repaint();
-
-        JButton testButton = new JButton("캔버스 위 버튼 생성 테스트");
-        testButton.setBounds(300,300,300,300);
-        gameLayer.add(testButton);
         setVisible(true);
+        //게임 실행 부
+        gameLayer.addKeyListener(new GameInputKeyListener());
+        gameThread = new GameThread(gameLayer,gameCanvas);
+        gameThread.start();
     }
 
     private void userListPanel() {
@@ -210,41 +210,6 @@ public class GameFrame extends JFrame implements Runnable{
                 txtInput.requestFocus(); // 메세지를 보내고 커서를 다시 텍스트 필드로 위치시킨다
 
             }
-        }
-    }
-    @Override
-    public void run() {
-        while (true){
-            gameCanvas.repaint();
-            //System.out.println("Painting");
-        }
-    }
-
-    public class GameCanvas extends Canvas{
-        private int cnt, gamecnt;
-        private Image background[] = new Image[8];
-        private Image characters[] = new Image[8];
-        private Image img = new ImageIcon(Main.class.getClassLoader().getResource("backgrounds/pokenet_normal.png")).getImage();
-        private Image dblbuff;//더블버퍼링용 백버퍼
-        private Graphics gc;//더블버퍼링용 그래픽 컨텍스트
-
-        private Font font;
-        public GameCanvas(){
-            font=new Font("Default",Font.PLAIN,9);
-        }
-
-        @Override
-        public void paint(Graphics g) {
-            super.paint(g);
-            g.drawImage(img,0,0,WindowConfig.WIDTH,WindowConfig.HEIGHT,this);
-        }
-        public void update(Graphics g){
-            if(gc==null) return;
-            dblpaint();//오프스크린 버퍼에 그리기
-            g.drawImage(dblbuff,0,0,this);//오프스크린 버퍼를 메인화면에 그린다.
-        }
-        public void dblpaint(){
-            gc.drawImage(img,0,0,WindowConfig.WIDTH,WindowConfig.HEIGHT,this);
         }
     }
 }

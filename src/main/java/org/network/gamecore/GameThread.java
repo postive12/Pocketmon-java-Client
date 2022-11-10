@@ -19,7 +19,7 @@ public class GameThread extends Thread{
     public void run() {
         while (true){
             preTime=System.currentTimeMillis();
-            parent.requestFocus();
+            //parent.requestFocus();
             target.repaint();//화면 리페인트
             Update();//키 처리
             //프레임 처리

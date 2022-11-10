@@ -87,10 +87,10 @@ public class UserSocket extends Thread{
                     }
                 }
                 //유저 채팅 패킷 처리
-
-                else if (obcm instanceof UserChatPacket chatPacket){
+                if (obcm instanceof UserChatPacket chatPacket){
                     GameFrame.AppendTextR(chatPacket.chat);
                 }
+
             } catch (IOException e) {
                 System.out.println("Error Client exited");
                 try {

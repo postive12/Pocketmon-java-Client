@@ -5,6 +5,7 @@ import org.network.gameframes.LoginFrame;
 import org.network.packet.LoginPacket;
 import org.network.packet.LoginPacketType;
 import org.network.packet.UserChatPacket;
+import org.network.packet.UserListPacket;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -92,7 +93,9 @@ public class UserSocket extends Thread{
                         GameFrame.AppendText(chatPacket.chat);
                     }
                 }
-
+                if (obcm instanceof UserListPacket userListPacket){
+                    GameFrame.updateUserList(userListPacket);
+                }
             } catch (IOException e) {
                 System.out.println("Error Client exited");
                 try {
@@ -116,5 +119,4 @@ public class UserSocket extends Thread{
             //AppendText("SendObject Error");
         }
     }
-
 }

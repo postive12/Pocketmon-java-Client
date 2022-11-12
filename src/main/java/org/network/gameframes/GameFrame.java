@@ -10,6 +10,7 @@ import org.network.gamecore.GameThread;
 import org.network.gamecore.Input;
 import org.network.packet.LoginPacket;
 import org.network.packet.UserChatPacket;
+import org.network.packet.UserListPacket;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -21,6 +22,7 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,6 +41,7 @@ public class GameFrame extends JFrame{
     private JPanel userChatPanel = new JPanel();//유저 채팅 패널
     private GameCanvas gameCanvas;//게임 캔버스
     private GameThread gameThread;
+    private static DefaultListModel model;
     public GameFrame(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
@@ -81,7 +84,7 @@ public class GameFrame extends JFrame{
     }
 
     private void userListPanel() {
-        DefaultListModel model=new DefaultListModel();
+        model=new DefaultListModel();
         JList<String> userList = new JList<String>((ListModel<String>) model);
         JScrollPane scrollPane = new JScrollPane(userList);
         scrollPane.setBounds(1, 1, 401, 180);
@@ -90,17 +93,14 @@ public class GameFrame extends JFrame{
         userListPanel.add(scrollPane);
         userListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         userListPanel.setLayout(null);
-
-        model.addElement("접속 목록");
-
-        for(int i=1;i<=10;i++){
-            model.add(i,UserData.username);
-        }
-
-
-        
     }
-
+    public static void updateUserList(UserListPacket userListPacket){
+        model.clear();
+        for (String username : userListPacket.userlist){
+            System.out.println(username);
+            model.addElement(username);
+        }
+    }
 
     // 화면에 출력
     public static void AppendText(String msg) {

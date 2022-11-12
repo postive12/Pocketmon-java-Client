@@ -8,6 +8,7 @@ import org.network.gamecore.GameCanvas;
 import org.network.gamecore.GameInputKeyListener;
 import org.network.gamecore.GameThread;
 import org.network.gamecore.Input;
+import org.network.packet.LoginPacket;
 import org.network.packet.UserChatPacket;
 
 import javax.swing.*;
@@ -80,16 +81,24 @@ public class GameFrame extends JFrame{
     }
 
     private void userListPanel() {
-        JScrollPane scrollPane = new JScrollPane();
+        DefaultListModel model=new DefaultListModel();
+        JList<String> userList = new JList<String>((ListModel<String>) model);
+        JScrollPane scrollPane = new JScrollPane(userList);
         scrollPane.setBounds(1, 1, 401, 180);
-        userListPanel.add(scrollPane);
-        textArea = new JTextPane();
-        textArea.setEditable(true);
-        textArea.setFont(new Font("굴림체", Font.PLAIN, 14));
-        scrollPane.setViewportView(textArea);
 
+
+        userListPanel.add(scrollPane);
         userListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
         userListPanel.setLayout(null);
+
+        model.addElement("접속 목록");
+
+        for(int i=1;i<=10;i++){
+            model.add(i,UserData.username);
+        }
+
+
+        
     }
 
 
@@ -160,15 +169,15 @@ public class GameFrame extends JFrame{
         btnSend.setBounds(320, 420, 70, 40);
         userChatPanel.add(btnSend);
 
-        lblUserName = new JLabel("이름");
+        //사용자 이름 보여주기
+        lblUserName = new JLabel(UserData.username);
         lblUserName.setBorder(new LineBorder(new Color(0, 0, 0)));
         lblUserName.setBackground(Color.WHITE);
         lblUserName.setFont(new Font("굴림", Font.BOLD, 14));
         lblUserName.setHorizontalAlignment(SwingConstants.CENTER);
         lblUserName.setBounds(10, 420, 70, 40);
         userChatPanel.add(lblUserName);
-
-
+        
         TextSendAction action = new TextSendAction();
         btnSend.addActionListener(action);
         txtInput.addActionListener(action);

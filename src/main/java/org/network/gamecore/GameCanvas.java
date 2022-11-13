@@ -21,8 +21,6 @@ public class GameCanvas extends Canvas {
     private Font font;
     public GameCanvas(GameFrame parent){
         this.parent = parent;
-        GameObject gameObject = new Character();
-        GameObject.Initiate(gameObject);
         font=new Font("Default",Font.PLAIN,9);
     }
 

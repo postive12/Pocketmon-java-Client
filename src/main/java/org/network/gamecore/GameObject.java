@@ -1,18 +1,20 @@
 package org.network.gamecore;
 
+import org.network.gamecompnent.GameManager;
+
 import java.awt.*;
 import java.util.Vector;
 
 public class GameObject
 {
     public static Vector<GameObject> gameObjects = new Vector<>();
-
+    private boolean isEnabled = true;
     private boolean isAnimationStop = false;
     private int defaultImagePos = 0;
     private int id;
     private String identificationId = "";
     private Image image;
-    private Point transform;
+    private Point transform = new Point(0,0);
     private int imgSwapRatio = 1;
     private int imageTick = 10;
     private int currentImgLine = 0;
@@ -32,8 +34,11 @@ public class GameObject
         return null;
     }
     public static void updateGameObjects(){
+        GameManager.current.update();
         for (GameObject g : gameObjects){
-            g.update();
+            if (g.isEnabled){
+                g.update();
+            }
         }
     }
     public String getIdentificationId() {
@@ -84,12 +89,13 @@ public class GameObject
     public Point getImageCount() {
         return imageCount;
     }
-    public boolean isAnimationStop() {
+    public boolean getIsAnimationStop() {
         return isAnimationStop;
     }
 
-    public void setAnimationStop(boolean animationStop) {
+    public void setIsAnimationStop(boolean animationStop) {
         isAnimationStop = animationStop;
+
     }
 
     public int getDefaultImagePos() {
@@ -103,9 +109,15 @@ public class GameObject
         this.imageCount = imageCount;
     }
     public int getXSize(Canvas canvas){
+        if (image==null){
+            return 0;
+        }
         return image.getWidth(canvas)/imageCount.x;
     }
     public int getYSize(Canvas canvas){
+        if (image==null){
+            return 0;
+        }
         return image.getHeight(canvas)/imageCount.y;
     }
     public int getCurrentImgLine() {
@@ -113,5 +125,13 @@ public class GameObject
     }
     public void setCurrentImgLine(int currentImgLine) {
         this.currentImgLine = currentImgLine;
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        isEnabled = enabled;
     }
 }

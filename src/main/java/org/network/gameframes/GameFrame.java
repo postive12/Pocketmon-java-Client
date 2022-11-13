@@ -15,33 +15,40 @@ import org.network.packet.UserListPacket;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.List;
 import java.util.Random;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.*;
 import java.net.Socket;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 import static javax.swing.SwingConstants.BOTTOM;
 import static javax.swing.SwingConstants.SOUTH;
 
-public class GameFrame extends JFrame{
+public class GameFrame extends JFrame implements ListSelectionListener {
     private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
     private JSplitPane gameFrameMainPanel = new JSplitPane();
     private JSplitPane gameServerInfoPanel = new JSplitPane();
-
+    private JList<String> userList;
     private JPanel userListPanel = new JPanel();//유저 리스트 패널
     private JPanel userChatPanel = new JPanel();//유저 채팅 패널
     private GameCanvas gameCanvas;//게임 캔버스
     private GameThread gameThread;
+    private JTextField txtInput;
+    private static JTextPane textArea;
+    private JButton btnSend;
+    private JLabel lblUserName;
     private static DefaultListModel model;
+
+    private boolean to=TRUE;//1대1채팅하기 전 boolean으로 전쳇일지 개인챗일지
     public GameFrame(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
@@ -85,10 +92,13 @@ public class GameFrame extends JFrame{
 
     private void userListPanel() {
         model=new DefaultListModel();
-        JList<String> userList = new JList<String>((ListModel<String>) model);
+        userList = new JList<String>((ListModel<String>) model);
         JScrollPane scrollPane = new JScrollPane(userList);
         scrollPane.setBounds(1, 1, 401, 180);
+        userList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);//하나만 선택되게
 
+        //선택되면 귓속말 창
+        userList.addListSelectionListener(this);
 
         userListPanel.add(scrollPane);
         userListPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -101,6 +111,15 @@ public class GameFrame extends JFrame{
             model.addElement(username);
         }
     }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {//리스트 선택시 실행되는 메소드
+        if(!e.getValueIsAdjusting()) {
+            to=false;
+
+        }
+    }
+
 
     // 화면에 출력
     public static void AppendText(String msg) {
@@ -140,11 +159,8 @@ public class GameFrame extends JFrame{
 
     }
 
-    private JTextField txtInput;
-    private static JTextPane textArea;
-    private JButton btnSend;
-    private JLabel lblUserName;
-    private JButton imgBtn;
+
+
     //유저 채팅 패널 초기화
     private void initUserChatPanel() {
         //userChatPanel
@@ -183,6 +199,8 @@ public class GameFrame extends JFrame{
         txtInput.addActionListener(action);
         txtInput.requestFocus();
     }
+
+
     class TextSendAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -191,12 +209,22 @@ public class GameFrame extends JFrame{
                 String msg = null;
                 msg = String.format(" %s\n", txtInput.getText());
                 AppendTextR(msg);
-                UserChatPacket chatPacket = new UserChatPacket(
-                        UserData.id,
-                        UserData.username,
-                        msg,
-                        "-ALL-"
-                );
+                UserChatPacket chatPacket = null;
+                if(to==TRUE){
+                         chatPacket = new UserChatPacket(
+                            UserData.id,
+                            UserData.username,
+                            msg,
+                            "-ALL-"
+                    );
+                }else if(to==FALSE) {
+                         chatPacket = new UserChatPacket(
+                            UserData.id,
+                            UserData.username,
+                            msg,
+                            "-TARGET-"
+                    );
+                }
                 UserSocket.getInstance().sendObject(chatPacket);
                 txtInput.setText(""); // 메세지를 보내고 나면 메세지 쓰는창을 비운다.
                 txtInput.requestFocus(); // 메세지를 보내고 커서를 다시 텍스트 필드로 위치시킨다

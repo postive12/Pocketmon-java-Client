@@ -1,11 +1,9 @@
 package org.network;
 
+import org.network.gamecompnent.GameManager;
 import org.network.gameframes.GameFrame;
 import org.network.gameframes.LoginFrame;
-import org.network.packet.LoginPacket;
-import org.network.packet.LoginPacketType;
-import org.network.packet.UserChatPacket;
-import org.network.packet.UserListPacket;
+import org.network.packet.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -53,7 +51,6 @@ public class UserSocket extends Thread{
     }
     public void run() {
         while (true) {
-            System.out.println("Alive");
             try {
                 Object obcm = null;
                 //String msg = null;
@@ -68,7 +65,6 @@ public class UserSocket extends Thread{
                     System.out.println("Null object received");
                     break;
                 }
-                System.out.println("packet received");
                 //로그인 패킷 처리
                 if (obcm instanceof LoginPacket loginPacket){
                     System.out.println("Login packet received");
@@ -95,6 +91,10 @@ public class UserSocket extends Thread{
                 }
                 if (obcm instanceof UserListPacket userListPacket){
                     GameFrame.updateUserList(userListPacket);
+                }
+                if (obcm instanceof UserMoveListPacket userMoveListPacket){
+                    //System.out.println("Receive userMoveList");
+                    GameManager.current.updateCharactersByUsername(userMoveListPacket);
                 }
             } catch (IOException e) {
                 System.out.println("Error Client exited");

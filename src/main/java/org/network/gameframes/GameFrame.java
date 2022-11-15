@@ -48,7 +48,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private JLabel lblUserName;
     private static DefaultListModel model;
 
-    private boolean to=TRUE;//1대1채팅하기 전 boolean으로 전쳇일지 개인챗일지
+    private String currentSelectedUser = "-ALL-";
     public GameFrame(){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
@@ -115,10 +115,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     @Override
     public void valueChanged(ListSelectionEvent e) {//리스트 선택시 실행되는 메소드
         if(!e.getValueIsAdjusting()) {
-            if(userList.getSelectedValue().equals(UserData.username)){// 나를 선택하면 다시 전쳇으로
-                to=TRUE;
-            }
-            else{to=false;}
+            currentSelectedUser = userList.getSelectedValue();
         }
     }
 
@@ -212,20 +209,10 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                 msg = String.format(" %s\n", txtInput.getText());
                 AppendTextR(msg);
                 UserChatPacket chatPacket = null;
-                if(to==TRUE){
-                         chatPacket = new UserChatPacket(
-                            UserData.id,
-                            UserData.username,
-                            msg,
-                            "-ALL-"
-                    );
-                }else if(to==FALSE) {
-                         chatPacket = new UserChatPacket(
-                            UserData.id,
-                            UserData.username,
-                            msg,
-                            "-TARGET-"
-                    );
+                if(currentSelectedUser.equals(UserData.username) || currentSelectedUser.equals("-ALL-")){
+                     chatPacket = new UserChatPacket(UserData.id, UserData.username, msg, "-ALL-");
+                }else{
+                     chatPacket = new UserChatPacket(UserData.id, UserData.username, msg, currentSelectedUser);
                 }
                 UserSocket.getInstance().sendObject(chatPacket);
                 txtInput.setText(""); // 메세지를 보내고 나면 메세지 쓰는창을 비운다.

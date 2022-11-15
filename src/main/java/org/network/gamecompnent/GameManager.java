@@ -22,6 +22,21 @@ public class GameManager extends GameObject {
     }
     @Override
     public void update() {
+        if (Input.GetKeyDown(KeyEvent.VK_SPACE)){
+            GameObject localPlayer = findGameObjectByIdentificationId(UserData.username);
+            int currentState = localPlayer.getCurrentImgLine();
+            Point transform = new Point(localPlayer.getTransform());
+            switch (currentState) {
+                case 0 -> transform.y -= localPlayer.getHeight();
+                case 1 -> transform.x += localPlayer.getWidth();
+                case 2 -> transform.y += localPlayer.getHeight();
+                case 3 -> transform.x -= localPlayer.getWidth();
+            }
+            GameObject g = PhysicsManager.getObjectFromPos(transform);
+            if (g != null){
+                System.out.println(g.getIdentificationId());
+            }
+        }
         if (Input.GetKeyPressed(KeyEvent.VK_A)){
             localPlayerDirection.x -= 1;
         }
@@ -43,6 +58,7 @@ public class GameManager extends GameObject {
         localPlayerDirection.x = 0;
     }
     public void sendPlayerMovePacket(int ratio){
+        //System.out.println(ratio);
         UserMovePacket userMovePacket = new UserMovePacket(
                 UserData.id,
                 UserData.username,
@@ -60,7 +76,7 @@ public class GameManager extends GameObject {
         }
         checkCharactersByUsername(userList);
         for (UserMoveData userMoveData : userMoveListPacket.userMoveList){
-            //System.out.println("Username : "+ userMoveData.username + " / Current post : " + userMoveData.currentPos.x +" : " + userMoveData.currentPos.y);
+            System.out.println("Username : "+ userMoveData.username + " / Current post : " + userMoveData.currentPos.x +" : " + userMoveData.currentPos.y);
             GameObject g = findGameObjectByIdentificationId(userMoveData.username);
             if (g == null){
                 continue;

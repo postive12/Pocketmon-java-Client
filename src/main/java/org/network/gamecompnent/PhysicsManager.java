@@ -46,4 +46,12 @@ public class PhysicsManager {
         }
         return lastAvailableNumber;
     }
+    public static GameObject getObjectFromPos(Point pos){
+        for (GameObject g : GameObject.gameObjects){
+            if (checkPhysicsByPoint(g.getTransform(), pos,g.getWidth(),g.getHeight())){
+                return g;
+            }
+        }
+        return null;
+    }
 }

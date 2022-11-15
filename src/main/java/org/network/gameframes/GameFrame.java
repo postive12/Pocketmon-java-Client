@@ -137,7 +137,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         }
         int len = textArea.getDocument().getLength();
         textArea.setCaretPosition(len);
-        //textArea.replaceSelection("\n");
 
     }
     public static void AppendTextR(String msg) {
@@ -155,8 +154,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         }
         int len = textArea.getDocument().getLength();
         textArea.setCaretPosition(len);
-        //textArea.replaceSelection("\n");
-
     }
 
 
@@ -185,6 +182,12 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             public void focusGained(FocusEvent e) {
                 super.focusGained(e);
                 GameThread.setIsFocusable(false);//게임 포커스 비활성화
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                super.focusLost(e);
+                GameThread.setIsFocusable(true);//게임 포커스 활성화
             }
         });
 
@@ -225,7 +228,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                 }
                 UserSocket.getInstance().sendObject(chatPacket);
                 txtInput.setText(""); // 메세지를 보내고 나면 메세지 쓰는창을 비운다.
-                GameThread.setIsFocusable(true);//게임 포커스 활성화
             }
         }
     }

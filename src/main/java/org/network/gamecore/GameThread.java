@@ -3,7 +3,6 @@ package org.network.gamecore;
 import org.network.gamecompnent.GameManager;
 
 import javax.swing.*;
-import java.awt.event.KeyEvent;
 
 public class GameThread extends Thread{
     private final GameCanvas target;
@@ -40,11 +39,8 @@ public class GameThread extends Thread{
         }
     }
     private void Update() {
-        if (Input.GetKeyPressed(KeyEvent.VK_SPACE)){
-            //System.out.println("Space pressed.");
-            System.out.println(cnt);
-        }
         GameObject.updateGameObjects();
+        Input.clearInputDown();//한 프레임 인식용 키입력 버퍼 비우기
     }
     public static int getCnt() {
         return cnt;
@@ -52,6 +48,6 @@ public class GameThread extends Thread{
 
     public static void setIsFocusable(boolean enable) {
         isFocusable = enable;
-        Input.ClearInput();
+        Input.clearInput();
     }
 }

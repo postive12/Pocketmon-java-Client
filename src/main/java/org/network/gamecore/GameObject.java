@@ -14,6 +14,8 @@ public class GameObject
     private int id;
     private String identificationId = "";
     private Image image;
+
+    private Point size = new Point(0,0);
     private Point transform = new Point(0,0);
     private int imgSwapRatio = 1;
     private int imageTick = 10;
@@ -133,5 +135,14 @@ public class GameObject
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+    public void setSize(Point size) {
+        this.size = size;
+    }
+    public int getWidth(){
+        return size.x;
+    }
+    public int getHeight(){
+        return size.y;
     }
 }

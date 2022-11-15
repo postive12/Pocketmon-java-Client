@@ -17,6 +17,7 @@ public class Character extends GameObject {
         setTransform(new Point(WindowConfig.WIDTH/3,WindowConfig.HEIGHT/2));
         setImageTick(4);
         setImageCount(new Point(4,4));
+        setSize(new Point(64,80));
         setIdentificationId(identificationId);
         setImgSwapRatio(2);
         setDefaultImagePos(2);

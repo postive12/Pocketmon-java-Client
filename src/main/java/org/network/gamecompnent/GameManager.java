@@ -3,6 +3,7 @@ package org.network.gamecompnent;
 import org.network.UserData;
 import org.network.UserSocket;
 import org.network.data.UserMoveData;
+import org.network.gamecore.GameConfig;
 import org.network.gamecore.GameObject;
 import org.network.gamecore.Input;
 import org.network.packet.UserMoveListPacket;
@@ -36,17 +37,18 @@ public class GameManager extends GameObject {
         if (localPlayerDirection.x == 0 && localPlayerDirection.y == 0){
             return;
         }
-        sendPlayerMovePacket();
+        int ratio = PhysicsManager.getMoveRatioByGameObjectAndSpeed(findGameObjectByIdentificationId(UserData.username),localPlayerDirection, GameConfig.UserSpeed);
+        sendPlayerMovePacket(ratio);
         localPlayerDirection.y = 0;
         localPlayerDirection.x = 0;
     }
-    public void sendPlayerMovePacket(){
+    public void sendPlayerMovePacket(int ratio){
         UserMovePacket userMovePacket = new UserMovePacket(
                 UserData.id,
                 UserData.username,
                 new Point(
-                        localPlayerDirection.x,
-                        localPlayerDirection.y
+                        localPlayerDirection.x * ratio,
+                        localPlayerDirection.y * ratio
                 )
         );
         UserSocket.getInstance().sendObject(userMovePacket);

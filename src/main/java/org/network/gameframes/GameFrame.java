@@ -115,8 +115,10 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     @Override
     public void valueChanged(ListSelectionEvent e) {//리스트 선택시 실행되는 메소드
         if(!e.getValueIsAdjusting()) {
-            to=false;
-
+            if(userList.getSelectedValue().equals(UserData.username)){// 나를 선택하면 다시 전쳇으로
+                to=TRUE;
+            }
+            else{to=false;}
         }
     }
 

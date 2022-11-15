@@ -81,6 +81,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         gameCanvas = new GameCanvas(this);
         gameCanvas.setBounds(0,0,gameLayer.getWidth(),gameLayer.getHeight());
         gameLayer.add(gameCanvas,JLayeredPane.FRAME_CONTENT_LAYER);
+
         gameCanvas.repaint();
         setVisible(true);
 
@@ -179,6 +180,14 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         userChatPanel.add(txtInput);
         txtInput.setColumns(10);
 
+        txtInput.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                super.focusGained(e);
+                GameThread.setIsFocusable(false);//게임 포커스 비활성화
+            }
+        });
+
         btnSend = new JButton("전송");
         btnSend.setFont(new Font("굴림", Font.PLAIN, 14));
         btnSend.setBounds(320, 420, 70, 40);
@@ -216,8 +225,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                 }
                 UserSocket.getInstance().sendObject(chatPacket);
                 txtInput.setText(""); // 메세지를 보내고 나면 메세지 쓰는창을 비운다.
-                txtInput.requestFocus(); // 메세지를 보내고 커서를 다시 텍스트 필드로 위치시킨다
-
+                GameThread.setIsFocusable(true);//게임 포커스 활성화
             }
         }
     }

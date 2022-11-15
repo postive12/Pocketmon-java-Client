@@ -60,7 +60,7 @@ public class GameManager extends GameObject {
         }
         checkCharactersByUsername(userList);
         for (UserMoveData userMoveData : userMoveListPacket.userMoveList){
-            System.out.println("Username : "+ userMoveData.username + " / Current post : " + userMoveData.currentPos.x +" : " + userMoveData.currentPos.y);
+            //System.out.println("Username : "+ userMoveData.username + " / Current post : " + userMoveData.currentPos.x +" : " + userMoveData.currentPos.y);
             GameObject g = findGameObjectByIdentificationId(userMoveData.username);
             if (g == null){
                 continue;

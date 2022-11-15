@@ -26,4 +26,7 @@ public class Input {
     public static boolean GetKeyPressed(int state){
         return userInputs.contains(state);
     }
+    public static void ClearInput(){
+        userInputs.clear();
+    }
 }

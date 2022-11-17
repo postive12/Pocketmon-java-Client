@@ -96,6 +96,9 @@ public class UserSocket extends Thread{
                     //System.out.println("Receive userMoveList");
                     GameManager.current.updateCharactersByUsername(userMoveListPacket);
                 }
+                if (obcm instanceof UserBattlePacket userBattlePacket){
+
+                }
             } catch (IOException e) {
                 System.out.println("Error Client exited");
                 try {

@@ -46,6 +46,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private static JButton okButton;
     private static ActionListener lastOkActionListener;
     private static JLabel okPanelTitle;
+    private JLayeredPane battleLogPanel = new JLayeredPane();
     private GameCanvas gameCanvas;//게임 캔버스
     private GameThread gameThread;
     private JTextField txtInput;
@@ -83,6 +84,8 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
         initOkNoPanel();
 
+        initBattleLogPanel();
+
         //gameFrameMainPanel.setLeftComponent(gameLayer);
 
         gameCanvas = new GameCanvas(this);
@@ -97,7 +100,15 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         //게임 실행 부
         addKeyListener(new GameInputKeyListener());
     }
+    private void initBattleLogPanel(){
+        battleLogPanel.setBounds(0,WindowConfig.HEIGHT*2/3 - 30,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT/3);
+        BackgroundPanel background = new BackgroundPanel("backgrounds/BottomUiPanel.png");
+        background.setBounds(0,0,battleLogPanel.getWidth(),battleLogPanel.getHeight());
+        //battleLogPanel.add(background,JLayeredPane.FRAME_CONTENT_LAYER);
+        //여기다가 전투 ui 추가
 
+        gameLayer.add(battleLogPanel,JLayeredPane.DRAG_LAYER);
+    }
     private void initOkNoPanel(){
         okNoPanel = new JLayeredPane();
         okNoPanel.setSize(WindowConfig.WIDTH/3,WindowConfig.HEIGHT/3);

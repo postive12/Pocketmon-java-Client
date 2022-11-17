@@ -17,6 +17,7 @@ public class UserSocket extends Thread{
     private Socket socket; // 연결소켓
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
+    private Music intro;
     public UserSocket(){
         current = this;
         try {
@@ -24,6 +25,10 @@ public class UserSocket extends Thread{
             oos = new ObjectOutputStream(socket.getOutputStream());
             oos.flush();
             ois = new ObjectInputStream(socket.getInputStream());
+
+            intro=new Music("music/login.mp3",true);
+            intro.start();
+
             start();
         } catch (NumberFormatException | IOException e) {
             System.out.println("서버에 연결하지 못했습니다.");
@@ -54,8 +59,6 @@ public class UserSocket extends Thread{
         sendObject(loginPacket);
     }
     public void run() {
-        Music intro=new Music("music/login.mp3",true);
-        intro.start();
         while (true) {
             try {
                 Object obcm = null;

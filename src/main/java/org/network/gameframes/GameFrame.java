@@ -7,6 +7,7 @@ import org.network.WindowConfig;
 import org.network.gamecore.*;
 import org.network.packet.UserChatPacket;
 import org.network.packet.UserListPacket;
+import org.network.panel.BackgroundPanel;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -41,6 +42,11 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private JList<String> userList;
     private JPanel userListPanel = new JPanel();//유저 리스트 패널
     private JPanel userChatPanel = new JPanel();//유저 채팅 패널
+    private static JLayeredPane okNoPanel;//유저 ok 패널
+    private static JButton okButton;
+    private static ActionListener lastOkActionListener;
+    private static JLabel okPanelTitle;
+    private JLayeredPane battleLogPanel = new JLayeredPane();
     private GameCanvas gameCanvas;//게임 캔버스
     private GameThread gameThread;
     private JTextField txtInput;
@@ -76,7 +82,9 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         userChatPanel.setBackground(Color.white);
         initUserChatPanel();
 
+        initOkNoPanel();
 
+        initBattleLogPanel();
 
         //gameFrameMainPanel.setLeftComponent(gameLayer);
 
@@ -86,12 +94,65 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
         gameCanvas.repaint();
         setVisible(true);
-
-
+        
         gameThread = new GameThread(this,gameCanvas);
         gameThread.start();
         //게임 실행 부
         addKeyListener(new GameInputKeyListener());
+    }
+    private void initBattleLogPanel(){
+        battleLogPanel.setBounds(0,WindowConfig.HEIGHT*2/3 - 30,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT/3);
+        BackgroundPanel background = new BackgroundPanel("backgrounds/BottomUiPanel.png");
+        background.setBounds(0,0,battleLogPanel.getWidth(),battleLogPanel.getHeight());
+        //battleLogPanel.add(background,JLayeredPane.FRAME_CONTENT_LAYER);
+        //여기다가 전투 ui 추가
+
+        gameLayer.add(battleLogPanel,JLayeredPane.DRAG_LAYER);
+    }
+    private void initOkNoPanel(){
+        okNoPanel = new JLayeredPane();
+        okNoPanel.setSize(WindowConfig.WIDTH/3,WindowConfig.HEIGHT/3);
+        okNoPanel.setLocation(WindowConfig.WIDTH/3 - okNoPanel.getWidth()/2,WindowConfig.HEIGHT/3 - okNoPanel.getHeight()/2);
+
+        BackgroundPanel backgroundPanel = new BackgroundPanel("ui/speechbox.png");
+        backgroundPanel.setLocation(0,0);
+        backgroundPanel.setSize(okNoPanel.getSize());
+        okNoPanel.add(backgroundPanel,JLayeredPane.FRAME_CONTENT_LAYER);
+
+        okPanelTitle = new JLabel(
+                "<html>테스트 디버깅 용 텍스트 입니다." +
+                "<br>테스트 디버깅 용 텍스트 입니다.</html>"
+        );
+        okPanelTitle.setHorizontalAlignment(JLabel.CENTER);
+        okPanelTitle.setBounds(30,0,okNoPanel.getWidth() - 60,200);
+        okPanelTitle.setFont(new Font("Default", Font.BOLD, 14));
+
+        okButton = new JButton("확인");
+        JButton noButton = new JButton("닫기");
+        noButton.addActionListener(e -> {
+            okNoPanel.setVisible(false);
+            okButton.removeActionListener(lastOkActionListener);
+        });
+
+        okButton.addActionListener(e -> {
+            okNoPanel.setVisible(false);
+        });
+
+        okButton.setBounds(120,150,100,30);
+        noButton.setBounds(230,150,100,30);
+
+        okNoPanel.add(okPanelTitle,JLayeredPane.POPUP_LAYER);
+        okNoPanel.add(okButton,JLayeredPane.POPUP_LAYER);
+        okNoPanel.add(noButton,JLayeredPane.POPUP_LAYER);
+        gameLayer.add(okNoPanel,JLayeredPane.DRAG_LAYER);
+        okNoPanel.setVisible(false);
+    }
+
+    public static void showOkNoPanel(String title,ActionListener okAction) {
+        okPanelTitle.setText("<html>"+title+"</html>");
+        lastOkActionListener = okAction;
+        okButton.addActionListener(lastOkActionListener);
+        okNoPanel.setVisible(true);
     }
 
     private void userListPanel() {

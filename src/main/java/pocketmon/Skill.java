@@ -1,13 +1,8 @@
 package pocketmon;
-
-
-
 public class Skill {
     private String name;
-    private String type;
+    //private String type;
     private int power;
-
-
     //생성자 깃 연습
     public Skill() {}
     public Skill(String name) {
@@ -17,10 +12,10 @@ public class Skill {
         this(name);
         this.power = power;
     }
-    public Skill(String name, int power, String type) {
-        this(name,power);
-        this.type = type;
-    }
+//    public Skill(String name, int power, String type) {
+//        this(name,power);
+//        this.type = type;
+//    }
 
     //getter, setter
     public String getName() {
@@ -29,19 +24,17 @@ public class Skill {
     public void setName(String name) {
         this.name = name;
     }
-    public String getType() {
-        return type;
-    }
-    public void setType(String type) {
-        this.type = type;
-    }
+//    public String getType() {
+//        return type;
+//    }
+//    public void setType(String type) {
+//        this.type = type;
+//    }
     public int getPower() {
         return power;
     }
     public void setPower(int power) {
         this.power = power;
     }
-
-
 }
 

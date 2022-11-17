@@ -4,7 +4,7 @@ import java.awt.*;
 
 public abstract class PocketMonster implements Fight {
     private String name;//포켓몬 이름 ex)피카츄, 파이리
-    private String type;//포켓몬 타입 ex)fire, grass
+    //private String type;//포켓몬 타입 ex)fire, grass
     private String condition;//현재상태
     private int current_HP;
     private int max_HP;
@@ -34,13 +34,13 @@ public abstract class PocketMonster implements Fight {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
-    }
+//    public String getType() {
+//        return type;
+//    }
 
-    public void setType(String type) {
-        this.type = type;
-    }
+//    public void setType(String type) {
+//        this.type = type;
+//    }
 
     public String getCondition() {
         return condition;
@@ -159,8 +159,6 @@ public abstract class PocketMonster implements Fight {
     public void setSkill_list(Skill[] skill_list) {
         this.skill_list = skill_list;
     }
-    public abstract String evolution();
-
     @Override //num : 사용할 스킬 넘버, p : 공격당하는 포켓몬
     public String use_skill(int num, PocketMonster p) { //몇번 스킬을 누구에게 사용하기 메소드
         System.out.println("--------- 스킬 사용 --------");
@@ -170,61 +168,61 @@ public abstract class PocketMonster implements Fight {
         String str_normal = "효과가 있었다!";
         String str_good = "효과는 굉장했다!";
         String str_bad = "효과가 모자른 것 같다.";
-        if(temp.getType().equals("water"))
-        {
-            if(p.getType().equals("fire"))
-            {
-                dam*=2;
-                str_base += str_good;
-            }
-            else
-                str_base +=str_normal;
-        }
-        else if(temp.getType().equals("electric"))
-        {
-            if(p.getType().equals("water"))
-            {
-                dam*=2;
-                str_base += str_good;
-            }
-            else if(p.getType().equals("grass"))
-            {
-                dam/=2;
-                str_base += str_bad;
-            }
-            else
-                str_base +=str_normal;
-        }
-        else if(temp.getType().equals("grass"))
-        {
-            if(p.getType().equals("water"))
-            {
-                dam*=2;
-                str_base += str_good;
-            }
-            else if(p.getType().equals("fire"))
-            {
-                dam/=2;
-                str_base += str_bad;
-            }
-            else
-                str_base +=str_normal;
-        }
-        else if(temp.getType().equals("fire"))
-        {
-            if(p.getType().equals("grass"))
-            {
-                dam*=2;
-                str_base += str_good;
-            }
-            else if(p.getType().equals("water"))
-            {
-                dam/=2;
-                str_base += str_bad;
-            }
-            else
-                str_base +=str_normal;
-        }
+//        if(temp.getType().equals("water"))
+//        {
+//            if(p.getType().equals("fire"))
+//            {
+//                dam*=2;
+//                str_base += str_good;
+//            }
+//            else
+//                str_base +=str_normal;
+//        }
+//        else if(temp.getType().equals("electric"))
+//        {
+//            if(p.getType().equals("water"))
+//            {
+//                dam*=2;
+//                str_base += str_good;
+//            }
+//            else if(p.getType().equals("grass"))
+//            {
+//                dam/=2;
+//                str_base += str_bad;
+//            }
+//            else
+//                str_base +=str_normal;
+//        }
+//        else if(temp.getType().equals("grass"))
+//        {
+//            if(p.getType().equals("water"))
+//            {
+//                dam*=2;
+//                str_base += str_good;
+//            }
+//            else if(p.getType().equals("fire"))
+//            {
+//                dam/=2;
+//                str_base += str_bad;
+//            }
+//            else
+//                str_base +=str_normal;
+//        }
+//        else if(temp.getType().equals("fire"))
+//        {
+//            if(p.getType().equals("grass"))
+//            {
+//                dam*=2;
+//                str_base += str_good;
+//            }
+//            else if(p.getType().equals("water"))
+//            {
+//                dam/=2;
+//                str_base += str_bad;
+//            }
+//            else
+//                str_base +=str_normal;
+//        }
         dam -= p.getDef();//실제 받는 데미지 = dam - p의 def
         dam/=10;
         p.changeCurrent_HP(-dam);

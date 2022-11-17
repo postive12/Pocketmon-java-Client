@@ -50,6 +50,8 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
     private String currentSelectedUser = "-ALL-";
     public GameFrame(){
+        new Music().play("music/login.wav");
+        new Music().play("music/lobby.wav");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
         setResizable(false);

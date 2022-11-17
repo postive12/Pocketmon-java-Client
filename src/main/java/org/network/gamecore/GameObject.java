@@ -7,8 +7,7 @@ import java.util.Vector;
 
 public class GameObject
 {
-    public static Vector<GameObject> userGameObjects = new Vector<>();
-    public static Vector<GameObject> structureGameObjects = new Vector<>();
+    public static Vector<GameObject> gameObjects = new Vector<>();
     private boolean isEnabled = true;
     private boolean isAnimationStop = false;
     private int defaultImagePos = 0;
@@ -23,13 +22,13 @@ public class GameObject
     private int currentImgLine = 0;
     private Point imageCount = new Point(1,1);
     public static void Initiate(GameObject gameObject){
-        userGameObjects.add(gameObject);
+        gameObjects.add(gameObject);
     }
     public static void Destroy(GameObject gameObject){
-        userGameObjects.remove(gameObject);
+        gameObjects.remove(gameObject);
     }
     public static GameObject findGameObjectByIdentificationId(String identificationId){
-        for (GameObject g : userGameObjects){
+        for (GameObject g : gameObjects){
             if (g.identificationId.equals(identificationId)){
                 return g;
             }
@@ -38,12 +37,7 @@ public class GameObject
     }
     public static void updateGameObjects(){
         GameManager.current.update();
-        for (GameObject g : userGameObjects){
-            if (g.isEnabled){
-                g.update();
-            }
-        }
-        for (GameObject g : structureGameObjects){
+        for (GameObject g : gameObjects){
             if (g.isEnabled){
                 g.update();
             }

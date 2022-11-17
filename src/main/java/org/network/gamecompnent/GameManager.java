@@ -2,10 +2,12 @@ package org.network.gamecompnent;
 
 import org.network.UserData;
 import org.network.UserSocket;
+import org.network.WindowConfig;
 import org.network.data.UserMoveData;
 import org.network.gamecore.GameConfig;
 import org.network.gamecore.GameObject;
 import org.network.gamecore.Input;
+import org.network.packet.UserBattlePacket;
 import org.network.packet.UserMoveListPacket;
 import org.network.packet.UserMovePacket;
 
@@ -19,6 +21,37 @@ public class GameManager extends GameObject {
     private Point localPlayerDirection = new Point(0,0);
     public GameManager(){
         current = this;
+        
+        //맵 구조물 추가
+        GameObject structure01 = new GameObject();
+        structure01.setIdentificationId("STRUCTURE_GROUP");
+        structure01.setTransform(new Point(166,128));
+        structure01.setSize(new Point(332,256));
+        Initiate(structure01);
+
+        GameObject wallLeft = new GameObject();
+        wallLeft.setIdentificationId("STRUCTURE_GROUP");
+        wallLeft.setTransform(new Point(-50,WindowConfig.HEIGHT/2));
+        wallLeft.setSize(new Point(100, WindowConfig.HEIGHT));
+        Initiate(wallLeft);
+
+        GameObject wallRight = new GameObject();
+        wallRight.setIdentificationId("STRUCTURE_GROUP");
+        wallRight.setTransform(new Point(WindowConfig.WIDTH * 2 / 3 + 50,WindowConfig.HEIGHT/2));
+        wallRight.setSize(new Point(100, WindowConfig.HEIGHT));
+        Initiate(wallRight);
+
+        GameObject wallTop = new GameObject();
+        wallTop.setIdentificationId("STRUCTURE_GROUP");
+        wallTop.setTransform(new Point(WindowConfig.WIDTH/2,-50));
+        wallTop.setSize(new Point(WindowConfig.WIDTH, 100));
+        Initiate(wallTop);
+
+        GameObject wallBottom = new GameObject();
+        wallBottom.setIdentificationId("STRUCTURE_GROUP");
+        wallBottom.setTransform(new Point(WindowConfig.WIDTH/2,WindowConfig.HEIGHT + 50));
+        wallBottom.setSize(new Point(WindowConfig.WIDTH,100));
+        Initiate(wallBottom);
     }
     @Override
     public void update() {
@@ -26,6 +59,7 @@ public class GameManager extends GameObject {
         if (localPlayer == null){
             return;
         }
+        handleEvent();
         if (Input.GetKeyDown(KeyEvent.VK_SPACE)){
 
             int currentState = localPlayer.getCurrentImgLine();
@@ -37,8 +71,15 @@ public class GameManager extends GameObject {
                 case 3 -> transform.x -= localPlayer.getWidth();
             }
             GameObject g = PhysicsManager.getObjectFromPos(transform);
-            if (g != null){
-                System.out.println(g.getIdentificationId());
+            if (g != null && !g.getIdentificationId().equals("STRUCTURE_GROUP")){
+                UserBattlePacket userBattlePacket = new UserBattlePacket(
+                        UserData.id,
+                        UserData.username,
+                        "REQUEST",
+                        g.getIdentificationId(),
+                        null
+                );
+                UserSocket.getInstance().sendObject(userBattlePacket);
             }
         }
         if (Input.GetKeyPressed(KeyEvent.VK_A)){
@@ -61,6 +102,22 @@ public class GameManager extends GameObject {
         localPlayerDirection.y = 0;
         localPlayerDirection.x = 0;
     }
+
+    private void handleEvent() {
+        if (Input.GetKeyDown(KeyEvent.VK_H)){
+
+        }
+        if (Input.GetKeyDown(KeyEvent.VK_J)){
+
+        }
+        if (Input.GetKeyDown(KeyEvent.VK_K)){
+
+        }
+        if (Input.GetKeyDown(KeyEvent.VK_L)){
+
+        }
+    }
+
     public void sendPlayerMovePacket(int ratio){
         //System.out.println(ratio);
         UserMovePacket userMovePacket = new UserMovePacket(
@@ -100,7 +157,10 @@ public class GameManager extends GameObject {
     }
     public void checkCharactersByUsername(List<String> usernameList){
         List<GameObject> destroyTarget = new ArrayList<>();
-        for (var target : GameObject.userGameObjects){
+        for (var target : GameObject.gameObjects){
+            if (target.getIdentificationId().equals("STRUCTURE_GROUP")){
+                continue;
+            }
             if (!usernameList.contains(target.getIdentificationId())){
                 destroyTarget.add(target);
             }

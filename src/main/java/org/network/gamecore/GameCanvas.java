@@ -12,7 +12,8 @@ public class GameCanvas extends Canvas {
     private Image background[] = new Image[8];
     private Image characters[] = new Image[8];
     private Image testChar = new ImageIcon(Main.class.getClassLoader().getResource("characters/players/1.png")).getImage();
-    private Image img = new ImageIcon(Main.class.getClassLoader().getResource("backgrounds/test.png")).getImage();
+    private Image img = new ImageIcon(Main.class.getClassLoader().getResource("backgrounds/lobby_map.png")).getImage();
+    private Image debug = new ImageIcon(Main.class.getClassLoader().getResource("backgrounds/test.png")).getImage();
     //private GameObject gameObject = new GameObject();
     private Image dblbuff;//더블버퍼링용 백버퍼
     private Graphics gc;//더블버퍼링용 그래픽 컨텍스트
@@ -44,7 +45,10 @@ public class GameCanvas extends Canvas {
         drawGameObjects();
     }
     private void drawGameObjects() {
-        for (GameObject gameObject : GameObject.userGameObjects){
+        for (GameObject gameObject : GameObject.gameObjects){
+            if (gameObject.getImage()==null){
+                continue;
+            }
             drawImageAnc(
                     gameObject.getImage(),
                     gameObject.getTransform().x,

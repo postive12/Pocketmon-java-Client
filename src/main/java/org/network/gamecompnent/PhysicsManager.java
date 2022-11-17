@@ -21,8 +21,14 @@ public class PhysicsManager {
             curPos.x += direction.x * i;
             curPos.y += direction.y * i;
             boolean isAvailable = true;
-            for (GameObject g: GameObject.userGameObjects){
+            //구조물 오브젝트 검증
+
+            //게임 오브젝트 검증
+            for (GameObject g: GameObject.gameObjects){
                 if (g == gameObject){
+                    continue;
+                }
+                if (!g.getIdentificationId().equals("STRUCTURE_GROUP")){
                     continue;
                 }
                 List<Point> checkList = new ArrayList<>();
@@ -70,7 +76,7 @@ public class PhysicsManager {
         return lastAvailableNumber;
     }
     public static GameObject getObjectFromPos(Point pos){
-        for (GameObject g : GameObject.userGameObjects){
+        for (GameObject g : GameObject.gameObjects){
             if (checkPhysicsByPoint(g.getTransform(), pos,g.getWidth(),g.getHeight())){
                 return g;
             }

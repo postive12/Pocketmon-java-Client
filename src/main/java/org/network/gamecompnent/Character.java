@@ -1,6 +1,7 @@
 package org.network.gamecompnent;
 
 import org.network.Main;
+import org.network.UserData;
 import org.network.WindowConfig;
 import org.network.gamecore.GameObject;
 import org.network.gamecore.Input;
@@ -13,7 +14,11 @@ public class Character extends GameObject {
     private Point direction = new Point(0,0);
     private int speed = 4;
     public Character(String identificationId){
-        setImage(new ImageIcon(Main.class.getClassLoader().getResource("characters/players/1.png")).getImage());
+        int imageNum = 2;
+        if (identificationId.equals(UserData.username))
+            imageNum = 1;
+
+        setImage(new ImageIcon(Main.class.getClassLoader().getResource("characters/players/"+imageNum+".png")).getImage());
         setTransform(new Point(WindowConfig.WIDTH/3,WindowConfig.HEIGHT/2));
         setImageTick(4);
         setImageCount(new Point(4,4));

@@ -25,7 +25,9 @@ public class UserSocket extends Thread{
             ois = new ObjectInputStream(socket.getInputStream());
             start();
         } catch (NumberFormatException | IOException e) {
+            System.out.println("서버에 연결하지 못했습니다.");
             e.printStackTrace();
+            System.exit(0);
         }
     }
     public static UserSocket getInstance(){
@@ -97,7 +99,16 @@ public class UserSocket extends Thread{
                     GameManager.current.updateCharactersByUsername(userMoveListPacket);
                 }
                 if (obcm instanceof UserBattlePacket userBattlePacket){
-
+                    GameFrame.showOkNoPanel(userBattlePacket.username+"님이 배틀을 요청하셨습니다.<br>배틀을 수락하시겠습니까?",e -> {
+                        UserBattlePacket result = new UserBattlePacket(
+                                UserData.id,
+                                UserData.username,
+                                "ACCEPT",
+                                userBattlePacket.username,
+                                null
+                        );
+                        sendObject(result);
+                    });
                 }
             } catch (IOException e) {
                 System.out.println("Error Client exited");
@@ -108,6 +119,7 @@ public class UserSocket extends Thread{
                     break;
                 } catch (Exception ee) {
                     System.out.println("Error Client exited");
+                    System.exit(0);
                     break;
                 } // catch문 끝
             } // 바깥 catch문끝

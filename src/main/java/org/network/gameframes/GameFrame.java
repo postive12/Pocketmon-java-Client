@@ -1,6 +1,5 @@
 package org.network.gameframes;
 
-import org.network.Main;
 import org.network.UserData;
 import org.network.UserSocket;
 import org.network.WindowConfig;
@@ -21,15 +20,6 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 
 import java.awt.event.*;
-import java.util.List;
-import java.util.Random;
-import java.io.*;
-import java.net.Socket;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-import static javax.swing.SwingConstants.BOTTOM;
-import static javax.swing.SwingConstants.SOUTH;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -102,9 +92,9 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     }
     private void initBattleLogPanel(){
         battleLogPanel.setBounds(0,WindowConfig.HEIGHT*2/3 - 30,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT/3);
-        BackgroundPanel background = new BackgroundPanel("backgrounds/BottomUiPanel.png");
+        BackgroundPanel background = new BackgroundPanel("ui/BottomUiPanel.png");
         background.setBounds(0,0,battleLogPanel.getWidth(),battleLogPanel.getHeight());
-        //battleLogPanel.add(background,JLayeredPane.FRAME_CONTENT_LAYER);
+        battleLogPanel.add(background,JLayeredPane.FRAME_CONTENT_LAYER);
         //여기다가 전투 ui 추가
 
         gameLayer.add(battleLogPanel,JLayeredPane.DRAG_LAYER);

@@ -9,7 +9,6 @@ public class Main {
     public static void main(String[] args)
     {
         userSocket = new UserSocket();
-        new Music().play("music/login.wav");
         new LoginFrame();
     }
 }

@@ -1,5 +1,6 @@
 package org.network.gameframes;
 
+import org.network.Main;
 import org.network.UserData;
 import org.network.UserSocket;
 import org.network.WindowConfig;
@@ -50,8 +51,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
     private String currentSelectedUser = "-ALL-";
     public GameFrame(){
-        new Music().play("music/login.wav");
-        new Music().play("music/lobby.wav");
+        new Music("music/lobby.wav",true).start();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(WindowConfig.WIDTH,WindowConfig.HEIGHT);
         setResizable(false);

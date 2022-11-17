@@ -3,6 +3,7 @@ package org.network;
 import org.network.gamecompnent.GameManager;
 import org.network.gameframes.GameFrame;
 import org.network.gameframes.LoginFrame;
+import org.network.gameframes.Music;
 import org.network.packet.*;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ public class UserSocket extends Thread{
                 password
         );
         sendObject(loginPacket);
+
     }
     public void SignIn(String username,String password){
         LoginPacket loginPacket = new LoginPacket(
@@ -50,6 +52,8 @@ public class UserSocket extends Thread{
         sendObject(loginPacket);
     }
     public void run() {
+        Music intro=new Music("music/login.mp3",true);
+        intro.start();
         while (true) {
             try {
                 Object obcm = null;
@@ -74,6 +78,9 @@ public class UserSocket extends Thread{
                             UserData.username = loginPacket.username;
                             UserData.id = loginPacket.id;
                             new GameFrame();
+                            intro.close();
+                            Music lobby=new Music("music/lobby.mp3",true);
+                            lobby.start();
                         }
                         catch (Exception e){
                             System.out.println("Error occur but alive");

@@ -2,7 +2,6 @@ package org.network.gamecore;
 
 import org.network.Main;
 import org.network.WindowConfig;
-import org.network.gamecompnent.Character;
 import org.network.gameframes.GameFrame;
 
 import javax.swing.*;
@@ -13,7 +12,7 @@ public class GameCanvas extends Canvas {
     private Image background[] = new Image[8];
     private Image characters[] = new Image[8];
     private Image testChar = new ImageIcon(Main.class.getClassLoader().getResource("characters/players/1.png")).getImage();
-    private Image img = new ImageIcon(Main.class.getClassLoader().getResource("backgrounds/pokenet_normal.png")).getImage();
+    private Image img = new ImageIcon(Main.class.getClassLoader().getResource("backgrounds/test.png")).getImage();
     //private GameObject gameObject = new GameObject();
     private Image dblbuff;//더블버퍼링용 백버퍼
     private Graphics gc;//더블버퍼링용 그래픽 컨텍스트
@@ -41,11 +40,11 @@ public class GameCanvas extends Canvas {
         g.drawImage(dblbuff,0,0,this);//오프스크린 버퍼를 메인화면에 그린다.
     }
     public void dblpaint(){
-        gc.drawImage(img,0,0, WindowConfig.WIDTH,WindowConfig.HEIGHT,this);
+        gc.drawImage(img,0,0, WindowConfig.WIDTH*2/3,WindowConfig.HEIGHT,this);
         drawGameObjects();
     }
     private void drawGameObjects() {
-        for (GameObject gameObject : GameObject.gameObjects){
+        for (GameObject gameObject : GameObject.userGameObjects){
             drawImageAnc(
                     gameObject.getImage(),
                     gameObject.getTransform().x,

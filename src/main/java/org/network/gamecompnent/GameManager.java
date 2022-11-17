@@ -22,8 +22,12 @@ public class GameManager extends GameObject {
     }
     @Override
     public void update() {
+        GameObject localPlayer = findGameObjectByIdentificationId(UserData.username);
+        if (localPlayer == null){
+            return;
+        }
         if (Input.GetKeyDown(KeyEvent.VK_SPACE)){
-            GameObject localPlayer = findGameObjectByIdentificationId(UserData.username);
+
             int currentState = localPlayer.getCurrentImgLine();
             Point transform = new Point(localPlayer.getTransform());
             switch (currentState) {
@@ -52,7 +56,7 @@ public class GameManager extends GameObject {
         if (localPlayerDirection.x == 0 && localPlayerDirection.y == 0){
             return;
         }
-        int ratio = PhysicsManager.getMoveRatioByGameObjectAndSpeed(findGameObjectByIdentificationId(UserData.username),localPlayerDirection, GameConfig.UserSpeed);
+        int ratio = PhysicsManager.getMoveRatioByGameObjectAndSpeed(findGameObjectByIdentificationId(UserData.username),localPlayerDirection, GameConfig.UserSpeed,true);
         sendPlayerMovePacket(ratio);
         localPlayerDirection.y = 0;
         localPlayerDirection.x = 0;
@@ -76,7 +80,7 @@ public class GameManager extends GameObject {
         }
         checkCharactersByUsername(userList);
         for (UserMoveData userMoveData : userMoveListPacket.userMoveList){
-            System.out.println("Username : "+ userMoveData.username + " / Current post : " + userMoveData.currentPos.x +" : " + userMoveData.currentPos.y);
+            //System.out.println("Username : "+ userMoveData.username + " / Current post : " + userMoveData.currentPos.x +" : " + userMoveData.currentPos.y);
             GameObject g = findGameObjectByIdentificationId(userMoveData.username);
             if (g == null){
                 continue;
@@ -96,7 +100,7 @@ public class GameManager extends GameObject {
     }
     public void checkCharactersByUsername(List<String> usernameList){
         List<GameObject> destroyTarget = new ArrayList<>();
-        for (var target : GameObject.gameObjects){
+        for (var target : GameObject.userGameObjects){
             if (!usernameList.contains(target.getIdentificationId())){
                 destroyTarget.add(target);
             }

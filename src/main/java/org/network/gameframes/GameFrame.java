@@ -43,6 +43,8 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private static JLabel opponentPocketMonHealthText;
     private static BackgroundPanel myPocketMonImage;
     private static BackgroundPanel opponentPocketMonImage;
+
+    private JPanel firstPocketMonSelectPanel;
     private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
     //private JSplitPane gameFrameMainPanel = new JSplitPane();
     private JSplitPane gameServerInfoPanel = new JSplitPane();
@@ -88,6 +90,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         initOkNoPanel();
 
         initBattleLogPanel();
+        initSelectFirstPocketMonPanel();
 
         //gameFrameMainPanel.setLeftComponent(gameLayer);
 
@@ -213,7 +216,15 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         opponentPocketMonImage.setBounds(450,50,300,300);
         battleLogPanel.add(opponentPocketMonImage,JLayeredPane.DEFAULT_LAYER);
         
-        gameLayer.add(battleLogPanel,JLayeredPane.DEFAULT_LAYER);
+        //gameLayer.add(battleLogPanel,JLayeredPane.DEFAULT_LAYER);
+    }
+    private void initSelectFirstPocketMonPanel(){
+        firstPocketMonSelectPanel = new JPanel();
+        firstPocketMonSelectPanel.setBackground(Color.gray);
+        firstPocketMonSelectPanel.setSize(WindowConfig.WIDTH/2,450);
+        firstPocketMonSelectPanel.setLocation(100,100);
+        //여기에다 추가
+        gameLayer.add(firstPocketMonSelectPanel,JLayeredPane.DEFAULT_LAYER);
     }
     private void initOkNoPanel(){
         okNoPanel = new JLayeredPane();

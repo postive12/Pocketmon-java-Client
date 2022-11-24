@@ -10,8 +10,11 @@ public class BackgroundPanel extends JLabel {
     private String path;
     private Image image;
     public BackgroundPanel(String path){
-        this.path = path;
+        setImage(path);
         setVisible(true);
+    }
+    public void setImage(String path){
+        this.path = path;
         try{
             image = new ImageIcon(Main.class.getClassLoader().getResource(path)).getImage();
         }

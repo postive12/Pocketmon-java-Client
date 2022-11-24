@@ -115,7 +115,7 @@ public class GameManager extends GameObject {
             if (test2 < 0) test2 = 150;
         }
         if (Input.GetKeyDown(KeyEvent.VK_K)){
-
+            GameFrame.setPlayerImage(false,"Pocketmon/pikachu-front.png");
         }
         if (Input.GetKeyDown(KeyEvent.VK_L)){
 

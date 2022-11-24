@@ -209,9 +209,9 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         opponentPocketMonHealthText.setForeground(Color.WHITE);
         battleLogPanel.add(opponentPocketMonHealthText,JLayeredPane.POPUP_LAYER);
 
-        myPocketMonImage = new BackgroundPanel("Pocketmon/firi-front.png");
-        myPocketMonImage.setBounds(450,50,300,300);
-        battleLogPanel.add(myPocketMonImage,JLayeredPane.DEFAULT_LAYER);
+        opponentPocketMonImage = new BackgroundPanel("Pocketmon/firi-front.png");
+        opponentPocketMonImage.setBounds(450,50,300,300);
+        battleLogPanel.add(opponentPocketMonImage,JLayeredPane.DEFAULT_LAYER);
         
         gameLayer.add(battleLogPanel,JLayeredPane.DEFAULT_LAYER);
     }
@@ -325,6 +325,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         int len = textArea.getDocument().getLength();
         textArea.setCaretPosition(len);
     }
+    //유저 체력 표시 변경
     public static void setPlayerHealth(boolean isOpponent,int health,int maxHealth)
     {
         int healthLength = 185;
@@ -335,6 +336,16 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         else {
             myPocketMonHealth.setSize(healthLength * health / maxHealth,12);
             myPocketMonHealthText.setText(health + "/" + maxHealth);
+        }
+    }
+    public static void setPlayerImage(boolean isOpponent,String path)
+    {
+        int healthLength = 185;
+        if (isOpponent){
+            opponentPocketMonImage.setImage(path);
+        }
+        else {
+            opponentPocketMonImage.setImage(path);
         }
     }
     //유저 채팅 패널 초기화

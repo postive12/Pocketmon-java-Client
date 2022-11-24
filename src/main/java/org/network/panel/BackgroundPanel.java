@@ -17,6 +17,7 @@ public class BackgroundPanel extends JLabel {
         this.path = path;
         try{
             image = new ImageIcon(Main.class.getClassLoader().getResource(path)).getImage();
+            repaint();
         }
         catch (Exception e){
             System.out.println("Failed to import image.");

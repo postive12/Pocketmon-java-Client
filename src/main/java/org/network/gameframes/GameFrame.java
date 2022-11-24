@@ -91,11 +91,10 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         addKeyListener(new GameInputKeyListener());
     }
     private void initBattleLogPanel(){
-        battleLogPanel.setBounds(0,WindowConfig.HEIGHT*2/3 - 30,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT/3);
+        battleLogPanel.setBounds(0,0,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT);
         BackgroundPanel background = new BackgroundPanel("ui/BottomUiPanel.png");
-        background.setBounds(0,0,battleLogPanel.getWidth(),battleLogPanel.getHeight());
+        background.setBounds(0,WindowConfig.HEIGHT*2/3 - 30,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT/3);
         battleLogPanel.add(background,JLayeredPane.FRAME_CONTENT_LAYER);
-        //여기다가 전투 ui 추가
 
         gameLayer.add(battleLogPanel,JLayeredPane.DRAG_LAYER);
     }

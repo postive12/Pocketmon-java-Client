@@ -5,10 +5,10 @@ import org.network.UserSocket;
 import org.network.WindowConfig;
 import org.network.gamecompnent.GameManager;
 import org.network.gamecore.*;
+import org.network.packet.ChoosePocketPacket;
 import org.network.packet.UserChatPacket;
 import org.network.packet.UserListPacket;
 import org.network.panel.BackgroundPanel;
-import pocketmon.PocketMonster;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -111,7 +111,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
         gameCanvas.repaint();
         setVisible(true);
-        
+
         gameThread = new GameThread(this,gameCanvas);
         gameThread.start();
         //게임 실행 부
@@ -141,7 +141,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         JButton[] jbt= new JButton[4];
         for(int i=0;i<4;i++){
             jbt[i]=new JButton(img);
-            jbt[i].setFont(new Font("굴림",Font.ITALIC,20));
+            jbt[i].setFont(new Font("굴림",Font.BOLD,20));
             jbt[i].setForeground(Color.WHITE);
         }
 
@@ -149,10 +149,12 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         jbt[1].setBounds(background.getWidth()/2+background.getWidth()/4,WindowConfig.HEIGHT*2/3-30,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
         jbt[2].setBounds(background.getWidth()/2,y,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
         jbt[3].setBounds(background.getWidth()/2+background.getWidth()/4,y,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
-        jbt[0].setText("1");
-        jbt[1].setText("2");
-        jbt[2].setText("3");
-        jbt[3].setText("4");
+        jbt[0].setText("공격");
+        jbt[1].setText("스킬");
+        jbt[2].setText("아이템");
+        jbt[3].setText("포켓몬교체");
+
+        //메뉴 선택 시 지정된 행동
 
 
         for(int i=0;i<4;i++){
@@ -166,7 +168,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         battleLogPanel.add(battleBackground,JLayeredPane.FRAME_CONTENT_LAYER);
 
         //battle health bar 파트
-        
+
         //자신이 소유한 포켓몬의 ui
         BackgroundPanel myHealthBackground = new BackgroundPanel("ui/HPBar.png");
         myHealthBackground.setBounds(580,400,250,27);
@@ -370,10 +372,12 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         });
         complete.addActionListener(e->{
             if(pocketMonList.size()==3){
-                System.out.println(pocketMonList.size());
+                ChoosePocketPacket choosePocketPacket = new ChoosePocketPacket(UserData.id, UserData.username, pocketMonList);
+                UserSocket.getInstance().sendObject(choosePocketPacket);
+
                 firstPocketMonSelectPanel.setVisible(false);
             }else{
-                AppendTextR("3마리만 선택해주세요.");
+                AppendTextR("3마리를 선택해주세요.");
             }
         });
 

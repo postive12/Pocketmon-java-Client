@@ -8,7 +8,9 @@ public enum PacketType {
     USER_MOVE(500),
     USER_LIST_DATA(600),
     USER_MOVE_LIST_DATA(700),
+    CHOOSE_POCKET(800),
     SERVER_DEFAULT(1000);
+
     private final int environments;
 
     PacketType(int environments){

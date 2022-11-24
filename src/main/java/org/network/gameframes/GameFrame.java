@@ -26,24 +26,36 @@ import java.awt.event.ActionListener;
 
 
 public class GameFrame extends JFrame implements ListSelectionListener {
+
+    private static JLayeredPane okNoPanel;//유저 ok 패널
+    private static JButton okButton;
+    private static ActionListener lastOkActionListener;
+    private static JLabel okPanelTitle;
+    private static DefaultListModel model;
+    private static JTextPane textArea;
+    //전투 ui 정보
+    private static JLabel myPocketMonName;
+    private static JLabel opponentPocketMonName;
+    private static JLabel myPocketMonHealth;
+    private static JLabel opponentPocketMonHealth;
+    private static JLabel myPocketMonHealthText;
+    private static JLabel opponentPocketMonHealthText;
+    private static BackgroundPanel myPocketMonImage;
+    private static BackgroundPanel opponentPocketMonImage;
     private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
     //private JSplitPane gameFrameMainPanel = new JSplitPane();
     private JSplitPane gameServerInfoPanel = new JSplitPane();
     private JList<String> userList;
     private JPanel userListPanel = new JPanel();//유저 리스트 패널
     private JPanel userChatPanel = new JPanel();//유저 채팅 패널
-    private static JLayeredPane okNoPanel;//유저 ok 패널
-    private static JButton okButton;
-    private static ActionListener lastOkActionListener;
-    private static JLabel okPanelTitle;
     private JLayeredPane battleLogPanel = new JLayeredPane();
     private GameCanvas gameCanvas;//게임 캔버스
     private GameThread gameThread;
     private JTextField txtInput;
-    private static JTextPane textArea;
+
     private JButton btnSend;
     private JLabel lblUserName;
-    private static DefaultListModel model;
+
 
     private String currentSelectedUser = "-ALL-";
     public GameFrame(){
@@ -94,9 +106,77 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         battleLogPanel.setBounds(0,0,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT);
         BackgroundPanel background = new BackgroundPanel("ui/BottomUiPanel.png");
         background.setBounds(0,WindowConfig.HEIGHT*2/3 - 30,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT/3);
-        battleLogPanel.add(background,JLayeredPane.FRAME_CONTENT_LAYER);
+        battleLogPanel.add(background,JLayeredPane.PALETTE_LAYER);
+        //여기다가 전투 ui 추가
 
-        gameLayer.add(battleLogPanel,JLayeredPane.DRAG_LAYER);
+        //전투 ui 파트
+        BackgroundPanel battleBackground = new BackgroundPanel("ui/battleUI.png");
+        battleBackground.setBounds(0,0,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT * 2 / 3 - 30);
+        battleLogPanel.add(battleBackground,JLayeredPane.FRAME_CONTENT_LAYER);
+
+        //battle health bar 파트
+        
+        //자신이 소유한 포켓몬의 ui
+        BackgroundPanel myHealthBackground = new BackgroundPanel("ui/HPBar.png");
+        myHealthBackground.setBounds(580,400,250,27);
+        battleLogPanel.add(myHealthBackground,JLayeredPane.PALETTE_LAYER);
+
+        myPocketMonHealth = new JLabel();
+        myPocketMonHealth.setBounds(myHealthBackground.getX() + 58,myHealthBackground.getY() + 8,185,12);
+        myPocketMonHealth.setBackground(Color.GREEN);
+        myPocketMonHealth.setOpaque(true);
+        battleLogPanel.add(myPocketMonHealth,JLayeredPane.POPUP_LAYER);
+
+        //포켓몬 이름
+        BackgroundPanel myNameBackground = new BackgroundPanel("ui/partyInactive.png");
+        myNameBackground.setBounds(610,355,220,40);
+        battleLogPanel.add(myNameBackground,JLayeredPane.PALETTE_LAYER);
+
+        myPocketMonName = new JLabel("피카츄");
+        myPocketMonName.setBounds(myNameBackground.getX() + 10,myNameBackground.getY() + 10, 100 ,20);
+        myPocketMonName.setForeground(Color.WHITE);
+        battleLogPanel.add(myPocketMonName,JLayeredPane.POPUP_LAYER);
+
+        myPocketMonHealthText = new JLabel("100/100");
+        myPocketMonHealthText.setBounds(myNameBackground.getX() + 120,myNameBackground.getY() + 10, 100 , 20);
+        myPocketMonHealthText.setForeground(Color.WHITE);
+        battleLogPanel.add(myPocketMonHealthText,JLayeredPane.POPUP_LAYER);
+
+        myPocketMonImage = new BackgroundPanel("Pocketmon/firi-back.png");
+        myPocketMonImage.setBounds(20,250,300,300);
+        battleLogPanel.add(myPocketMonImage,JLayeredPane.DEFAULT_LAYER);
+
+        //상대가 소유한 포켓몬 정보
+        BackgroundPanel opponentHealthBackground = new BackgroundPanel("ui/HPBar.png");
+        opponentHealthBackground.setBounds(10,150,250,27);
+        battleLogPanel.add(opponentHealthBackground,JLayeredPane.PALETTE_LAYER);
+
+        opponentPocketMonHealth = new JLabel();
+        opponentPocketMonHealth.setBounds(opponentHealthBackground.getX() + 58,opponentHealthBackground.getY() + 7,185,13);
+        opponentPocketMonHealth.setBackground(Color.GREEN);
+        opponentPocketMonHealth.setOpaque(true);
+        battleLogPanel.add(opponentPocketMonHealth,JLayeredPane.POPUP_LAYER);
+
+        //포켓몬 이름
+        BackgroundPanel opponentNameBackground = new BackgroundPanel("ui/partyInactive.png");
+        opponentNameBackground.setBounds(40,105,220,40);
+        battleLogPanel.add(opponentNameBackground,JLayeredPane.PALETTE_LAYER);
+
+        opponentPocketMonName = new JLabel("피카츄");
+        opponentPocketMonName.setBounds(opponentNameBackground.getX() + 10,opponentNameBackground.getY() + 10, 100,20);
+        opponentPocketMonName.setForeground(Color.WHITE);
+        battleLogPanel.add(opponentPocketMonName,JLayeredPane.POPUP_LAYER);
+
+        opponentPocketMonHealthText = new JLabel("100/100");
+        opponentPocketMonHealthText.setBounds(opponentPocketMonName.getX() + 120,opponentPocketMonName.getY(), 100 , 20);
+        opponentPocketMonHealthText.setForeground(Color.WHITE);
+        battleLogPanel.add(opponentPocketMonHealthText,JLayeredPane.POPUP_LAYER);
+
+        myPocketMonImage = new BackgroundPanel("Pocketmon/firi-front.png");
+        myPocketMonImage.setBounds(450,50,300,300);
+        battleLogPanel.add(myPocketMonImage,JLayeredPane.DEFAULT_LAYER);
+        
+        gameLayer.add(battleLogPanel,JLayeredPane.DEFAULT_LAYER);
     }
     private void initOkNoPanel(){
         okNoPanel = new JLayeredPane();
@@ -207,9 +287,18 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         int len = textArea.getDocument().getLength();
         textArea.setCaretPosition(len);
     }
-
-
-
+    public static void setPlayerHealth(boolean isOpponent,int health,int maxHealth)
+    {
+        int healthLength = 185;
+        if (isOpponent){
+            opponentPocketMonHealth.setSize(healthLength * health / maxHealth,13);
+            opponentPocketMonHealthText.setText(health + "/" + maxHealth);
+        }
+        else {
+            myPocketMonHealth.setSize(healthLength * health / maxHealth,12);
+            myPocketMonHealthText.setText(health + "/" + maxHealth);
+        }
+    }
     //유저 채팅 패널 초기화
     private void initUserChatPanel() {
         //userChatPanel

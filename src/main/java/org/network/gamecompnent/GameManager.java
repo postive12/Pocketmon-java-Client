@@ -7,6 +7,7 @@ import org.network.data.UserMoveData;
 import org.network.gamecore.GameConfig;
 import org.network.gamecore.GameObject;
 import org.network.gamecore.Input;
+import org.network.gameframes.GameFrame;
 import org.network.packet.UserBattlePacket;
 import org.network.packet.UserMoveListPacket;
 import org.network.packet.UserMovePacket;
@@ -102,13 +103,16 @@ public class GameManager extends GameObject {
         localPlayerDirection.y = 0;
         localPlayerDirection.x = 0;
     }
-
+    int test = 150;
+    int test2 = 150;
     private void handleEvent() {
-        if (Input.GetKeyDown(KeyEvent.VK_H)){
-
+        if (Input.GetKeyPressed(KeyEvent.VK_H)){
+            GameFrame.setPlayerHealth(false,test--,150);
+            if (test < 0) test = 150;
         }
-        if (Input.GetKeyDown(KeyEvent.VK_J)){
-
+        if (Input.GetKeyPressed(KeyEvent.VK_J)){
+            GameFrame.setPlayerHealth(true,test2--,150);
+            if (test2 < 0) test2 = 150;
         }
         if (Input.GetKeyDown(KeyEvent.VK_K)){
 

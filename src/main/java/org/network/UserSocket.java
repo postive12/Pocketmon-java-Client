@@ -88,6 +88,7 @@ public class UserSocket extends Thread{
                             lobby.start();
                             if (loginPacket.password.equals("FirstIn")){
                                 //이곳에 처음 진입시 활성화 코드 삽입
+                                GameFrame.enableFirstPocketSelectPanel(true);
                             }
                         }
                         catch (Exception e){

@@ -9,19 +9,11 @@ public abstract class PocketMonster implements Fight {
     private int current_HP;
     private int max_HP;
     private int atk;//공격력
-    private int def;//방어력
-    private int E_LV;//현재 진화 단계
-    private int M_LV;//최대 진화 단계
-    private int speed;//공격속도(공격의 선을 결정)
-    private int kill_score;
-    private Image current_img;
-    private Image[] image_list;//해당 포켓몬 진화 단계별 이미지
     private Skill[] skill_list;//해당 포켓몬이 사용할 수 있는 스킬(4가지)
 
     //생성자
     public PocketMonster() {
-        image_list = new Image[3];
-        current_img = image_list[0];
+
         skill_list = new Skill[4];
     }
 
@@ -92,65 +84,7 @@ public abstract class PocketMonster implements Fight {
         this.atk += num;
     }
 
-    public int getDef() {
-        return def;
-    }
 
-    public void setDef(int def) {
-        this.def = def;
-    }
-
-    public void changeDef(int num) {
-        this.def += num;
-    }
-
-    public int getE_LV() {
-        return E_LV;
-    }
-
-    public void setE_LV(int e_LV) {
-        this.E_LV = e_LV;
-    }
-
-    public void changeE_LV(int num) {
-        this.E_LV += num;
-    }
-
-    public int getM_LV() {
-        return M_LV;
-    }
-
-    public void setM_LV(int m_LV) {
-        this.M_LV = m_LV;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public void changeSpeed(int num) {
-        this.speed += num;
-    }
-
-    public int getKill_score() {
-        return kill_score;
-    }
-
-    public void setKill_score(int kill_score) {
-        this.kill_score = kill_score;
-    }
-
-    public Image[] getImage_list() {
-        return image_list;
-    }
-
-    public void setImage_list(Image[] image_list) {
-        this.image_list = image_list;
-    }
 
     public Skill[] getSkill_list() {
         return skill_list;
@@ -223,7 +157,7 @@ public abstract class PocketMonster implements Fight {
 //            else
 //                str_base +=str_normal;
 //        }
-        dam -= p.getDef();//실제 받는 데미지 = dam - p의 def
+        //dam -= p.getDef();//실제 받는 데미지 = dam - p의 def
         dam/=10;
         p.changeCurrent_HP(-dam);
 

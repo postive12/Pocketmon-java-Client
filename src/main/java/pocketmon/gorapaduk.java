@@ -15,7 +15,6 @@ public class gorapaduk extends PocketMonster {
         temp_img[0]=img1;
         temp_img[1]=img2;
         temp_img[2]=img3;
-        this.setImage_list(temp_img);
 
         Skill s1 = new Skill("마구할퀴기",30);
         Skill s2 = new Skill("물의파동",40);
@@ -34,12 +33,7 @@ public class gorapaduk extends PocketMonster {
         this.setMax_HP(100);
         //this.setType("grass");
         this.setAtk(10);
-        this.setDef(10);
         this.setCondition("normal");
-        this.setE_LV(0);
-        this.setM_LV(2);
-        this.setSpeed(10);
-        this.setKill_score(0);
 
     }
 

@@ -16,7 +16,6 @@ public class ggobugi extends PocketMonster {
         temp_img[0]=img1;
         temp_img[1]=img2;
         temp_img[2]=img3;
-        this.setImage_list(temp_img);
 
 //		Skill s1 = new Skill("몸통박치기",50);
 //		Skill s2 = new Skill("물대포",60);
@@ -42,12 +41,7 @@ public class ggobugi extends PocketMonster {
         this.setMax_HP(100);
         //this.setType("water");
         this.setAtk(10);
-        this.setDef(10);
         this.setCondition("normal");
-        this.setE_LV(0);
-        this.setM_LV(2);
-        this.setSpeed(10);
-        this.setKill_score(0);
 
     }
 

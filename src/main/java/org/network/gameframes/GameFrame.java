@@ -7,6 +7,7 @@ import org.network.gamecore.*;
 import org.network.packet.UserChatPacket;
 import org.network.packet.UserListPacket;
 import org.network.panel.BackgroundPanel;
+import pocketmon.PocketMonster;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -95,6 +96,43 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         BackgroundPanel background = new BackgroundPanel("ui/BottomUiPanel.png");
         background.setBounds(0,WindowConfig.HEIGHT*2/3 - 30,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT/3);
         battleLogPanel.add(background,JLayeredPane.FRAME_CONTENT_LAYER);
+        int y=(WindowConfig.HEIGHT*2/3-30)+(WindowConfig.HEIGHT*1/6);
+
+        //배틀설명 창 생성
+        JLabel battletext= new JLabel();
+        battletext.setText("배틀상황 설명");
+        battletext.setForeground(Color.WHITE);
+        battletext.setFont(new Font("굴림",Font.BOLD,18));
+        battletext.setBounds(60,400,background.getWidth()/2,WindowConfig.HEIGHT/3);
+        battleLogPanel.add(battletext);
+
+        //버튼 4개 배열로 생성
+        ImageIcon image = new ImageIcon(getClass().getResource("/ui/button.png"));
+        Image changeimg = image.getImage();
+        Image im= changeimg.getScaledInstance(background.getWidth()/4,(WindowConfig.HEIGHT*1/6),Image.SCALE_SMOOTH);
+        ImageIcon img= new ImageIcon(im);
+
+        JButton[] jbt= new JButton[4];
+        for(int i=0;i<4;i++){
+            jbt[i]=new JButton(img);
+            jbt[i].setFont(new Font("굴림",Font.ITALIC,20));
+            jbt[i].setForeground(Color.WHITE);
+        }
+
+        jbt[0].setBounds(background.getWidth()/2,WindowConfig.HEIGHT*2/3-30,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
+        jbt[1].setBounds(background.getWidth()/2+background.getWidth()/4,WindowConfig.HEIGHT*2/3-30,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
+        jbt[2].setBounds(background.getWidth()/2,y,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
+        jbt[3].setBounds(background.getWidth()/2+background.getWidth()/4,y,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
+        jbt[0].setText("1");
+        jbt[1].setText("2");
+        jbt[2].setText("3");
+        jbt[3].setText("4");
+
+
+        for(int i=0;i<4;i++){
+            jbt[i].setHorizontalTextPosition(JButton.CENTER);
+            battleLogPanel.add(jbt[i]);
+        }
 
         gameLayer.add(battleLogPanel,JLayeredPane.DRAG_LAYER);
     }
@@ -125,6 +163,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
         okButton.addActionListener(e -> {
             okNoPanel.setVisible(false);
+
         });
 
         okButton.setBounds(120,150,100,30);

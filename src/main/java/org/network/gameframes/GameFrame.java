@@ -3,6 +3,7 @@ package org.network.gameframes;
 import org.network.UserData;
 import org.network.UserSocket;
 import org.network.WindowConfig;
+import org.network.data.PocketMonData;
 import org.network.gamecompnent.GameManager;
 import org.network.gamecore.*;
 import org.network.packet.ChoosePocketPacket;
@@ -32,6 +33,7 @@ import java.util.List;
 public class GameFrame extends JFrame implements ListSelectionListener {
 
     private static JLayeredPane okNoPanel;//유저 ok 패널
+    private static JPanel choosepocket;// 처음시작 포켓몬 패널
     private static JButton okButton;
     private static ActionListener lastOkActionListener;
     private static JLabel okPanelTitle;
@@ -149,14 +151,21 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         jbt[1].setBounds(background.getWidth()/2+background.getWidth()/4,WindowConfig.HEIGHT*2/3-30,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
         jbt[2].setBounds(background.getWidth()/2,y,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
         jbt[3].setBounds(background.getWidth()/2+background.getWidth()/4,y,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
+
         jbt[0].setText("공격");
         jbt[1].setText("스킬");
         jbt[2].setText("아이템");
         jbt[3].setText("포켓몬교체");
+        
+        jbt[1].addActionListener(e->{
+            jbt[0].setText("공격");
+            jbt[1].setText("방어");
+            jbt[2].setText("아이템");
+            jbt[3].setText("포켓몬교체");
+            //스테이트 패턴
+        });
 
         //메뉴 선택 시 지정된 행동
-
-
         for(int i=0;i<4;i++){
             jbt[i].setHorizontalTextPosition(JButton.CENTER);
             battleLogPanel.add(jbt[i],JLayeredPane.POPUP_LAYER);
@@ -382,6 +391,11 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         });
         firstPocketMonSelectPanel.setVisible(false);
         gameLayer.add(firstPocketMonSelectPanel,JLayeredPane.DEFAULT_LAYER);
+
+
+        //리스트와 해쉬맵 합치기
+        int number=1;
+        PocketMonData.monsterInfo.get(number);
     }
     public static void enableFirstPocketSelectPanel(boolean isEnable){
         firstPocketMonSelectPanel.setVisible(isEnable);
@@ -425,6 +439,9 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         okNoPanel.add(noButton,JLayeredPane.POPUP_LAYER);
         gameLayer.add(okNoPanel,JLayeredPane.DRAG_LAYER);
         okNoPanel.setVisible(false);
+    }
+    private void choosefirst(){
+        choosepocket=new JPanel();
     }
 
     public static void showOkNoPanel(String title,ActionListener okAction) {

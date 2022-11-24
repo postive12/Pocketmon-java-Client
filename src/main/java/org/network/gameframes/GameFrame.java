@@ -372,9 +372,9 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         });
         complete.addActionListener(e->{
             if(pocketMonList.size()==3){
+                UserData.pocketMonList=pocketMonList;
                 ChoosePocketPacket choosePocketPacket = new ChoosePocketPacket(UserData.id, UserData.username, pocketMonList);
                 UserSocket.getInstance().sendObject(choosePocketPacket);
-
                 firstPocketMonSelectPanel.setVisible(false);
             }else{
                 AppendTextR("3마리를 선택해주세요.");

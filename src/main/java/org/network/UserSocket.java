@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.List;
 
 public class UserSocket extends Thread{
     private static UserSocket current;
@@ -128,6 +129,10 @@ public class UserSocket extends Thread{
                         System.out.println(userBattlePacket.target + "/" + userBattlePacket.username);
                         GameManager.current.processBattlePacket(userBattlePacket);
                     }
+                }
+                if(obcm instanceof ChoosePocketPacket choosePocketPacket){
+                   UserData.pocketMonList = choosePocketPacket.pocketMonList;
+                   System.out.println(choosePocketPacket.pocketMonList);
                 }
             } catch (IOException e) {
                 System.out.println("Error Client exited");

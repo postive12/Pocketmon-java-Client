@@ -400,7 +400,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     public static void enableFirstPocketSelectPanel(boolean isEnable){
         firstPocketMonSelectPanel.setVisible(isEnable);
     }
-    private void initOkNoPanel(){
+    private void initOkNoPanel(){W
         okNoPanel = new JLayeredPane();
         okNoPanel.setSize(WindowConfig.WIDTH/3,WindowConfig.HEIGHT/3);
         okNoPanel.setLocation(WindowConfig.WIDTH/3 - okNoPanel.getWidth()/2,WindowConfig.HEIGHT/3 - okNoPanel.getHeight()/2);
@@ -415,7 +415,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                 "<br>테스트 디버깅 용 텍스트 입니다.</html>"
         );
         okPanelTitle.setHorizontalAlignment(JLabel.CENTER);
-        okPanelTitle.setBounds(30,0,okNoPanel.getWidth() - 60,200);
+        okPanelTitle.setBounds(30,0,okNoPanel.getWidth() - 60,200);W
         okPanelTitle.setFont(new Font("Default", Font.BOLD, 14));
 
         okButton = new JButton("확인");

@@ -47,7 +47,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private static BackgroundPanel myPocketMonImage;
     private static BackgroundPanel opponentPocketMonImage;
 
-    private JPanel firstPocketMonSelectPanel;
+    private static JPanel firstPocketMonSelectPanel;
     private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
     //private JSplitPane gameFrameMainPanel = new JSplitPane();
     private JSplitPane gameServerInfoPanel = new JSplitPane();
@@ -380,8 +380,11 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                 AppendTextR("3마리를 선택해주세요.");
             }
         });
-
+        firstPocketMonSelectPanel.setVisible(false);
         gameLayer.add(firstPocketMonSelectPanel,JLayeredPane.DEFAULT_LAYER);
+    }
+    public static void enableFirstPocketSelectPanel(boolean isEnable){
+        firstPocketMonSelectPanel.setVisible(isEnable);
     }
     private void initOkNoPanel(){
         okNoPanel = new JLayeredPane();

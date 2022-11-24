@@ -2,13 +2,10 @@ package pocketmon;
 import javax.swing.ImageIcon;
 import java.awt.Image;
 public class pikachu extends PocketMonster {
-    public pikachu(){
-
-        Image img1 = new ImageIcon(this.getClass().getResource("/피카츄.png")).getImage();
-        Image img2 = new ImageIcon(this.getClass().getResource("/라이츄.png")).getImage();
-        Image[] temp_img = new Image[2];
-        temp_img[0]=img1;
-        temp_img[1]=img2;
+    public pikachu()
+    {
+        setBackPath("Pocketmon/pikachu-back.png");
+        setFrontPath("Pocketmon/pikachu-front.png");
 
         Skill s1 = new Skill("몸통박치기",30);
         Skill s2 = new Skill("백만볼트",50);

@@ -3,6 +3,7 @@ package org.network.gameframes;
 import org.network.UserData;
 import org.network.UserSocket;
 import org.network.WindowConfig;
+import org.network.gamecompnent.GameManager;
 import org.network.gamecore.*;
 import org.network.packet.UserChatPacket;
 import org.network.packet.UserListPacket;
@@ -53,7 +54,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private JList<String> userList;
     private JPanel userListPanel = new JPanel();//유저 리스트 패널
     private JPanel userChatPanel = new JPanel();//유저 채팅 패널
-    private JLayeredPane battleLogPanel = new JLayeredPane();
+    private static JLayeredPane battleLogPanel = new JLayeredPane();
     private GameCanvas gameCanvas;//게임 캔버스
     private GameThread gameThread;
     private JTextField txtInput;
@@ -225,8 +226,9 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         opponentPocketMonImage = new BackgroundPanel("Pocketmon/firi-front.png");
         opponentPocketMonImage.setBounds(450,50,300,300);
         battleLogPanel.add(opponentPocketMonImage,JLayeredPane.DEFAULT_LAYER);
-        
-        //gameLayer.add(battleLogPanel,JLayeredPane.DEFAULT_LAYER);
+
+        battleLogPanel.setVisible(false);
+        gameLayer.add(battleLogPanel,JLayeredPane.DEFAULT_LAYER);
     }
     private void initSelectFirstPocketMonPanel(){
         firstPocketMonSelectPanel = new JPanel();
@@ -234,7 +236,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         firstPocketMonSelectPanel.setSize(WindowConfig.WIDTH/2,450);
         firstPocketMonSelectPanel.setLocation(100,100);
         firstPocketMonSelectPanel.setLayout(null);
-        //여기에다 추가
 
         ImageIcon f= new ImageIcon(getClass().getResource("/Pocketmon/firi-front.png"));
         Image f1=f.getImage();
@@ -401,11 +402,12 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         noButton.addActionListener(e -> {
             okNoPanel.setVisible(false);
             okButton.removeActionListener(lastOkActionListener);
+            GameManager.current.isLocalPlayerMovable = true;
         });
 
         okButton.addActionListener(e -> {
             okNoPanel.setVisible(false);
-
+            GameManager.current.isLocalPlayerMovable = true;
         });
 
         okButton.setBounds(120,150,100,30);
@@ -419,6 +421,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     }
 
     public static void showOkNoPanel(String title,ActionListener okAction) {
+        GameManager.current.isLocalPlayerMovable = false;
         okPanelTitle.setText("<html>"+title+"</html>");
         lastOkActionListener = okAction;
         okButton.addActionListener(lastOkActionListener);
@@ -503,13 +506,16 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     }
     public static void setPlayerImage(boolean isOpponent,String path)
     {
-        int healthLength = 185;
+        System.out.println(path);
         if (isOpponent){
             opponentPocketMonImage.setImage(path);
         }
         else {
             opponentPocketMonImage.setImage(path);
         }
+    }
+    public static void enableBattleWindow(boolean isEnable){
+        battleLogPanel.setVisible(isEnable);
     }
     //유저 채팅 패널 초기화
     private void initUserChatPanel() {

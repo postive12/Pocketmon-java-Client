@@ -86,6 +86,9 @@ public class UserSocket extends Thread{
                             intro.close();
                             Music lobby=new Music("music/lobby.mp3",true);
                             lobby.start();
+                            if (loginPacket.password.equals("FirstIn")){
+                                //이곳에 처음 진입시 활성화 코드 삽입
+                            }
                         }
                         catch (Exception e){
                             System.out.println("Error occur but alive");
@@ -109,16 +112,22 @@ public class UserSocket extends Thread{
                     GameManager.current.updateCharactersByUsername(userMoveListPacket);
                 }
                 if (obcm instanceof UserBattlePacket userBattlePacket){
-                    GameFrame.showOkNoPanel(userBattlePacket.username+"님이 배틀을 요청하셨습니다.<br>배틀을 수락하시겠습니까?",e -> {
-                        UserBattlePacket result = new UserBattlePacket(
-                                UserData.id,
-                                UserData.username,
-                                "ACCEPT",
-                                userBattlePacket.username,
-                                null
-                        );
-                        sendObject(result);
-                    });
+                    if (userBattlePacket.commandType.equals("REQUEST")){
+                        GameFrame.showOkNoPanel(userBattlePacket.username+"님이 배틀을 요청하셨습니다.<br>배틀을 수락하시겠습니까?",e -> {
+                            UserBattlePacket result = new UserBattlePacket(
+                                    UserData.id,
+                                    UserData.username,
+                                    "ACCEPT",
+                                    userBattlePacket.username,
+                                    null
+                            );
+                            sendObject(result);
+                        });
+                    }
+                    else {
+                        System.out.println(userBattlePacket.target + "/" + userBattlePacket.username);
+                        GameManager.current.processBattlePacket(userBattlePacket);
+                    }
                 }
             } catch (IOException e) {
                 System.out.println("Error Client exited");

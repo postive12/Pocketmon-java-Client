@@ -4,8 +4,10 @@ import java.awt.*;
 
 public abstract class PocketMonster implements Fight {
     private String name;//포켓몬 이름 ex)피카츄, 파이리
-    //private String type;//포켓몬 타입 ex)fire, grass
     private String condition;//현재상태
+
+    private String frontPath;
+    private String backPath;
     private int current_HP;
     private int max_HP;
     private int atk;//공격력
@@ -16,7 +18,21 @@ public abstract class PocketMonster implements Fight {
 
         skill_list = new Skill[4];
     }
+    public String getFrontPath() {
+        return frontPath;
+    }
 
+    public void setFrontPath(String frontPath) {
+        this.frontPath = frontPath;
+    }
+
+    public String getBackPath() {
+        return backPath;
+    }
+
+    public void setBackPath(String backPath) {
+        this.backPath = backPath;
+    }
     //getter, setter
     public String getName() {
         return name;

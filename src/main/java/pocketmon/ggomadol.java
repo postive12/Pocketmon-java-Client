@@ -6,14 +6,8 @@ import java.awt.*;
 public class ggomadol extends PocketMonster {
     public ggomadol()
     {
-
-        Image img1 = new ImageIcon(this.getClass().getResource("/ggomadol.png")).getImage();
-        Image img2 = new ImageIcon(this.getClass().getResource("/이상해풀.png")).getImage();
-        Image img3 = new ImageIcon(this.getClass().getResource("/이상해꽃.png")).getImage();
-        Image[] temp_img = new Image[3];
-        temp_img[0]=img1;
-        temp_img[1]=img2;
-        temp_img[2]=img3;
+        setBackPath("Pocketmon/ggomadol-back.png");
+        setFrontPath("Pocketmon/ggomadol-front.png");
 
         Skill s1 = new Skill("몸통박치기",30);
         Skill s2 = new Skill("흙놀이",20);

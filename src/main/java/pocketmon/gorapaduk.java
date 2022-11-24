@@ -7,14 +7,8 @@ import java.awt.*;
 public class gorapaduk extends PocketMonster {
     public gorapaduk()
     {
-
-        Image img1 = new ImageIcon(this.getClass().getResource("/gorapaduk.png")).getImage();
-        Image img2 = new ImageIcon(this.getClass().getResource("/이상해풀.png")).getImage();
-        Image img3 = new ImageIcon(this.getClass().getResource("/이상해꽃.png")).getImage();
-        Image[] temp_img = new Image[3];
-        temp_img[0]=img1;
-        temp_img[1]=img2;
-        temp_img[2]=img3;
+        setBackPath("Pocketmon/gorapaduk-back.png");
+        setFrontPath("Pocketmon/gorapaduk-front.png");
 
         Skill s1 = new Skill("마구할퀴기",30);
         Skill s2 = new Skill("물의파동",40);

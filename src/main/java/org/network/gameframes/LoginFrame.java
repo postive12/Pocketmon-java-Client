@@ -113,7 +113,6 @@ public class LoginFrame extends JFrame {
             System.out.println("Login session end but login packet received.");
             return;
         }
-
     }
 
     public void close() {

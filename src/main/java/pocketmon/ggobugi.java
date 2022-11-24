@@ -6,23 +6,8 @@ import java.awt.*;
 public class ggobugi extends PocketMonster {
     public ggobugi()
     {
-        //진화 단계별 이미지
-        Image img1 = new ImageIcon(this.getClass().getResource("/꼬부기.png")).getImage();
-        Image img2 = new ImageIcon(this.getClass().getResource("/어니부기.png")).getImage();
-        Image img3 = new ImageIcon(this.getClass().getResource("/거북왕.png")).getImage();
-
-        //진화 단계별 이미지 배열인 temp_img[]
-        Image[] temp_img = new Image[3];
-        temp_img[0]=img1;
-        temp_img[1]=img2;
-        temp_img[2]=img3;
-        this.setImage_list(temp_img);
-
-//		Skill s1 = new Skill("몸통박치기",50);
-//		Skill s2 = new Skill("물대포",60);
-//		Skill s3 = new Skill("깨물기",60);
-//		Skill s4 = new Skill("파도타기",70);
-
+        setBackPath("Pocketmon/ggobugi-back.png");
+        setFrontPath("Pocketmon/ggobugi-front.png");
 
         Skill s1 = new Skill("몸통박치기",30);
         Skill s2 = new Skill("물대포",40);

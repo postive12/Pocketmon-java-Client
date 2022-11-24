@@ -3,6 +3,7 @@ package org.network.gamecompnent;
 import org.network.UserData;
 import org.network.UserSocket;
 import org.network.WindowConfig;
+import org.network.data.PocketMonData;
 import org.network.data.UserMoveData;
 import org.network.gamecore.GameConfig;
 import org.network.gamecore.GameObject;
@@ -11,6 +12,7 @@ import org.network.gameframes.GameFrame;
 import org.network.packet.UserBattlePacket;
 import org.network.packet.UserMoveListPacket;
 import org.network.packet.UserMovePacket;
+import pocketmon.PocketMonster;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -19,6 +21,7 @@ import java.util.List;
 
 public class GameManager extends GameObject {
     public static GameManager current;
+    public boolean isLocalPlayerMovable = true;
     private Point localPlayerDirection = new Point(0,0);
     public GameManager(){
         current = this;
@@ -61,8 +64,10 @@ public class GameManager extends GameObject {
             return;
         }
         handleEvent();
+        if(!isLocalPlayerMovable){
+            return;
+        }
         if (Input.GetKeyDown(KeyEvent.VK_SPACE)){
-
             int currentState = localPlayer.getCurrentImgLine();
             Point transform = new Point(localPlayer.getTransform());
             switch (currentState) {
@@ -103,25 +108,69 @@ public class GameManager extends GameObject {
         localPlayerDirection.y = 0;
         localPlayerDirection.x = 0;
     }
-    int test = 150;
-    int test2 = 150;
     private void handleEvent() {
         if (Input.GetKeyPressed(KeyEvent.VK_H)){
-            GameFrame.setPlayerHealth(false,test--,150);
-            if (test < 0) test = 150;
+            List<Integer> args = new ArrayList<>();
+            args.add(10);
+            args.add(30);
+            args.add(25);
+            args.add(30);
+            UserBattlePacket battlePacket = new UserBattlePacket(
+                    0,
+                    UserData.username,
+                    "HEALTH",
+                    "",
+                    args
+            );
+            processBattlePacket(battlePacket);
         }
-        if (Input.GetKeyPressed(KeyEvent.VK_J)){
-            GameFrame.setPlayerHealth(true,test2--,150);
-            if (test2 < 0) test2 = 150;
+        if (Input.GetKeyDown(KeyEvent.VK_J)){
+            List<Integer> args = new ArrayList<>();
+            args.add(1);
+            UserBattlePacket battlePacket = new UserBattlePacket(
+                    0,
+                    UserData.username,
+                    "CHANGE",
+                    UserData.username,
+                    args
+            );
+            processBattlePacket(battlePacket);
         }
         if (Input.GetKeyDown(KeyEvent.VK_K)){
-            GameFrame.setPlayerImage(false,"Pocketmon/pikachu-front.png");
+
         }
         if (Input.GetKeyDown(KeyEvent.VK_L)){
+            UserBattlePacket battlePacket = new UserBattlePacket(
+                    0,
+                    UserData.username,
+                    "ACCEPT",
+                    "",
+                    new ArrayList<>()
+            );
+            processBattlePacket(battlePacket);
+        }
+    }
+    public void processBattlePacket(UserBattlePacket battlePacket){
+        if (battlePacket.commandType.equals("ACCEPT")){
+            GameFrame.enableBattleWindow(true);
+        }
+        if (battlePacket.commandType.equals("HEALTH")){
+            List<Integer> data = battlePacket.args;
+            GameFrame.setPlayerHealth(false,data.get(0),data.get(1));
+            GameFrame.setPlayerHealth(true,data.get(2),data.get(3));
+        }
+        if (battlePacket.commandType.equals("CHANGE")){
+            System.out.println("test");
+            boolean isLocalPlayer = battlePacket.target.equals(UserData.username);
+            GameFrame.setPlayerImage(
+                    isLocalPlayer,
+                    isLocalPlayer ? PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getFrontPath() : PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getBackPath()
+            );
+        }
+        if (battlePacket.commandType.equals("REQUEST_CHANGE")){
 
         }
     }
-
     public void sendPlayerMovePacket(int ratio){
         //System.out.println(ratio);
         UserMovePacket userMovePacket = new UserMovePacket(

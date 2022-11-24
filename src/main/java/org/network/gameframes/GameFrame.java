@@ -24,6 +24,8 @@ import java.awt.event.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class GameFrame extends JFrame implements ListSelectionListener {
@@ -58,8 +60,16 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
     private JButton btnSend;
     private JLabel lblUserName;
+    private JButton firi;
+    private JButton ggobugi;
+    private JButton ggomadol;
+    private JButton gorapaduk;
+    private JButton isanghessi;
+    private JButton pikachu;
+    private JButton complete;
+    private List<Integer> pocketMonList= new ArrayList<>();
 
-
+    private JLabel explain;
     private String currentSelectedUser = "-ALL-";
     public GameFrame(){
         new Music("music/lobby.wav",true).start();
@@ -220,10 +230,152 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     }
     private void initSelectFirstPocketMonPanel(){
         firstPocketMonSelectPanel = new JPanel();
-        firstPocketMonSelectPanel.setBackground(Color.gray);
+        firstPocketMonSelectPanel.setBackground(Color.WHITE);
         firstPocketMonSelectPanel.setSize(WindowConfig.WIDTH/2,450);
         firstPocketMonSelectPanel.setLocation(100,100);
+        firstPocketMonSelectPanel.setLayout(null);
         //여기에다 추가
+
+        ImageIcon f= new ImageIcon(getClass().getResource("/Pocketmon/firi-front.png"));
+        Image f1=f.getImage();
+        Image f2=f1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
+        ImageIcon f3=new ImageIcon(f2);
+        firi=new JButton(f3);
+        firi.setBackground(Color.WHITE);
+        firi.setBorder(BorderFactory.createEmptyBorder());
+        firi.setBounds(firstPocketMonSelectPanel.getX()-90, firstPocketMonSelectPanel.getY()-100, 200,200);
+        firstPocketMonSelectPanel.add(firi);
+
+        ImageIcon g= new ImageIcon(getClass().getResource("/Pocketmon/ggobugi-front.png"));
+        Image g1=g.getImage();
+        Image g2=g1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
+        ImageIcon g3=new ImageIcon(g2);
+        ggobugi=new JButton(g3);
+        ggobugi.setBackground(Color.WHITE);
+        ggobugi.setBorder(BorderFactory.createEmptyBorder());
+        ggobugi.setBounds(firstPocketMonSelectPanel.getX()+120, firstPocketMonSelectPanel.getY()-100, 200,200);
+        firstPocketMonSelectPanel.add(ggobugi);
+
+        ImageIcon gg= new ImageIcon(getClass().getResource("/Pocketmon/ggomadol-front.png"));
+        Image gg1=gg.getImage();
+        Image gg2=gg1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
+        ImageIcon gg3=new ImageIcon(gg2);
+        ggomadol=new JButton(gg3);
+        ggomadol.setBackground(Color.WHITE);
+        ggomadol.setBorder(BorderFactory.createEmptyBorder());
+        ggomadol.setBounds(firstPocketMonSelectPanel.getX()+330, firstPocketMonSelectPanel.getY()-100, 200,200);
+        firstPocketMonSelectPanel.add(ggomadol);
+
+        ImageIcon go= new ImageIcon(getClass().getResource("/Pocketmon/gorapaduk-front.png"));
+        Image go1=go.getImage();
+        Image go2=go1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
+        ImageIcon go3=new ImageIcon(go2);
+        gorapaduk=new JButton(go3);
+        gorapaduk.setBackground(Color.WHITE);
+        gorapaduk.setBorder(BorderFactory.createEmptyBorder());
+        gorapaduk.setBounds(firstPocketMonSelectPanel.getX()-90, firstPocketMonSelectPanel.getY()+100, 200,200);
+        firstPocketMonSelectPanel.add(gorapaduk);
+
+        ImageIcon is= new ImageIcon(getClass().getResource("/Pocketmon/isanghessi-front.png"));
+        Image is1=is.getImage();
+        Image is2=is1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
+        ImageIcon is3=new ImageIcon(is2);
+        isanghessi=new JButton(is3);
+        isanghessi.setBackground(Color.WHITE);
+        isanghessi.setBorder(BorderFactory.createEmptyBorder());
+        isanghessi.setBounds(firstPocketMonSelectPanel.getX()+120, firstPocketMonSelectPanel.getY()+100, 200,200);
+        firstPocketMonSelectPanel.add(isanghessi);
+
+        ImageIcon p= new ImageIcon(getClass().getResource("/Pocketmon/pikachu-front.png"));
+        Image p1=p.getImage();
+        Image p2=p1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
+        ImageIcon p3=new ImageIcon(p2);
+        pikachu=new JButton(p3);
+        pikachu.setBackground(Color.WHITE);
+        pikachu.setBorder(BorderFactory.createEmptyBorder());
+        pikachu.setBounds(firstPocketMonSelectPanel.getX()+330, firstPocketMonSelectPanel.getY()+100, 200,200);
+        firstPocketMonSelectPanel.add(pikachu);
+
+        complete = new JButton("선택");
+        complete.setBackground(Color.white);
+        complete.setFont(new Font("굴림",Font.BOLD,20));
+        complete.setBounds(firstPocketMonSelectPanel.getX()+170, isanghessi.getY()+200, 120,40);
+        firstPocketMonSelectPanel.add(complete,JLayeredPane.POPUP_LAYER);
+
+        explain= new JLabel("포켓몬을 세 마리 선택해주세요.");
+        explain.setFont(new Font("굴림",Font.BOLD,16));
+        explain.setBounds(firstPocketMonSelectPanel.getX()-80, isanghessi.getY()+200, 240,40);
+        firstPocketMonSelectPanel.add(explain,JLayeredPane.POPUP_LAYER);
+
+        firi.addActionListener(e -> {
+            if(firi.getBackground()==Color.WHITE) {
+                firi.setBackground(Color.gray);
+                pocketMonList.add(0);
+            }
+            else if(firi.getBackground()==Color.GRAY){
+                firi.setBackground(Color.WHITE);
+                pocketMonList.remove((Object)0);
+            }
+        });
+        ggobugi.addActionListener(e -> {
+            if(ggobugi.getBackground()==Color.WHITE) {
+                ggobugi.setBackground(Color.gray);
+                pocketMonList.add(1);
+            }
+            else if(ggobugi.getBackground()==Color.GRAY){
+                ggobugi.setBackground(Color.WHITE);
+                pocketMonList.remove((Object)1);
+            }
+        });
+        ggomadol.addActionListener(e -> {
+            if(ggomadol.getBackground()==Color.WHITE) {
+                ggomadol.setBackground(Color.gray);
+                pocketMonList.add(2);
+            }
+            else if(ggomadol.getBackground()==Color.GRAY){
+                ggomadol.setBackground(Color.WHITE);
+                pocketMonList.remove((Object)2);
+            }
+        });
+        gorapaduk.addActionListener(e -> {
+            if(gorapaduk.getBackground()==Color.WHITE) {
+                gorapaduk.setBackground(Color.gray);
+                pocketMonList.add(3);
+            }
+            else if(gorapaduk.getBackground()==Color.GRAY){
+                gorapaduk.setBackground(Color.WHITE);
+                pocketMonList.remove((Object)3);
+            }
+        });
+        isanghessi.addActionListener(e -> {
+            if(isanghessi.getBackground()==Color.WHITE) {
+                isanghessi.setBackground(Color.gray);
+                pocketMonList.add(4);
+            }
+            else if(isanghessi.getBackground()==Color.GRAY){
+                isanghessi.setBackground(Color.WHITE);
+                pocketMonList.remove((Object)4);
+            }
+        });
+        pikachu.addActionListener(e -> {
+            if(pikachu.getBackground()==Color.WHITE) {
+                pikachu.setBackground(Color.gray);
+                pocketMonList.add(5);
+            }
+            else if(pikachu.getBackground()==Color.GRAY){
+                pikachu.setBackground(Color.WHITE);
+                pocketMonList.remove((Object)5);
+            }
+        });
+        complete.addActionListener(e->{
+            if(pocketMonList.size()==3){
+                System.out.println(pocketMonList.size());
+                firstPocketMonSelectPanel.setVisible(false);
+            }else{
+                AppendTextR("3마리만 선택해주세요.");
+            }
+        });
+
         gameLayer.add(firstPocketMonSelectPanel,JLayeredPane.DEFAULT_LAYER);
     }
     private void initOkNoPanel(){

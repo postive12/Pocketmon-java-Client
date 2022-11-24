@@ -33,7 +33,7 @@ import java.util.List;
 public class GameFrame extends JFrame implements ListSelectionListener {
 
     private static JLayeredPane okNoPanel;//유저 ok 패널
-    private static JPanel choosepocket;// 처음시작 포켓몬 패널
+    private static JPanel choosePocketForBattlePanel;// 처음시작 포켓몬 패널
     private static JButton okButton;
     private static ActionListener lastOkActionListener;
     private static JLabel okPanelTitle;
@@ -104,7 +104,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
         initBattleLogPanel();
         initSelectFirstPocketMonPanel();
-
+        initChoosePocketForBattlePanel();
         //gameFrameMainPanel.setLeftComponent(gameLayer);
 
         gameCanvas = new GameCanvas(this);
@@ -440,8 +440,11 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         gameLayer.add(okNoPanel,JLayeredPane.DRAG_LAYER);
         okNoPanel.setVisible(false);
     }
-    private void choosefirst(){
-        choosepocket=new JPanel();
+    private void initChoosePocketForBattlePanel(){
+        choosePocketForBattlePanel =new JPanel();
+        choosePocketForBattlePanel.setBounds(100,100,600,500);
+        choosePocketForBattlePanel.setBackground(Color.gray);
+        gameLayer.add(choosePocketForBattlePanel,JLayeredPane.PALETTE_LAYER);
     }
 
     public static void showOkNoPanel(String title,ActionListener okAction) {

@@ -474,8 +474,41 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         img3.setBorder(BorderFactory.createEmptyBorder());
         choosePocketForBattlePanel.add(img3);
 
+        img1.addActionListener(e -> {
+            choosePocketForBattlePanel.setVisible(false);
+//            if(img1.getBackground()==Color.WHITE) {
+//                img1.setBackground(Color.gray);
+//            }
+//            else if(img1.getBackground()==Color.GRAY){
+//                img1.setBackground(Color.WHITE);
+//            }
+        });
 
+        img2.addActionListener(e -> {
+            choosePocketForBattlePanel.setVisible(false);
+//            if(img2.getBackground()==Color.WHITE) {
+//                img2.setBackground(Color.gray);
+//            }
+//            else if(img2.getBackground()==Color.GRAY){
+//                img2.setBackground(Color.WHITE);
+//            }
+        });
+
+        img3.addActionListener(e -> {
+            choosePocketForBattlePanel.setVisible(false);
+//            if(img3.getBackground()==Color.WHITE) {
+//                img3.setBackground(Color.gray);
+//            }
+//            else if(img3.getBackground()==Color.GRAY){
+//                img3.setBackground(Color.WHITE);
+//            }
+        });
+
+        choosePocketForBattlePanel.setVisible(false);
         gameLayer.add(choosePocketForBattlePanel,JLayeredPane.PALETTE_LAYER);
+    }
+    public static void enablechoosePocketForBattlePanel(boolean isEnable){
+        choosePocketForBattlePanel.setVisible(isEnable);
     }
 
     public static void showOkNoPanel(String title,ActionListener okAction) {

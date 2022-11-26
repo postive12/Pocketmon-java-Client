@@ -104,7 +104,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
         initBattleLogPanel();
         initSelectFirstPocketMonPanel();
-        initChoosePocketForBattlePanel();
+        //initChoosePocketForBattlePanel();
         //gameFrameMainPanel.setLeftComponent(gameLayer);
 
         gameCanvas = new GameCanvas(this);
@@ -476,32 +476,17 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
         img1.addActionListener(e -> {
             choosePocketForBattlePanel.setVisible(false);
-//            if(img1.getBackground()==Color.WHITE) {
-//                img1.setBackground(Color.gray);
-//            }
-//            else if(img1.getBackground()==Color.GRAY){
-//                img1.setBackground(Color.WHITE);
-//            }
+            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getBackPath());
         });
 
         img2.addActionListener(e -> {
             choosePocketForBattlePanel.setVisible(false);
-//            if(img2.getBackground()==Color.WHITE) {
-//                img2.setBackground(Color.gray);
-//            }
-//            else if(img2.getBackground()==Color.GRAY){
-//                img2.setBackground(Color.WHITE);
-//            }
+            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(1)).getBackPath());
         });
 
         img3.addActionListener(e -> {
             choosePocketForBattlePanel.setVisible(false);
-//            if(img3.getBackground()==Color.WHITE) {
-//                img3.setBackground(Color.gray);
-//            }
-//            else if(img3.getBackground()==Color.GRAY){
-//                img3.setBackground(Color.WHITE);
-//            }
+            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath());
         });
 
         choosePocketForBattlePanel.setVisible(false);

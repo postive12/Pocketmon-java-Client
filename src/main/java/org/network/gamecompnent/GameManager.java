@@ -152,6 +152,7 @@ public class GameManager extends GameObject {
     }
     public void processBattlePacket(UserBattlePacket battlePacket){
         if (battlePacket.commandType.equals("ACCEPT")){
+            GameFrame.enablechoosePocketForBattlePanel(true);
             GameFrame.enableBattleWindow(true);
         }
         if (battlePacket.commandType.equals("HEALTH")){

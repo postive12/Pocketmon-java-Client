@@ -157,12 +157,21 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         jbt[2].setText("아이템");
         jbt[3].setText("포켓몬교체");
         
-        jbt[1].addActionListener(e->{
-            jbt[0].setText("공격");
-            jbt[1].setText("방어");
-            jbt[2].setText("아이템");
-            jbt[3].setText("포켓몬교체");
+        jbt[0].addActionListener(e->{
+            //기본 공격 행동
             //스테이트 패턴
+        });
+
+        jbt[1].addActionListener(e->{
+
+        });
+
+        jbt[2].addActionListener(e->{
+
+        });
+
+        jbt[3].addActionListener(e->{
+
         });
 
         //메뉴 선택 시 지정된 행동
@@ -440,7 +449,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     //포켓몬 처음에 골라야되면 이 패널 오류남.
     private void initChoosePocketForBattlePanel(){
         choosePocketForBattlePanel =new JPanel();
-        choosePocketForBattlePanel.setBounds(100,100,600,350);
+        choosePocketForBattlePanel.setBounds(100,100,600,300);
         choosePocketForBattlePanel.setBackground(Color.white);
         choosePocketForBattlePanel.setLayout(null);
 
@@ -474,9 +483,16 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         img3.setBorder(BorderFactory.createEmptyBorder());
         choosePocketForBattlePanel.add(img3);
 
+        JLabel text1 = new JLabel("처음 나갈 포켓몬을 선택해주세요.");
+        text1.setFont(new Font("굴림",Font.BOLD,20));
+        text1.setBounds(choosePocketForBattlePanel.getX()+60, 150, 320,220);
+        choosePocketForBattlePanel.add(text1,JLayeredPane.POPUP_LAYER);
+
+
         img1.addActionListener(e -> {
             choosePocketForBattlePanel.setVisible(false);
             myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getBackPath());
+            
         });
 
         img2.addActionListener(e -> {

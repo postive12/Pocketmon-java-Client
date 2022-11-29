@@ -111,7 +111,7 @@ public class UserSocket extends Thread{
                 }
                 if (obcm instanceof UserMoveListPacket userMoveListPacket){
                     //System.out.println("Receive userMoveList");
-                    GameManager.current.updateCharactersByUsername(userMoveListPacket);
+                    if(GameManager.current != null) GameManager.current.updateCharactersByUsername(userMoveListPacket);
                 }
                 if (obcm instanceof UserBattlePacket userBattlePacket){
                     if (userBattlePacket.commandType.equals("REQUEST")){

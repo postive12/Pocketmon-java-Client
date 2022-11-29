@@ -104,7 +104,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
         initBattleLogPanel();
         initSelectFirstPocketMonPanel();
-        //initChoosePocketForBattlePanel();
+        initChoosePocketForBattlePanel();
         //gameFrameMainPanel.setLeftComponent(gameLayer);
 
         gameCanvas = new GameCanvas(this);
@@ -453,6 +453,10 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         choosePocketForBattlePanel.setBackground(Color.white);
         choosePocketForBattlePanel.setLayout(null);
 
+        if (UserData.pocketMonList == null || UserData.pocketMonList.isEmpty()){
+            return;
+        }
+
         ImageIcon i=new ImageIcon(getClass().getResource("/"+PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getFrontPath()));
         Image i1=i.getImage();
         Image i2=i1.getScaledInstance(180,200,Image.SCALE_SMOOTH);
@@ -489,6 +493,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         choosePocketForBattlePanel.add(text1,JLayeredPane.POPUP_LAYER);
 
 
+
         img1.addActionListener(e -> {
             choosePocketForBattlePanel.setVisible(false);
             myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getBackPath());
@@ -510,6 +515,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     }
     public static void enablechoosePocketForBattlePanel(boolean isEnable){
         choosePocketForBattlePanel.setVisible(isEnable);
+        
     }
 
     public static void showOkNoPanel(String title,ActionListener okAction) {

@@ -7,6 +7,7 @@ import org.network.data.PocketMonData;
 import org.network.gamecompnent.GameManager;
 import org.network.gamecore.*;
 import org.network.packet.ChoosePocketPacket;
+import org.network.packet.UserBattlePacket;
 import org.network.packet.UserChatPacket;
 import org.network.packet.UserListPacket;
 import org.network.panel.BackgroundPanel;
@@ -489,18 +490,47 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
         img1.addActionListener(e -> {
             choosePocketForBattlePanel.setVisible(false);
-            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getBackPath());
-            
+            //myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getBackPath());
+            List<Integer> args = new ArrayList<>();
+            args.add(0);
+            UserBattlePacket userBattlePacket = new UserBattlePacket(
+                    UserData.id,
+                    UserData.username,
+                    "CHANGE",
+                    UserData.username,
+                    args
+            );
+            UserSocket.getInstance().sendObject(userBattlePacket);
         });
 
         img2.addActionListener(e -> {
             choosePocketForBattlePanel.setVisible(false);
-            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(1)).getBackPath());
+            //myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(1)).getBackPath());
+            List<Integer> args = new ArrayList<>();
+            args.add(1);
+            UserBattlePacket userBattlePacket = new UserBattlePacket(
+                    UserData.id,
+                    UserData.username,
+                    "CHANGE",
+                    UserData.username,
+                    args
+            );
+            UserSocket.getInstance().sendObject(userBattlePacket);
         });
 
         img3.addActionListener(e -> {
             choosePocketForBattlePanel.setVisible(false);
-            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath());
+            List<Integer> args = new ArrayList<>();
+            args.add(2);
+            UserBattlePacket userBattlePacket = new UserBattlePacket(
+                    UserData.id,
+                    UserData.username,
+                    "CHANGE",
+                    UserData.username,
+                    args
+            );
+            UserSocket.getInstance().sendObject(userBattlePacket);
+            //myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath());
         });
 
         choosePocketForBattlePanel.setVisible(false);
@@ -615,12 +645,12 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     }
     public void setPlayerImage(boolean isOpponent,String path)
     {
-        System.out.println(path);
+        //System.out.println(path);
         if (isOpponent){
             opponentPocketMonImage.setImage(path);
         }
         else {
-            opponentPocketMonImage.setImage(path);
+            myPocketMonImage.setImage(path);
         }
     }
     public void enableBattleWindow(boolean isEnable){

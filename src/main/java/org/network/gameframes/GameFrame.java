@@ -7,6 +7,7 @@ import org.network.data.PocketMonData;
 import org.network.gamecompnent.GameManager;
 import org.network.gamecore.*;
 import org.network.packet.ChoosePocketPacket;
+import org.network.packet.UserBattlePacket;
 import org.network.packet.UserChatPacket;
 import org.network.packet.UserListPacket;
 import org.network.panel.BackgroundPanel;
@@ -155,7 +156,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         JButton[] jbt= new JButton[4];
         for(int i=0;i<4;i++){
             jbt[i]=new JButton(img);
-            jbt[i].setFont(new Font("굴림",Font.BOLD,20));
+            jbt[i].setFont(new Font("굴림",Font.BOLD,18));
             jbt[i].setForeground(Color.WHITE);
         }
 
@@ -169,30 +170,60 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         jbt[2].setText("아이템");
         jbt[3].setText("포켓몬교체");
         //스테이트 패턴
-
+        List<Integer> args= new ArrayList<>();
         jbt[0].addActionListener(e->{//기본 공격 행동
-
+            battletext.setText("기본공격을 하였습니다.");
+            args.add(-1);
+            UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ATTACK","OPPENENT",args);
+            UserSocket.getInstance().sendObject(userBattlePacket);
         });
 
         jbt[1].addActionListener(e->{//스킬 행동
+            battletext.setText("스킬창을 선택하셨습니다.");
             Skill[] skills = PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp)).getSkill_list();
             Skill temp = skills[0];
             Skill temp1= skills[1];
             Skill temp2= skills[2];
             Skill temp3= skills[3];
             jbt[0].setText(temp.getName()+"/"+temp.getPower());
-            jbt[1].setText(temp1.getName()+"/"+temp.getPower());
-            jbt[2].setText(temp2.getName()+"/"+temp.getPower());
-            jbt[3].setText(temp3.getName()+"/"+temp.getPower());
+            jbt[1].setText(temp1.getName()+"/"+temp1.getPower());
+            jbt[2].setText(temp2.getName()+"/"+temp2.getPower());
+            jbt[3].setText(temp3.getName()+"/"+temp3.getPower());
         });
 
         jbt[2].addActionListener(e->{//아이템 사용
-
+            jbt[0].setText("라즈베리열매 / 30회복");
+            jbt[1].setText("베리베리열매 / 20회복");
+            jbt[2].setText("");
+            jbt[3].setText("");
         });
 
         jbt[3].addActionListener(e->{//포켓몬 교체
-
+            if(myp==0){
+                jbt[0].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp+1)).getName());
+                jbt[1].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp+2)).getName());
+                jbt[2].setText("");
+                jbt[3].setText("");
+            }
+            else if(myp==1){
+                jbt[0].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp-1)).getName());
+                jbt[1].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp+1)).getName());
+                jbt[2].setText("");
+                jbt[3].setText("");
+            }
+            else if(myp==2){
+                jbt[0].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp-2)).getName());
+                jbt[1].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp-1)).getName());
+                jbt[2].setText("");
+                jbt[3].setText("");
+            }
         });
+
+
+
+
+
+
 
         //메뉴 선택 시 지정된 행동
         for(int i=0;i<4;i++){

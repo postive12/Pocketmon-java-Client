@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameManager extends GameObject {
-    public static GameManager current;
+    private static GameManager current;
     public boolean isLocalPlayerMovable = true;
     private Point localPlayerDirection = new Point(0,0);
     public GameManager(){
@@ -56,6 +56,9 @@ public class GameManager extends GameObject {
         wallBottom.setTransform(new Point(WindowConfig.WIDTH/2,WindowConfig.HEIGHT + 50));
         wallBottom.setSize(new Point(WindowConfig.WIDTH,100));
         Initiate(wallBottom);
+    }
+    public static GameManager getInstance(){
+        return current;
     }
     @Override
     public void update() {
@@ -165,17 +168,17 @@ public class GameManager extends GameObject {
     public void processBattlePacket(UserBattlePacket battlePacket){
         if (battlePacket.commandType.equals("ACCEPT")){
             GameFrame.enablechoosePocketForBattlePanel(true);
-            GameFrame.enableBattleWindow(true);
+            GameFrame.getInstance().enableBattleWindow(true);
         }
         if (battlePacket.commandType.equals("HEALTH")){
             List<Integer> data = battlePacket.args;
-            GameFrame.setPlayerHealth(false,data.get(0),data.get(1));
-            GameFrame.setPlayerHealth(true,data.get(2),data.get(3));
+            GameFrame.getInstance().setPlayerHealth(false,data.get(0),data.get(1));
+            GameFrame.getInstance().setPlayerHealth(true,data.get(2),data.get(3));
         }
         if (battlePacket.commandType.equals("CHANGE")){
             System.out.println("test");
             boolean isLocalPlayer = battlePacket.target.equals(UserData.username);
-            GameFrame.setPlayerImage(
+            GameFrame.getInstance().setPlayerImage(
                     isLocalPlayer,
                     isLocalPlayer ? PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getFrontPath() : PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getBackPath()
             );

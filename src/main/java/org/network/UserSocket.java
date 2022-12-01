@@ -104,18 +104,18 @@ public class UserSocket extends Thread{
                 //유저 채팅 패킷 처리
                 if (obcm instanceof UserChatPacket chatPacket){
                     if (!chatPacket.username.equals(UserData.username)){
-                        GameFrame.AppendText(chatPacket.chat);
+                        GameFrame.getInstance().AppendText(chatPacket.chat);
                     }
                 }
                 if (obcm instanceof UserListPacket userListPacket){
                     GameFrame.updateUserList(userListPacket);
                 }
                 if (obcm instanceof UserMoveListPacket userMoveListPacket){
-                    if(GameManager.current != null) GameManager.current.updateCharactersByUsername(userMoveListPacket);
+                    if(GameManager.getInstance() != null) GameManager.getInstance().updateCharactersByUsername(userMoveListPacket);
                 }
                 if (obcm instanceof UserBattlePacket userBattlePacket){
                     if (userBattlePacket.commandType.equals("REQUEST")){
-                        GameFrame.showOkNoPanel(userBattlePacket.username+"님이 배틀을 요청하셨습니다.<br>배틀을 수락하시겠습니까?",e -> {
+                        GameFrame.getInstance().showOkNoPanel(userBattlePacket.username+"님이 배틀을 요청하셨습니다.<br>배틀을 수락하시겠습니까?",e -> {
                             UserBattlePacket result = new UserBattlePacket(
                                     UserData.id,
                                     UserData.username,
@@ -128,7 +128,7 @@ public class UserSocket extends Thread{
                     }
                     else {
                         System.out.println(userBattlePacket.target + "/" + userBattlePacket.username);
-                        GameManager.current.processBattlePacket(userBattlePacket);
+                        GameManager.getInstance().processBattlePacket(userBattlePacket);
                     }
                 }
                 if(obcm instanceof ChoosePocketPacket choosePocketPacket){

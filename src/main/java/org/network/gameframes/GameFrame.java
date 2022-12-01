@@ -435,12 +435,12 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         noButton.addActionListener(e -> {
             okNoPanel.setVisible(false);
             okButton.removeActionListener(lastOkActionListener);
-            GameManager.current.isLocalPlayerMovable = true;
+            GameManager.getInstance().isLocalPlayerMovable = true;
         });
 
         okButton.addActionListener(e -> {
             okNoPanel.setVisible(false);
-            GameManager.current.isLocalPlayerMovable = true;
+            GameManager.getInstance().isLocalPlayerMovable = true;
         });
 
         okButton.setBounds(120,150,100,30);
@@ -521,12 +521,12 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         gameLayer.add(choosePocketForBattlePanel,JLayeredPane.PALETTE_LAYER);
     }
     public static void enablechoosePocketForBattlePanel(boolean isEnable){
+        System.out.println("Open choose pocket");
         choosePocketForBattlePanel.setVisible(isEnable);
-        
     }
 
-    public static void showOkNoPanel(String title,ActionListener okAction) {
-        GameManager.current.isLocalPlayerMovable = false;
+    public void showOkNoPanel(String title,ActionListener okAction) {
+        GameManager.getInstance().isLocalPlayerMovable = false;
         okPanelTitle.setText("<html>"+title+"</html>");
         lastOkActionListener = okAction;
         okButton.addActionListener(lastOkActionListener);
@@ -563,7 +563,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
 
     // 화면에 출력
-    public static void AppendText(String msg) {
+    public void AppendText(String msg) {
         msg = msg.trim(); // 앞뒤 blank와 \n을 제거한다.
         StyledDocument doc = textArea.getStyledDocument();
         SimpleAttributeSet left = new SimpleAttributeSet();
@@ -580,7 +580,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         textArea.setCaretPosition(len);
 
     }
-    public static void AppendTextR(String msg) {
+    public void AppendTextR(String msg) {
         msg = msg.trim(); // 앞뒤 blank와 \n을 제거한다.
         StyledDocument doc = textArea.getStyledDocument();
         SimpleAttributeSet right = new SimpleAttributeSet();
@@ -597,7 +597,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         textArea.setCaretPosition(len);
     }
     //유저 체력 표시 변경
-    public static void setPlayerHealth(boolean isOpponent,int health,int maxHealth)
+    public void setPlayerHealth(boolean isOpponent,int health,int maxHealth)
     {
         int healthLength = 185;
         if (isOpponent){
@@ -609,7 +609,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             myPocketMonHealthText.setText(health + "/" + maxHealth);
         }
     }
-    public static void setPlayerImage(boolean isOpponent,String path)
+    public void setPlayerImage(boolean isOpponent,String path)
     {
         System.out.println(path);
         if (isOpponent){
@@ -619,7 +619,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             opponentPocketMonImage.setImage(path);
         }
     }
-    public static void enableBattleWindow(boolean isEnable){
+    public void enableBattleWindow(boolean isEnable){
         battleLogPanel.setVisible(isEnable);
     }
     //유저 채팅 패널 초기화

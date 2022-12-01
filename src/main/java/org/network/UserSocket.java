@@ -83,7 +83,8 @@ public class UserSocket extends Thread{
                             LoginFrame.current.close();
                             UserData.username = loginPacket.username;
                             UserData.id = loginPacket.id;
-                            new GameFrame();
+                            //new GameFrame();
+                            GameFrame.getInstance();
                             intro.close();
                             Music lobby=new Music("music/lobby.mp3",true);
                             lobby.start();
@@ -110,7 +111,6 @@ public class UserSocket extends Thread{
                     GameFrame.updateUserList(userListPacket);
                 }
                 if (obcm instanceof UserMoveListPacket userMoveListPacket){
-                    //System.out.println("Receive userMoveList");
                     if(GameManager.current != null) GameManager.current.updateCharactersByUsername(userMoveListPacket);
                 }
                 if (obcm instanceof UserBattlePacket userBattlePacket){

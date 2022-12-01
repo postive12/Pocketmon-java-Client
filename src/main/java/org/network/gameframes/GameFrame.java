@@ -31,7 +31,7 @@ import java.util.List;
 
 
 public class GameFrame extends JFrame implements ListSelectionListener {
-
+    private static GameFrame current = null;
     private static JLayeredPane okNoPanel;//유저 ok 패널
     private static JPanel choosePocketForBattlePanel;// 처음시작 포켓몬 패널
     private static JButton okButton;
@@ -118,6 +118,13 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         gameThread.start();
         //게임 실행 부
         addKeyListener(new GameInputKeyListener());
+    }
+    //싱글턴
+    public static synchronized GameFrame getInstance(){
+        if (current==null){
+            current = new GameFrame();
+        }
+        return current;
     }
     private void initBattleLogPanel(){
         battleLogPanel.setBounds(0,0,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT);

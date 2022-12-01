@@ -110,44 +110,56 @@ public class GameManager extends GameObject {
     }
     private void handleEvent() {
         if (Input.GetKeyPressed(KeyEvent.VK_H)){
+//            List<Integer> args = new ArrayList<>();
+//            args.add(10);
+//            args.add(30);
+//            args.add(25);
+//            args.add(30);
+//            UserBattlePacket battlePacket = new UserBattlePacket(
+//                    0,
+//                    UserData.username,
+//                    "HEALTH",
+//                    "",
+//                    args
+//            );
+//            processBattlePacket(battlePacket);
             List<Integer> args = new ArrayList<>();
-            args.add(10);
-            args.add(30);
-            args.add(25);
-            args.add(30);
-            UserBattlePacket battlePacket = new UserBattlePacket(
-                    0,
-                    UserData.username,
-                    "HEALTH",
-                    "",
-                    args
-            );
-            processBattlePacket(battlePacket);
-        }
-        if (Input.GetKeyDown(KeyEvent.VK_J)){
-            List<Integer> args = new ArrayList<>();
+            args.add(0);
             args.add(1);
             UserBattlePacket battlePacket = new UserBattlePacket(
-                    0,
+                    UserData.id,
                     UserData.username,
-                    "CHANGE",
-                    UserData.username,
+                    "ATTACK",
+                    "OPPONENT",
                     args
             );
-            processBattlePacket(battlePacket);
+            UserSocket.getInstance().sendObject(battlePacket);
+        }
+        if (Input.GetKeyDown(KeyEvent.VK_J)){
+//            List<Integer> args = new ArrayList<>();
+//            args.add(1);
+//            UserBattlePacket battlePacket = new UserBattlePacket(
+//                    0,
+//                    UserData.username,
+//                    "CHANGE",
+//                    UserData.username,
+//                    args
+//            );
+//            processBattlePacket(battlePacket);
         }
         if (Input.GetKeyDown(KeyEvent.VK_K)){
 
         }
         if (Input.GetKeyDown(KeyEvent.VK_L)){
-            UserBattlePacket battlePacket = new UserBattlePacket(
-                    0,
-                    UserData.username,
-                    "ACCEPT",
-                    "",
-                    new ArrayList<>()
-            );
-            processBattlePacket(battlePacket);
+//            UserBattlePacket battlePacket = new UserBattlePacket(
+//                    0,
+//                    UserData.username,
+//                    "ACCEPT",
+//                    "",
+//                    new ArrayList<>()
+//            );
+//            processBattlePacket(battlePacket);
+
         }
     }
     public void processBattlePacket(UserBattlePacket battlePacket){

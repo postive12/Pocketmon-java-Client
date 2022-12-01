@@ -27,8 +27,6 @@ public class firi extends PocketMonster{
         this.setAtk(10);
 
         this.setCondition("normal");
-
-
     }
 
 }

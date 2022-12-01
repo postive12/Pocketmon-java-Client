@@ -13,4 +13,12 @@ public class UserBattlePacket extends Packet{
         this.args = args;
         this.target = target;
     }
+    /*
+    공격 패킷
+    commandType : "ATTACK"
+    args : 첫번째 인자가 공격 타입
+    기본 공격 : -1
+    스킬 번호 : 0-3
+    서버에서 처리 후 체력에 반영
+     */
 }

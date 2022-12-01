@@ -71,10 +71,18 @@ public class UserSocket extends Thread{
                     System.out.println("Class not founded");
                     e.printStackTrace();
                     //break;
-                } catch (EOFException eof){
-                    break;
-                } catch (IOException e){
-                    //Ignored
+                } catch (IOException eof){
+                    System.out.println("Error Client exited");
+                    try {
+                        ois.close();
+                        oos.close();
+                        socket.close();
+                        break;
+                    } catch (Exception ee) {
+                        System.out.println("Error Client exited");
+                        System.exit(0);
+                        break;
+                    } // catch문 끝
                 }
                 handlePacket(obcm);
             }

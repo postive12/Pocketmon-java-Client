@@ -36,7 +36,7 @@ public class GameObject
         return null;
     }
     public static void updateGameObjects(){
-        GameManager.current.update();
+        GameManager.getInstance().update();
         for (GameObject g : gameObjects){
             if (g.isEnabled){
                 g.update();

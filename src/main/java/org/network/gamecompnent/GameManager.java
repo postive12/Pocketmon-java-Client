@@ -12,7 +12,6 @@ import org.network.gameframes.GameFrame;
 import org.network.packet.UserBattlePacket;
 import org.network.packet.UserMoveListPacket;
 import org.network.packet.UserMovePacket;
-import pocketmon.PocketMonster;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -167,8 +166,8 @@ public class GameManager extends GameObject {
     }
     public void processBattlePacket(UserBattlePacket battlePacket){
         if (battlePacket.commandType.equals("ACCEPT")){
-            GameFrame.enableBattleWindow(true);
-            GameFrame.getInstance().enablechoosePocketForBattlePanel(true);
+            GameFrame.getInstance().enableBattleWindow(true);
+            GameFrame.getInstance().enableChoosePocketForBattlePanel(true);
         }
         if (battlePacket.commandType.equals("HEALTH")){
             List<Integer> data = battlePacket.args;

@@ -52,7 +52,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private static BackgroundPanel myPocketMonImage;
     private static BackgroundPanel opponentPocketMonImage;
     private JLabel battletext;
-    private List<Integer> args= new ArrayList<>();
+    //private List<Integer> args= new ArrayList<>();
     private static JPanel firstPocketMonSelectPanel;
     private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
     //private JSplitPane gameFrameMainPanel = new JSplitPane();
@@ -310,6 +310,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         jbt[3].setText("교체");
         jbt[0].addActionListener(e -> {
             battletext.setText("기본공격을 하였습니다.");
+            List<Integer> args = new ArrayList<>();
             args.add(-1);
             UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ATTACK","OPPONENT",args);
             UserSocket.getInstance().sendObject(userBattlePacket);
@@ -336,6 +337,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             int finalI = i;
             jbt[i].addActionListener(e ->{
                 //스킬 패킷 전송
+                List<Integer> args = new ArrayList<>();
                 args.add(finalI);
                 UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ATTACK","OPPONENT",args);
                 UserSocket.getInstance().sendObject(userBattlePacket);
@@ -355,11 +357,14 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         jbt[3].setText("");
 
         jbt[0].addActionListener(e -> {
+            List<Integer> args = new ArrayList<>();
+            args.add(0);
             UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ITEM","ME",args);
             UserSocket.getInstance().sendObject(userBattlePacket);
             setBattleButtonDefaultState();
         });
         jbt[1].addActionListener(e -> {
+            List<Integer> args = new ArrayList<>();
             args.add(1);
             UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ITEM","ME",args);
             UserSocket.getInstance().sendObject(userBattlePacket);
@@ -381,8 +386,10 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             int current = i;
             jbt[count].addActionListener(e ->{
                 myp=current;
+                List<Integer> args = new ArrayList<>();
+                args.add(current);
                 myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(current)).getBackPath());
-                UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"CHANGE","ME",args);
+                UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"CHANGE",UserData.username,args);
                 UserSocket.getInstance().sendObject(userBattlePacket);
                 setBattleButtonDefaultState();
             });

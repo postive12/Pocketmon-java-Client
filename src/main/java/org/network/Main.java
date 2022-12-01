@@ -9,7 +9,6 @@ public class Main {
     public static UserSocket userSocket;
     public static void main(String[] args)
     {
-
         userSocket = new UserSocket();
         PocketMonData.InitPocketmonData();
         new LoginFrame();

@@ -175,15 +175,12 @@ public class GameManager extends GameObject {
             GameFrame.getInstance().setPlayerHealth(true,data.get(2),data.get(3));
         }
         if (battlePacket.commandType.equals("CHANGE")){
-            System.out.println("test");
-            boolean isLocalPlayer = battlePacket.target.equals(UserData.username);
+            boolean isOpponent = !battlePacket.target.equals(UserData.username);
+            //System.out.println( "battle packet : "+ battlePacket.target + " / " + UserData.username +"/" +isLocalPlayer);
             GameFrame.getInstance().setPlayerImage(
-                    isLocalPlayer,
-                    isLocalPlayer ? PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getFrontPath() : PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getBackPath()
+                    isOpponent,
+                    isOpponent ? PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getFrontPath() : PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getBackPath()
             );
-        }
-        if (battlePacket.commandType.equals("REQUEST_CHANGE")){
-
         }
     }
     public void sendPlayerMovePacket(int ratio){

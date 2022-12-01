@@ -6,6 +6,7 @@ import org.network.gameframes.LoginFrame;
 import org.network.gameframes.Music;
 import org.network.packet.*;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -61,7 +62,7 @@ public class UserSocket extends Thread{
     }
     public void run() {
         while (true) {
-            try {
+            while (true){
                 Object obcm = null;
                 //String msg = null;
                 try {
@@ -69,92 +70,90 @@ public class UserSocket extends Thread{
                 } catch (ClassNotFoundException e) {
                     System.out.println("Class not founded");
                     e.printStackTrace();
-                    break;
-                }
-                if (obcm == null) {
-                    System.out.println("Null object received");
-                    break;
-                }
-                //로그인 패킷 처리
-                if (obcm instanceof LoginPacket loginPacket){
-                    System.out.println("Login packet received");
-                    if (loginPacket.loginPacketType==LoginPacketType.LOGIN_ACCEPT){
-                        try{
-                            LoginFrame.current.close();
-                            UserData.username = loginPacket.username;
-                            UserData.id = loginPacket.id;
-                            //new GameFrame();
-                            GameFrame.getInstance();
-                            intro.close();
-                            Music lobby=new Music("music/lobby.mp3",true);
-                            lobby.start();
-                            if (loginPacket.password.equals("FirstIn")){
-                                //이곳에 처음 진입시 활성화 코드 삽입
-                                GameFrame.enableFirstPocketSelectPanel(true);
-                            }
-                        }
-                        catch (Exception e){
-                            System.out.println("Error occur but alive");
-                        }
-                    }
-                    else {
-                        LoginFrame.current.setLoginLog(loginPacket);
-                    }
-                }
-                //유저 채팅 패킷 처리
-                if (obcm instanceof UserChatPacket chatPacket){
-                    if (!chatPacket.username.equals(UserData.username)){
-                        GameFrame.getInstance().AppendText(chatPacket.chat);
-                    }
-                }
-                if (obcm instanceof UserListPacket userListPacket){
-                    GameFrame.updateUserList(userListPacket);
-                }
-                if (obcm instanceof UserMoveListPacket userMoveListPacket){
-                    if(GameManager.getInstance() != null) GameManager.getInstance().updateCharactersByUsername(userMoveListPacket);
-                }
-                if (obcm instanceof UserBattlePacket userBattlePacket){
-                    if (userBattlePacket.commandType.equals("REQUEST")){
-                        GameFrame.getInstance().showOkNoPanel(userBattlePacket.username+"님이 배틀을 요청하셨습니다.<br>배틀을 수락하시겠습니까?",e -> {
-                            UserBattlePacket result = new UserBattlePacket(
-                                    UserData.id,
-                                    UserData.username,
-                                    "ACCEPT",
-                                    userBattlePacket.username,
-                                    null
-                            );
-                            sendObject(result);
-                        });
-                    }
-                    else {
-                        System.out.println(userBattlePacket.target + "/" + userBattlePacket.username);
-                        GameManager.getInstance().processBattlePacket(userBattlePacket);
-                    }
-                }
-                if(obcm instanceof ChoosePocketPacket choosePocketPacket){
-                   UserData.pocketMonList = choosePocketPacket.pocketMonList;
-                   System.out.println(choosePocketPacket.pocketMonList);
-                }
-            } catch (IOException e) {
-                System.out.println("Error Client exited");
-                try {
-                    ois.close();
-                    oos.close();
-                    socket.close();
-                    break;
-                } catch (Exception ee) {
+                    //break;
+                } catch (IOException eof){
                     System.out.println("Error Client exited");
-                    System.exit(0);
-                    break;
-                } // catch문 끝
-            } // 바깥 catch문끝
-
+                    try {
+                        ois.close();
+                        oos.close();
+                        socket.close();
+                        break;
+                    } catch (Exception ee) {
+                        System.out.println("Error Client exited");
+                        System.exit(0);
+                        break;
+                    } // catch문 끝
+                }
+                handlePacket(obcm);
+            }
         }
     }
-
+    private void handlePacket(Object obcm){
+        //로그인 패킷 처리
+        if (obcm instanceof LoginPacket loginPacket){
+            System.out.println("Login packet received");
+            if (loginPacket.loginPacketType==LoginPacketType.LOGIN_ACCEPT){
+                try{
+                    LoginFrame.current.close();
+                    UserData.username = loginPacket.username;
+                    UserData.id = loginPacket.id;
+                    //new GameFrame();
+                    GameFrame.getInstance();
+                    intro.close();
+                    Music lobby=new Music("music/lobby.mp3",true);
+                    lobby.start();
+                    if (loginPacket.password.equals("FirstIn")){
+                        //이곳에 처음 진입시 활성화 코드 삽입
+                        GameFrame.enableFirstPocketSelectPanel(true);
+                    }
+                }
+                catch (Exception e){
+                    System.out.println("Error occur but alive");
+                }
+            }
+            else {
+                LoginFrame.current.setLoginLog(loginPacket);
+            }
+        }
+        //유저 채팅 패킷 처리
+        if (obcm instanceof UserChatPacket chatPacket){
+            if (!chatPacket.username.equals(UserData.username)){
+                GameFrame.getInstance().AppendText(chatPacket.chat);
+            }
+        }
+        if (obcm instanceof UserListPacket userListPacket){
+            GameFrame.updateUserList(userListPacket);
+        }
+        if (obcm instanceof UserMoveListPacket userMoveListPacket){
+            if(GameManager.getInstance() != null) GameManager.getInstance().updateCharactersByUsername(userMoveListPacket);
+        }
+        if (obcm instanceof UserBattlePacket userBattlePacket){
+            if (userBattlePacket.commandType.equals("REQUEST")){
+                GameFrame.getInstance().showOkNoPanel(userBattlePacket.username+"님이 배틀을 요청하셨습니다.<br>배틀을 수락하시겠습니까?",e -> {
+                    UserBattlePacket result = new UserBattlePacket(
+                            UserData.id,
+                            UserData.username,
+                            "ACCEPT",
+                            userBattlePacket.username,
+                            null
+                    );
+                    sendObject(result);
+                });
+            }
+            else {
+                System.out.println(userBattlePacket.target + "/" + userBattlePacket.username);
+                GameManager.getInstance().processBattlePacket(userBattlePacket);
+            }
+        }
+        if(obcm instanceof ChoosePocketPacket choosePocketPacket){
+            UserData.pocketMonList = choosePocketPacket.pocketMonList;
+            System.out.println(choosePocketPacket.pocketMonList);
+        }
+    }
     public void sendObject(Object ob) { // 서버로 메세지를 보내는 메소드
         try {
             oos.writeObject(ob);
+            //oos.writeObject(null);
         } catch (IOException e) {
             //AppendText("SendObject Error");
         }

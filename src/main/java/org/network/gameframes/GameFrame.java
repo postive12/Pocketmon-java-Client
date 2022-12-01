@@ -388,6 +388,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                 myp=current;
                 List<Integer> args = new ArrayList<>();
                 args.add(current);
+                myPocketMonName.setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(current)).getName());
                 myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(current)).getBackPath());
                 UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"CHANGE",UserData.username,args);
                 UserSocket.getInstance().sendObject(userBattlePacket);
@@ -639,6 +640,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                     args
             );
             UserSocket.getInstance().sendObject(userBattlePacket);
+            myPocketMonName.setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getName());
             myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getBackPath());
             myp=0;
         });
@@ -656,6 +658,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                     args
             );
             UserSocket.getInstance().sendObject(userBattlePacket);
+            myPocketMonName.setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(1)).getName());
             myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(1)).getBackPath());
             myp=1;
         });
@@ -673,6 +676,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             );
             UserSocket.getInstance().sendObject(userBattlePacket);
             //myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath());
+            myPocketMonName.setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getName());
             myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath());
             myp=2;
         });

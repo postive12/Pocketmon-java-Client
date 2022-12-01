@@ -51,7 +51,8 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private static JLabel opponentPocketMonHealthText;
     private static BackgroundPanel myPocketMonImage;
     private static BackgroundPanel opponentPocketMonImage;
-
+    private JLabel battletext;
+    private List<Integer> args= new ArrayList<>();
     private static JPanel firstPocketMonSelectPanel;
     private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
     //private JSplitPane gameFrameMainPanel = new JSplitPane();
@@ -142,7 +143,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         int y=(WindowConfig.HEIGHT*2/3-30)+(WindowConfig.HEIGHT*1/6);
 
         //배틀설명 창 생성
-        JLabel battletext= new JLabel();
+        battletext= new JLabel();
         battletext.setText("배틀상황 설명");
         battletext.setForeground(Color.WHITE);
         battletext.setFont(new Font("굴림",Font.BOLD,18));
@@ -308,7 +309,10 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         jbt[2].setText("아이템");
         jbt[3].setText("교체");
         jbt[0].addActionListener(e -> {
-            //공격 코드 추가
+            battletext.setText("기본공격을 하였습니다.");
+            args.add(-1);
+            UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ATTACK","OPPONENT",args);
+            UserSocket.getInstance().sendObject(userBattlePacket);
         });
         jbt[1].addActionListener(e -> {
             setBattleButtonSkillState();
@@ -327,21 +331,17 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             }
         }
         Skill[] skills = PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp)).getSkill_list();
-//        Skill temp = skills[0];
-//        Skill temp1= skills[1];
-//        Skill temp2= skills[2];
-//        Skill temp3= skills[3];
         for (int i =0;i<4;i++){
             jbt[i].setText(skills[i].getName() + "/" + skills[i].getPower());
+            int finalI = i;
             jbt[i].addActionListener(e ->{
                 //스킬 패킷 전송
+                args.add(finalI);
+                UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ATTACK","OPPONENT",args);
+                UserSocket.getInstance().sendObject(userBattlePacket);
                 setBattleButtonDefaultState();
             });
         }
-//        jbt[0].setText(temp.getName()+"/"+temp.getPower());
-//        jbt[1].setText(temp1.getName()+"/"+temp1.getPower());
-//        jbt[2].setText(temp2.getName()+"/"+temp2.getPower());
-//        jbt[3].setText(temp3.getName()+"/"+temp3.getPower());
     }
     private void setBattleButtonItemState(){
         for (JButton bt : jbt){
@@ -349,10 +349,22 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                 bt.removeActionListener(al);
             }
         }
-        jbt[0].setText("라즈베리열매 / 30회복");
-        jbt[1].setText("베리베리열매 / 20회복");
+        jbt[0].setText("라즈베리열매/30회복");
+        jbt[1].setText("베리베리열매/20회복");
         jbt[2].setText("");
         jbt[3].setText("");
+
+        jbt[0].addActionListener(e -> {
+            UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ITEM","ME",args);
+            UserSocket.getInstance().sendObject(userBattlePacket);
+            setBattleButtonDefaultState();
+        });
+        jbt[1].addActionListener(e -> {
+            args.add(1);
+            UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ITEM","ME",args);
+            UserSocket.getInstance().sendObject(userBattlePacket);
+            setBattleButtonDefaultState();
+        });
     }
     private void setBattleButtonChangeState(){
         for (JButton bt : jbt){
@@ -366,28 +378,18 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                 continue;
             }
             jbt[count].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(i)).getName());
+            int current = i;
+            jbt[count].addActionListener(e ->{
+                myp=current;
+                myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(current)).getBackPath());
+                UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"CHANGE","ME",args);
+                UserSocket.getInstance().sendObject(userBattlePacket);
+                setBattleButtonDefaultState();
+            });
             count++;
         }
         jbt[2].setText("");
         jbt[3].setText("");
-//        if(myp==0){
-//            jbt[0].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp+1)).getName());
-//            jbt[1].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp+2)).getName());
-//            jbt[2].setText("");
-//            jbt[3].setText("");
-//        }
-//        else if(myp==1){
-//            jbt[0].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp-1)).getName());
-//            jbt[1].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp+1)).getName());
-//            jbt[2].setText("");
-//            jbt[3].setText("");
-//        }
-//        else if(myp==2){
-//            jbt[0].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp-2)).getName());
-//            jbt[1].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp-1)).getName());
-//            jbt[2].setText("");
-//            jbt[3].setText("");
-//        }
     }
     private void initSelectFirstPocketMonPanel(){
         firstPocketMonSelectPanel = new JPanel();

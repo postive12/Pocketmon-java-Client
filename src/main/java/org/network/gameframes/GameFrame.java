@@ -72,6 +72,8 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private JButton complete;
     private List<Integer> pocketMonList= new ArrayList<>();
 
+    private JButton img1,img2,img3;
+
     private JLabel explain;
     private String currentSelectedUser = "-ALL-";
     public GameFrame(){
@@ -452,23 +454,12 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         gameLayer.add(okNoPanel,JLayeredPane.DRAG_LAYER);
         okNoPanel.setVisible(false);
     }
-
-    //포켓몬 처음에 골라야되면 이 패널 오류남.
-    private void initChoosePocketForBattlePanel(){
-        choosePocketForBattlePanel =new JPanel();
-        choosePocketForBattlePanel.setBounds(100,100,600,300);
-        choosePocketForBattlePanel.setBackground(Color.white);
-        choosePocketForBattlePanel.setLayout(null);
-
-        if (UserData.pocketMonList == null || UserData.pocketMonList.isEmpty()){
-            return;
-        }
-
+    public void select(){
         ImageIcon i=new ImageIcon(getClass().getResource("/"+PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getFrontPath()));
         Image i1=i.getImage();
         Image i2=i1.getScaledInstance(180,200,Image.SCALE_SMOOTH);
         ImageIcon i3= new ImageIcon(i2);
-        JButton img1=new JButton(i3);
+        img1=new JButton(i3);
         img1.setBounds(choosePocketForBattlePanel.getX()-95, choosePocketForBattlePanel.getY()-100, 190,220);
         img1.setBackground(Color.WHITE);
         img1.setBorder(BorderFactory.createEmptyBorder());
@@ -478,7 +469,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         Image j1=j.getImage();
         Image j2=j1.getScaledInstance(180,200,Image.SCALE_SMOOTH);
         ImageIcon j3= new ImageIcon(j2);
-        JButton img2=new JButton(j3);
+        img2=new JButton(j3);
         img2.setBounds(choosePocketForBattlePanel.getX()+110, choosePocketForBattlePanel.getY()-100, 190,220);
         img2.setBackground(Color.WHITE);
         img2.setBorder(BorderFactory.createEmptyBorder());
@@ -488,7 +479,50 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         Image k1=k.getImage();
         Image k2=k1.getScaledInstance(180,200,Image.SCALE_SMOOTH);
         ImageIcon k3= new ImageIcon(k2);
-        JButton img3=new JButton(k3);
+        img3=new JButton(k3);
+        img3.setBounds(choosePocketForBattlePanel.getX()+300, choosePocketForBattlePanel.getY()-100, 190,220);
+        img3.setBackground(Color.WHITE);
+        img3.setBorder(BorderFactory.createEmptyBorder());
+        choosePocketForBattlePanel.add(img3);
+    }
+    //포켓몬 처음에 골라야되면 이 패널 오류남.
+    private void initChoosePocketForBattlePanel(){
+        choosePocketForBattlePanel =new JPanel();
+        choosePocketForBattlePanel.setBounds(100,100,600,300);
+        choosePocketForBattlePanel.setBackground(Color.white);
+        choosePocketForBattlePanel.setLayout(null);
+
+        if (UserData.pocketMonList == null || UserData.pocketMonList.isEmpty()){
+            UserData.pocketMonList.add(4);
+            UserData.pocketMonList.add(4);
+            UserData.pocketMonList.add(4);
+        }
+
+        ImageIcon i=new ImageIcon(getClass().getResource("/"+PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getFrontPath()));
+        Image i1=i.getImage();
+        Image i2=i1.getScaledInstance(180,200,Image.SCALE_SMOOTH);
+        ImageIcon i3= new ImageIcon(i2);
+        img1=new JButton(i3);
+        img1.setBounds(choosePocketForBattlePanel.getX()-95, choosePocketForBattlePanel.getY()-100, 190,220);
+        img1.setBackground(Color.WHITE);
+        img1.setBorder(BorderFactory.createEmptyBorder());
+        choosePocketForBattlePanel.add(img1);
+
+        ImageIcon j=new ImageIcon(getClass().getResource("/"+PocketMonData.monsterInfo.get(UserData.pocketMonList.get(1)).getFrontPath()));
+        Image j1=j.getImage();
+        Image j2=j1.getScaledInstance(180,200,Image.SCALE_SMOOTH);
+        ImageIcon j3= new ImageIcon(j2);
+        img2=new JButton(j3);
+        img2.setBounds(choosePocketForBattlePanel.getX()+110, choosePocketForBattlePanel.getY()-100, 190,220);
+        img2.setBackground(Color.WHITE);
+        img2.setBorder(BorderFactory.createEmptyBorder());
+        choosePocketForBattlePanel.add(img2);
+
+        ImageIcon k=new ImageIcon(getClass().getResource("/"+PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getFrontPath()));
+        Image k1=k.getImage();
+        Image k2=k1.getScaledInstance(180,200,Image.SCALE_SMOOTH);
+        ImageIcon k3= new ImageIcon(k2);
+        img3=new JButton(k3);
         img3.setBounds(choosePocketForBattlePanel.getX()+300, choosePocketForBattlePanel.getY()-100, 190,220);
         img3.setBackground(Color.WHITE);
         img3.setBorder(BorderFactory.createEmptyBorder());

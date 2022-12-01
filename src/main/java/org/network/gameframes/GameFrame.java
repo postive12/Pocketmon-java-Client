@@ -11,6 +11,8 @@ import org.network.packet.UserBattlePacket;
 import org.network.packet.UserChatPacket;
 import org.network.packet.UserListPacket;
 import org.network.panel.BackgroundPanel;
+import pocketmon.PocketMonster;
+import pocketmon.Skill;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -75,6 +77,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
 
     private JButton img1,img2,img3;
 
+    private int myp;
     private JLabel explain;
     private String currentSelectedUser = "-ALL-";
     public GameFrame(){
@@ -166,21 +169,29 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         jbt[1].setText("스킬");
         jbt[2].setText("아이템");
         jbt[3].setText("포켓몬교체");
-        
-        jbt[0].addActionListener(e->{
-            //기본 공격 행동
-            //스테이트 패턴
-        });
+        //스테이트 패턴
 
-        jbt[1].addActionListener(e->{
+        jbt[0].addActionListener(e->{//기본 공격 행동
 
         });
 
-        jbt[2].addActionListener(e->{
+        jbt[1].addActionListener(e->{//스킬 행동
+            Skill[] skills = PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp)).getSkill_list();
+            Skill temp = skills[0];
+            Skill temp1= skills[1];
+            Skill temp2= skills[2];
+            Skill temp3= skills[3];
+            jbt[0].setText(temp.getName()+"/"+temp.getPower());
+            jbt[1].setText(temp1.getName()+"/"+temp.getPower());
+            jbt[2].setText(temp2.getName()+"/"+temp.getPower());
+            jbt[3].setText(temp3.getName()+"/"+temp.getPower());
+        });
+
+        jbt[2].addActionListener(e->{//아이템 사용
 
         });
 
-        jbt[3].addActionListener(e->{
+        jbt[3].addActionListener(e->{//포켓몬 교체
 
         });
 
@@ -501,6 +512,8 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                     args
             );
             UserSocket.getInstance().sendObject(userBattlePacket);
+            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getBackPath());
+            myp=0;
         });
 
         img2.addActionListener(e -> {
@@ -516,6 +529,8 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                     args
             );
             UserSocket.getInstance().sendObject(userBattlePacket);
+            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(1)).getBackPath());
+            myp=1;
         });
 
         img3.addActionListener(e -> {
@@ -531,6 +546,8 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             );
             UserSocket.getInstance().sendObject(userBattlePacket);
             //myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath());
+            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath());
+            myp=2;
         });
 
         choosePocketForBattlePanel.setVisible(false);

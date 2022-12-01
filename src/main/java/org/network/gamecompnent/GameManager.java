@@ -182,6 +182,9 @@ public class GameManager extends GameObject {
                     isOpponent ? PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getFrontPath() : PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getBackPath()
             );
         }
+        if(battlePacket.commandType.equals("EXIT")){
+            GameFrame.getInstance().enableBattleWindow(false);
+        }
     }
     public void sendPlayerMovePacket(int ratio){
         //System.out.println(ratio);

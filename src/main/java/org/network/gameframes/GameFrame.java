@@ -371,7 +371,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             setBattleButtonDefaultState();
         });
     }
-    private void setBattleButtonChangeState(){
+    public void setBattleButtonChangeState(){
         for (JButton bt : jbt){
             for(ActionListener al : bt.getActionListeners() ) {
                 bt.removeActionListener(al);

@@ -141,7 +141,7 @@ public class UserSocket extends Thread{
                 });
             }
             else {
-                System.out.println(userBattlePacket.target + "/" + userBattlePacket.username);
+                //System.out.println(userBattlePacket.target + "/" + userBattlePacket.username);
                 GameManager.getInstance().processBattlePacket(userBattlePacket);
             }
         }

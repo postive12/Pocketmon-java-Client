@@ -8,6 +8,7 @@ import org.network.data.UserMoveData;
 import org.network.gamecore.GameConfig;
 import org.network.gamecore.GameObject;
 import org.network.gamecore.Input;
+import org.network.gameframes.BattleControlFrame;
 import org.network.gameframes.GameFrame;
 import org.network.packet.UserBattlePacket;
 import org.network.packet.UserMoveListPacket;
@@ -170,6 +171,8 @@ public class GameManager extends GameObject {
         if (battlePacket.commandType.equals("CHANGE_REQUEST")){
             System.out.println("Get Change Request");
             remain = battlePacket.args;
+            GameFrame.getInstance().getBattleControlFrame().setBattleLogText("전투불능 상태가 되었습니다 <br>" +
+                    "포켓몬을 교체해주세요");
             //System.out.println(battlePacket.args.toString());
             GameFrame.getInstance().getBattleControlFrame().setBattleButtonChangeState();
         }

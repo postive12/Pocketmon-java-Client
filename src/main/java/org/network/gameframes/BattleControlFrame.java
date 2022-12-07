@@ -226,7 +226,7 @@ public class BattleControlFrame extends JLayeredPane {
             System.out.println(remain.toString());
             if (!remain.contains(i)){
                 String a1=PocketMonData.monsterInfo.get(UserData.pocketMonList.get(i)).getName();
-                String a2="is die";
+                String a2=" is die";
                 String a3=a1.concat(a2);
                 System.out.println("a3 = "+ a1);
                 jbt[count].setText(a3);

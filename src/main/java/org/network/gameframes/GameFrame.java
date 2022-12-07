@@ -35,11 +35,7 @@ import java.util.List;
 
 public class GameFrame extends JFrame implements ListSelectionListener {
     private static GameFrame current = null;
-    private static JLayeredPane okNoPanel;//유저 ok 패널
     private static JPanel choosePocketForBattlePanel;// 처음시작 포켓몬 패널
-    private static JButton okButton;
-    private static ActionListener lastOkActionListener;
-    private static JLabel okPanelTitle;
     private static DefaultListModel model;
     private static JTextPane textArea;
     //전투 ui 정보
@@ -71,6 +67,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private JButton img1,img2,img3;
     //배틀 컨트롤 프레임 생성
     private BattleControlFrame battleControlFrame;
+    private OkOrNoFrame okOrNoFrame;
     private JLabel explain;
     private String currentSelectedUser = "-ALL-";
     public GameFrame(){
@@ -98,12 +95,13 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         userListPanel();
         userChatPanel.setBackground(Color.white);
         initUserChatPanel();
-
-        initOkNoPanel();
         initSelectFirstPocketMonPanel();
         initChoosePocketForBattlePanel();
         battleControlFrame = new BattleControlFrame();
         gameLayer.add(battleControlFrame,JLayeredPane.DEFAULT_LAYER);
+        okOrNoFrame = new OkOrNoFrame();
+        gameLayer.add(okOrNoFrame,JLayeredPane.DRAG_LAYER);
+
         //gameFrameMainPanel.setLeftComponent(gameLayer);
         //gameLayer.add(new BattleControlFrame(),JLayeredPane.DEFAULT_LAYER);
         gameCanvas = new GameCanvas(this);
@@ -280,47 +278,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     public static void enableFirstPocketSelectPanel(boolean isEnable){
         firstPocketMonSelectPanel.setVisible(isEnable);
     }
-    private void initOkNoPanel(){
-        okNoPanel = new JLayeredPane();
-        okNoPanel.setSize(WindowConfig.WIDTH/3,WindowConfig.HEIGHT/3);
-        okNoPanel.setLocation(WindowConfig.WIDTH/3 - okNoPanel.getWidth()/2,WindowConfig.HEIGHT/3 - okNoPanel.getHeight()/2);
-
-        BackgroundPanel backgroundPanel = new BackgroundPanel("ui/speechbox.png");
-        backgroundPanel.setLocation(0,0);
-        backgroundPanel.setSize(okNoPanel.getSize());
-        okNoPanel.add(backgroundPanel,JLayeredPane.FRAME_CONTENT_LAYER);
-
-        okPanelTitle = new JLabel(
-                "<html>테스트 디버깅 용 텍스트 입니다." +
-                "<br>테스트 디버깅 용 텍스트 입니다.</html>"
-        );
-        okPanelTitle.setHorizontalAlignment(JLabel.CENTER);
-        okPanelTitle.setBounds(30,0,okNoPanel.getWidth() - 60,200);
-        okPanelTitle.setFont(new Font("Default", Font.BOLD, 14));
-
-        okButton = new JButton("확인");
-        JButton noButton = new JButton("닫기");
-        noButton.addActionListener(e -> {
-            okNoPanel.setVisible(false);
-            okButton.removeActionListener(lastOkActionListener);
-            GameManager.getInstance().isLocalPlayerMovable = true;
-        });
-
-        okButton.addActionListener(e -> {
-            okNoPanel.setVisible(false);
-            GameManager.getInstance().isLocalPlayerMovable = true;
-        });
-
-        okButton.setBounds(120,150,100,30);
-        noButton.setBounds(230,150,100,30);
-
-        okNoPanel.add(okPanelTitle,JLayeredPane.POPUP_LAYER);
-        okNoPanel.add(okButton,JLayeredPane.POPUP_LAYER);
-        okNoPanel.add(noButton,JLayeredPane.POPUP_LAYER);
-        gameLayer.add(okNoPanel,JLayeredPane.DRAG_LAYER);
-        okNoPanel.setVisible(false);
-    }
-
     //포켓몬 처음에 골라야되면 이 패널 오류남.
     private void initChoosePocketForBattlePanel(){
         choosePocketForBattlePanel =new JPanel();
@@ -448,15 +405,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         img3.setIcon(k3);
         choosePocketForBattlePanel.setVisible(isEnable);
     }
-
-    public void showOkNoPanel(String title,ActionListener okAction) {
-        GameManager.getInstance().isLocalPlayerMovable = false;
-        okPanelTitle.setText("<html>"+title+"</html>");
-        lastOkActionListener = okAction;
-        okButton.addActionListener(lastOkActionListener);
-        okNoPanel.setVisible(true);
-    }
-
     private void userListPanel() {
         model=new DefaultListModel();
         userList = new JList<String>((ListModel<String>) model);
@@ -520,10 +468,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         int len = textArea.getDocument().getLength();
         textArea.setCaretPosition(len);
     }
-
-    public void enableBattleWindow(boolean isEnable){
-        battleControlFrame.setVisible(isEnable);
-    }
     //유저 채팅 패널 초기화
     private void initUserChatPanel() {
         //userChatPanel
@@ -576,8 +520,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         txtInput.addActionListener(action);
         txtInput.requestFocus();
     }
-
-
     class TextSendAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -597,8 +539,14 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             }
         }
     }
-
+    public void enableBattleWindow(boolean isEnable){
+        battleControlFrame.setVisible(isEnable);
+    }
     public BattleControlFrame getBattleControlFrame() {
         return battleControlFrame;
+    }
+
+    public OkOrNoFrame getOkOrNoFrame() {
+        return okOrNoFrame;
     }
 }

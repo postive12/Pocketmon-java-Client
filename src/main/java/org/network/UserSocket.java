@@ -129,7 +129,7 @@ public class UserSocket extends Thread{
         }
         if (obcm instanceof UserBattlePacket userBattlePacket){
             if (userBattlePacket.commandType.equals("REQUEST")){
-                GameFrame.getInstance().showOkNoPanel(userBattlePacket.username+"님이 배틀을 요청하셨습니다.<br>배틀을 수락하시겠습니까?",e -> {
+                GameFrame.getInstance().getOkOrNoFrame().showOkNoPanel(userBattlePacket.username+"님이 배틀을 요청하셨습니다.<br>배틀을 수락하시겠습니까?",e -> {
                     UserBattlePacket result = new UserBattlePacket(
                             UserData.id,
                             UserData.username,

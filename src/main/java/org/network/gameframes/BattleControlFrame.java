@@ -274,4 +274,9 @@ public class BattleControlFrame extends JLayeredPane {
     public void setCurrentPocketMon(int i) {
         myp = i;
     }
+    public void setBattleButtonEnable(boolean isEnable){
+        for (int i = 0;i < 4;i++){
+            jbt[i].setEnabled(isEnable);
+        }
+    }
 }

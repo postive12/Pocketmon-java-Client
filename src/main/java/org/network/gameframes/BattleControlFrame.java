@@ -4,6 +4,7 @@ import org.network.UserData;
 import org.network.UserSocket;
 import org.network.WindowConfig;
 import org.network.data.PocketMonData;
+import org.network.gamecompnent.GameManager;
 import org.network.packet.UserBattlePacket;
 import org.network.panel.BackgroundPanel;
 import pocketmon.Skill;
@@ -215,12 +216,23 @@ public class BattleControlFrame extends JLayeredPane {
                 bt.removeActionListener(al);
             }
         }
+        List<Integer> remain = GameManager.getInstance().remain;
+
         int count = 0;
         for (int i = 0; i<3;i++){
             if (i==myp){
                 continue;
             }
-            jbt[count].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(i)).getName());
+            System.out.println(remain.toString());
+            if (!remain.contains(i)){
+                String a1=PocketMonData.monsterInfo.get(UserData.pocketMonList.get(i)).getName();
+                String a2="is die";
+                String a3=a1.concat(a2);
+                System.out.println("a3 = "+ a1);
+                jbt[count].setText(a3);
+            }else{
+                jbt[count].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(i)).getName());
+            }
             int current = i;
             jbt[count].addActionListener(e ->{
                 myp=current;

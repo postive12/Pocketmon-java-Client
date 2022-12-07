@@ -22,6 +22,7 @@ public class GameManager extends GameObject {
     private static GameManager current;
     public boolean isLocalPlayerMovable = true;
     private Point localPlayerDirection = new Point(0,0);
+    public List<Integer> remain = new ArrayList<>();
     public GameManager(){
         current = this;
         
@@ -136,6 +137,10 @@ public class GameManager extends GameObject {
         if (battlePacket.commandType.equals("ACCEPT")){
             GameFrame.getInstance().enableBattleWindow(true);
             GameFrame.getInstance().enableChoosePocketForBattlePanel(true);
+            remain.clear();
+            remain.add(0);
+            remain.add(1);
+            remain.add(2);
         }
         if (battlePacket.commandType.equals("HEALTH")){
             List<Integer> data = battlePacket.args;
@@ -164,7 +169,8 @@ public class GameManager extends GameObject {
         }
         if (battlePacket.commandType.equals("CHANGE_REQUEST")){
             System.out.println("Get Change Request");
-            System.out.println(battlePacket.args.toString());
+            remain = battlePacket.args;
+            //System.out.println(battlePacket.args.toString());
             GameFrame.getInstance().getBattleControlFrame().setBattleButtonChangeState();
         }
         if(battlePacket.commandType.equals("EXIT")){

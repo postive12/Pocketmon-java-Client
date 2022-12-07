@@ -292,4 +292,12 @@ public class BattleControlFrame extends JLayeredPane {
     public void setBattleLogText(String target) {
         battleText.setText("<html>"+target+"</html>");
     }
+    public void resetBattleFrame(){
+        setBattleLogText("");
+        setPlayerHealth(true,100,100);
+        setPlayerHealth(false,100,100);
+        setPlayerImage(true,PocketMonData.monsterInfo.get(0).getBackPath());
+        setPlayerImage(true,PocketMonData.monsterInfo.get(0).getFrontPath());
+        setBattleButtonDefaultState();
+    }
 }

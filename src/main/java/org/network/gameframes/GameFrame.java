@@ -540,6 +540,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         }
     }
     public void enableBattleWindow(boolean isEnable){
+        battleControlFrame.resetBattleFrame();
         battleControlFrame.setVisible(isEnable);
     }
     public BattleControlFrame getBattleControlFrame() {

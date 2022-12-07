@@ -223,27 +223,24 @@ public class BattleControlFrame extends JLayeredPane {
             if (i==myp){
                 continue;
             }
-            System.out.println(remain.toString());
+            //System.out.println(remain.toString());
             if (!remain.contains(i)){
                 String a1=PocketMonData.monsterInfo.get(UserData.pocketMonList.get(i)).getName();
-                String a2="is die";
-                String a3=a1.concat(a2);
-                System.out.println("a3 = "+ a1);
-                jbt[count].setText(a3);
+                jbt[count].setText(a1 + "[DEAD]");
             }else{
                 jbt[count].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(i)).getName());
+                int current = i;
+                jbt[count].addActionListener(e ->{
+                    myp=current;
+                    List<Integer> args = new ArrayList<>();
+                    args.add(current);
+                    myPocketMonName.setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(current)).getName());
+                    myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(current)).getBackPath());
+                    UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"CHANGE",UserData.username,args);
+                    UserSocket.getInstance().sendObject(userBattlePacket);
+                    setBattleButtonDefaultState();
+                });
             }
-            int current = i;
-            jbt[count].addActionListener(e ->{
-                myp=current;
-                List<Integer> args = new ArrayList<>();
-                args.add(current);
-                myPocketMonName.setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(current)).getName());
-                myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(current)).getBackPath());
-                UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"CHANGE",UserData.username,args);
-                UserSocket.getInstance().sendObject(userBattlePacket);
-                setBattleButtonDefaultState();
-            });
             count++;
         }
         jbt[2].setText("");

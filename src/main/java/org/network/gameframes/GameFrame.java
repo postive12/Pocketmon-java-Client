@@ -115,7 +115,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         initSelectFirstPocketMonPanel();
         initChoosePocketForBattlePanel();
         //gameFrameMainPanel.setLeftComponent(gameLayer);
-
+        //gameLayer.add(new BattleControlFrame(),JLayeredPane.DEFAULT_LAYER);
         gameCanvas = new GameCanvas(this);
         gameCanvas.setBounds(0,0,gameLayer.getWidth(),gameLayer.getHeight());
         gameLayer.add(gameCanvas,JLayeredPane.FRAME_CONTENT_LAYER);

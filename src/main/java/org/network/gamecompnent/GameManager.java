@@ -157,6 +157,14 @@ public class GameManager extends GameObject {
         if(battlePacket.commandType.equals("EXIT")){
             GameFrame.getInstance().enableBattleWindow(false);
         }
+        if (battlePacket.commandType.equals("WAIT")){
+            //선택창을 비활성화 하는 코드 삽입
+            System.out.println("Wait packet received");
+        }
+        if (battlePacket.commandType.equals("TURN")){
+            //선택창을 활성화하는 코드 삽입
+            System.out.println("Turn packet received");
+        }
     }
     public void sendPlayerMovePacket(int ratio){
         //System.out.println(ratio);

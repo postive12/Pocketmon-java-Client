@@ -178,13 +178,16 @@ public class GameManager extends GameObject {
         }
         if (battlePacket.commandType.equals("WAIT")){
             //선택창을 비활성화 하는 코드 삽입
-            System.out.println("Wait packet received");
+            //System.out.println("Wait packet received");
             GameFrame.getInstance().getBattleControlFrame().setBattleButtonEnable(false);
         }
         if (battlePacket.commandType.equals("TURN")){
             //선택창을 활성화하는 코드 삽입
-            System.out.println("Turn packet received");
+            //System.out.println("Turn packet received");
             GameFrame.getInstance().getBattleControlFrame().setBattleButtonEnable(true);
+        }
+        if (battlePacket.commandType.equals("BATTLE_LOG")){
+            GameFrame.getInstance().getBattleControlFrame().setBattleLogText(battlePacket.target);
         }
     }
     public void sendPlayerMovePacket(int ratio){

@@ -20,10 +20,10 @@ public class UserSocket extends Thread{
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private Music intro;
-    public UserSocket(){
+    public UserSocket(String ip,String port){
         current = this;
         try {
-            socket = new Socket("127.0.0.1", 30000);
+            socket = new Socket(ip, Integer.parseInt(port));
             oos = new ObjectOutputStream(socket.getOutputStream());
             oos.flush();
             ois = new ObjectInputStream(socket.getInputStream());

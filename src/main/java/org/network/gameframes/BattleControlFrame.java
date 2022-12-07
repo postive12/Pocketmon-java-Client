@@ -279,4 +279,8 @@ public class BattleControlFrame extends JLayeredPane {
             jbt[i].setEnabled(isEnable);
         }
     }
+
+    public void setBattleLogText(String target) {
+        battleText.setText("<html>"+target+"</html>");
+    }
 }

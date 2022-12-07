@@ -134,7 +134,7 @@ public class BattleControlFrame extends JLayeredPane {
         opponentPocketMonImage.setBounds(450,50,300,300);
         add(opponentPocketMonImage,JLayeredPane.DEFAULT_LAYER);
 
-        setVisible(true);
+        setVisible(false);
     }
     private void setBattleButtonDefaultState(){
         for (JButton bt : jbt){
@@ -236,5 +236,42 @@ public class BattleControlFrame extends JLayeredPane {
         }
         jbt[2].setText("");
         jbt[3].setText("");
+    }
+    //유저 체력 표시 변경
+    public void setPlayerHealth(boolean isOpponent,int health,int maxHealth)
+    {
+        System.out.println(health+"/"+maxHealth);
+        int healthLength = 185;
+        if (isOpponent){
+            opponentPocketMonHealth.setSize(healthLength * health / maxHealth,13);
+            opponentPocketMonHealthText.setText(health + "/" + maxHealth);
+        }
+        else {
+            myPocketMonHealth.setSize(healthLength * health / maxHealth,12);
+            myPocketMonHealthText.setText(health + "/" + maxHealth);
+        }
+    }
+    public void setPlayerImage(boolean isOpponent,String path)
+    {
+        //System.out.println(path);
+        if (isOpponent){
+            opponentPocketMonImage.setImage(path);
+        }
+        else {
+            myPocketMonImage.setImage(path);
+        }
+    }
+
+    public void setPlayerName(boolean isOpponent, String name) {
+        if (isOpponent){
+            opponentPocketMonName.setText(name);
+        }
+        else {
+            myPocketMonName.setText(name);
+        }
+    }
+
+    public void setCurrentPocketMon(int i) {
+        myp = i;
     }
 }

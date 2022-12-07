@@ -139,20 +139,32 @@ public class GameManager extends GameObject {
         }
         if (battlePacket.commandType.equals("HEALTH")){
             List<Integer> data = battlePacket.args;
-            GameFrame.getInstance().setPlayerHealth(false,data.get(0),data.get(1));
-            GameFrame.getInstance().setPlayerHealth(true,data.get(2),data.get(3));
+            GameFrame.getInstance().getBattleControlFrame().setPlayerHealth(false,data.get(0),data.get(1));
+            GameFrame.getInstance().getBattleControlFrame().setPlayerHealth(true,data.get(2),data.get(3));
         }
         if (battlePacket.commandType.equals("CHANGE")){
             boolean isOpponent = !battlePacket.target.equals(UserData.username);
             //System.out.println( "battle packet : "+ battlePacket.target + " / " + UserData.username +"/" +isLocalPlayer);
-            GameFrame.getInstance().setPlayerImage(
+            try{
+                GameFrame.getInstance().getBattleControlFrame().setPlayerImage(
+                        isOpponent,
+                        isOpponent ?
+                                PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getFrontPath() :
+                                PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getBackPath()
+                );
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                System.out.println("Receive Change to " + battlePacket.args.get(0));//서버에서 0이하 교체 안되게 해서 오류난듯
+            }
+
+            GameFrame.getInstance().getBattleControlFrame().setPlayerName(
                     isOpponent,
-                    isOpponent ? PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getFrontPath() : PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getBackPath()
-            );
+                    PocketMonData.monsterInfo.get(battlePacket.args.get(0)).getName());
         }
         if (battlePacket.commandType.equals("CHANGE_REQUEST")){
             System.out.println("Get Change Request");
-            GameFrame.getInstance().setBattleButtonChangeState();
+            GameFrame.getInstance().getBattleControlFrame().setBattleButtonChangeState();
         }
         if(battlePacket.commandType.equals("EXIT")){
             GameFrame.getInstance().enableBattleWindow(false);

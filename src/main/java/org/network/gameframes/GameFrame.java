@@ -43,15 +43,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private static DefaultListModel model;
     private static JTextPane textArea;
     //전투 ui 정보
-    private static JLabel myPocketMonName;
-    private static JLabel opponentPocketMonName;
-    private static JLabel myPocketMonHealth;
-    private static JLabel opponentPocketMonHealth;
-    private static JLabel myPocketMonHealthText;
-    private static JLabel opponentPocketMonHealthText;
-    private static BackgroundPanel myPocketMonImage;
-    private static BackgroundPanel opponentPocketMonImage;
-    private JLabel battletext;
     //private List<Integer> args= new ArrayList<>();
     private static JPanel firstPocketMonSelectPanel;
     private JLayeredPane gameLayer = new JLayeredPane();//게임 패널
@@ -60,7 +51,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private JList<String> userList;
     private JPanel userListPanel = new JPanel();//유저 리스트 패널
     private JPanel userChatPanel = new JPanel();//유저 채팅 패널
-    private static JLayeredPane battleLogPanel = new JLayeredPane();
     //배틀 버튼 리스트
     private JButton[] jbt;
     private GameCanvas gameCanvas;//게임 캔버스
@@ -79,8 +69,8 @@ public class GameFrame extends JFrame implements ListSelectionListener {
     private List<Integer> pocketMonList= new ArrayList<>();
 
     private JButton img1,img2,img3;
-
-    private int myp;
+    //배틀 컨트롤 프레임 생성
+    private BattleControlFrame battleControlFrame;
     private JLabel explain;
     private String currentSelectedUser = "-ALL-";
     public GameFrame(){
@@ -110,10 +100,10 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         initUserChatPanel();
 
         initOkNoPanel();
-
-        initBattleLogPanel();
         initSelectFirstPocketMonPanel();
         initChoosePocketForBattlePanel();
+        battleControlFrame = new BattleControlFrame();
+        gameLayer.add(battleControlFrame,JLayeredPane.DEFAULT_LAYER);
         //gameFrameMainPanel.setLeftComponent(gameLayer);
         //gameLayer.add(new BattleControlFrame(),JLayeredPane.DEFAULT_LAYER);
         gameCanvas = new GameCanvas(this);
@@ -134,270 +124,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             current = new GameFrame();
         }
         return current;
-    }
-    private void initBattleLogPanel(){
-        battleLogPanel.setBounds(0,0,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT);
-        BackgroundPanel background = new BackgroundPanel("ui/BottomUiPanel.png");
-        background.setBounds(0,WindowConfig.HEIGHT*2/3 - 30,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT/3);
-        battleLogPanel.add(background,JLayeredPane.PALETTE_LAYER);
-        int y=(WindowConfig.HEIGHT*2/3-30)+(WindowConfig.HEIGHT*1/6);
-
-        //배틀설명 창 생성
-        battletext= new JLabel();
-        battletext.setText("배틀상황 설명");
-        battletext.setForeground(Color.WHITE);
-        battletext.setFont(new Font("굴림",Font.BOLD,18));
-        battletext.setBounds(60,400,background.getWidth()/2,WindowConfig.HEIGHT/3);
-        battleLogPanel.add(battletext,JLayeredPane.POPUP_LAYER);
-
-        //버튼 4개 배열로 생성
-        ImageIcon image = new ImageIcon(getClass().getResource("/ui/button.png"));
-        Image changeimg = image.getImage();
-        Image im= changeimg.getScaledInstance(background.getWidth()/4,(WindowConfig.HEIGHT*1/6),Image.SCALE_SMOOTH);
-        ImageIcon img= new ImageIcon(im);
-
-        jbt= new JButton[4];
-        for(int i=0;i<4;i++){
-            jbt[i]=new JButton(img);
-            jbt[i].setFont(new Font("굴림",Font.BOLD,18));
-            jbt[i].setForeground(Color.WHITE);
-        }
-
-        jbt[0].setBounds(background.getWidth()/2,WindowConfig.HEIGHT*2/3-30,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
-        jbt[1].setBounds(background.getWidth()/2+background.getWidth()/4,WindowConfig.HEIGHT*2/3-30,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
-        jbt[2].setBounds(background.getWidth()/2,y,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
-        jbt[3].setBounds(background.getWidth()/2+background.getWidth()/4,y,background.getWidth()/4,(WindowConfig.HEIGHT*1/6));
-        setBattleButtonDefaultState();
-//        jbt[0].setText("공격");
-//        jbt[1].setText("스킬");
-//        jbt[2].setText("아이템");
-//        jbt[3].setText("포켓몬교체");
-//        //스테이트 패턴
-//        List<Integer> args= new ArrayList<>();
-//        jbt[0].addActionListener(e->{//기본 공격 행동
-//            battletext.setText("기본공격을 하였습니다.");
-//            args.add(-1);
-//            UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ATTACK","OPPENENT",args);
-//            UserSocket.getInstance().sendObject(userBattlePacket);
-//        });
-
-//        jbt[1].addActionListener(e->{//스킬 행동
-//            battletext.setText("스킬창을 선택하셨습니다.");
-//            Skill[] skills = PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp)).getSkill_list();
-//            Skill temp = skills[0];
-//            Skill temp1= skills[1];
-//            Skill temp2= skills[2];
-//            Skill temp3= skills[3];
-//            jbt[0].setText(temp.getName()+"/"+temp.getPower());
-//            jbt[1].setText(temp1.getName()+"/"+temp1.getPower());
-//            jbt[2].setText(temp2.getName()+"/"+temp2.getPower());
-//            jbt[3].setText(temp3.getName()+"/"+temp3.getPower());
-//        });
-//
-//        jbt[2].addActionListener(e->{//아이템 사용
-//            jbt[0].setText("라즈베리열매 / 30회복");
-//            jbt[1].setText("베리베리열매 / 20회복");
-//            jbt[2].setText("");
-//            jbt[3].setText("");
-//        });
-//
-//        jbt[3].addActionListener(e->{//포켓몬 교체
-//            if(myp==0){
-//                jbt[0].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp+1)).getName());
-//                jbt[1].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp+2)).getName());
-//                jbt[2].setText("");
-//                jbt[3].setText("");
-//            }
-//            else if(myp==1){
-//                jbt[0].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp-1)).getName());
-//                jbt[1].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp+1)).getName());
-//                jbt[2].setText("");
-//                jbt[3].setText("");
-//            }
-//            else if(myp==2){
-//                jbt[0].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp-2)).getName());
-//                jbt[1].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp-1)).getName());
-//                jbt[2].setText("");
-//                jbt[3].setText("");
-//            }
-//        });
-
-        //메뉴 선택 시 지정된 행동
-        for(int i=0;i<4;i++){
-            jbt[i].setHorizontalTextPosition(JButton.CENTER);
-            battleLogPanel.add(jbt[i],JLayeredPane.POPUP_LAYER);
-        }
-
-        //전투 ui 파트
-        BackgroundPanel battleBackground = new BackgroundPanel("ui/battleUI.png");
-        battleBackground.setBounds(0,0,WindowConfig.WIDTH * 2 / 3,WindowConfig.HEIGHT * 2 / 3 - 30);
-        battleLogPanel.add(battleBackground,JLayeredPane.FRAME_CONTENT_LAYER);
-
-        //battle health bar 파트
-
-        //자신이 소유한 포켓몬의 ui
-        BackgroundPanel myHealthBackground = new BackgroundPanel("ui/HPBar.png");
-        myHealthBackground.setBounds(580,400,250,27);
-        battleLogPanel.add(myHealthBackground,JLayeredPane.PALETTE_LAYER);
-
-        myPocketMonHealth = new JLabel();
-        myPocketMonHealth.setBounds(myHealthBackground.getX() + 58,myHealthBackground.getY() + 8,185,12);
-        myPocketMonHealth.setBackground(Color.GREEN);
-        myPocketMonHealth.setOpaque(true);
-        battleLogPanel.add(myPocketMonHealth,JLayeredPane.POPUP_LAYER);
-
-        //포켓몬 이름
-        BackgroundPanel myNameBackground = new BackgroundPanel("ui/partyInactive.png");
-        myNameBackground.setBounds(610,355,220,40);
-        battleLogPanel.add(myNameBackground,JLayeredPane.PALETTE_LAYER);
-
-        myPocketMonName = new JLabel("피카츄");
-        myPocketMonName.setBounds(myNameBackground.getX() + 10,myNameBackground.getY() + 10, 100 ,20);
-        myPocketMonName.setForeground(Color.WHITE);
-        battleLogPanel.add(myPocketMonName,JLayeredPane.POPUP_LAYER);
-
-        myPocketMonHealthText = new JLabel("100/100");
-        myPocketMonHealthText.setBounds(myNameBackground.getX() + 120,myNameBackground.getY() + 10, 100 , 20);
-        myPocketMonHealthText.setForeground(Color.WHITE);
-        battleLogPanel.add(myPocketMonHealthText,JLayeredPane.POPUP_LAYER);
-
-        myPocketMonImage = new BackgroundPanel("Pocketmon/firi-back.png");
-        myPocketMonImage.setBounds(20,250,300,300);
-        battleLogPanel.add(myPocketMonImage,JLayeredPane.DEFAULT_LAYER);
-
-        //상대가 소유한 포켓몬 정보
-        BackgroundPanel opponentHealthBackground = new BackgroundPanel("ui/HPBar.png");
-        opponentHealthBackground.setBounds(10,150,250,27);
-        battleLogPanel.add(opponentHealthBackground,JLayeredPane.PALETTE_LAYER);
-
-        opponentPocketMonHealth = new JLabel();
-        opponentPocketMonHealth.setBounds(opponentHealthBackground.getX() + 58,opponentHealthBackground.getY() + 7,185,13);
-        opponentPocketMonHealth.setBackground(Color.GREEN);
-        opponentPocketMonHealth.setOpaque(true);
-        battleLogPanel.add(opponentPocketMonHealth,JLayeredPane.POPUP_LAYER);
-
-        //포켓몬 이름
-        BackgroundPanel opponentNameBackground = new BackgroundPanel("ui/partyInactive.png");
-        opponentNameBackground.setBounds(40,105,220,40);
-        battleLogPanel.add(opponentNameBackground,JLayeredPane.PALETTE_LAYER);
-
-        opponentPocketMonName = new JLabel("피카츄");
-        opponentPocketMonName.setBounds(opponentNameBackground.getX() + 10,opponentNameBackground.getY() + 10, 100,20);
-        opponentPocketMonName.setForeground(Color.WHITE);
-        battleLogPanel.add(opponentPocketMonName,JLayeredPane.POPUP_LAYER);
-
-        opponentPocketMonHealthText = new JLabel("100/100");
-        opponentPocketMonHealthText.setBounds(opponentPocketMonName.getX() + 120,opponentPocketMonName.getY(), 100 , 20);
-        opponentPocketMonHealthText.setForeground(Color.WHITE);
-        battleLogPanel.add(opponentPocketMonHealthText,JLayeredPane.POPUP_LAYER);
-
-        opponentPocketMonImage = new BackgroundPanel("Pocketmon/firi-front.png");
-        opponentPocketMonImage.setBounds(450,50,300,300);
-        battleLogPanel.add(opponentPocketMonImage,JLayeredPane.DEFAULT_LAYER);
-
-        battleLogPanel.setVisible(false);
-        gameLayer.add(battleLogPanel,JLayeredPane.DEFAULT_LAYER);
-    }
-    private void setBattleButtonDefaultState(){
-        for (JButton bt : jbt){
-            for(ActionListener al : bt.getActionListeners() ) {
-                bt.removeActionListener(al);
-            }
-        }
-        jbt[0].setText("공격");
-        jbt[1].setText("스킬");
-        jbt[2].setText("아이템");
-        jbt[3].setText("교체");
-        jbt[0].addActionListener(e -> {
-            battletext.setText("기본공격을 하였습니다.");
-            List<Integer> args = new ArrayList<>();
-            args.add(-1);
-            UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ATTACK","OPPONENT",args);
-            UserSocket.getInstance().sendObject(userBattlePacket);
-        });
-        jbt[1].addActionListener(e -> {
-            setBattleButtonSkillState();
-        });
-        jbt[2].addActionListener(e -> {
-            setBattleButtonItemState();
-        });
-        jbt[3].addActionListener(e -> {
-            setBattleButtonChangeState();
-        });
-    }
-    private void setBattleButtonSkillState(){
-        for (JButton bt : jbt){
-            for(ActionListener al : bt.getActionListeners() ) {
-                bt.removeActionListener(al);
-            }
-        }
-        Skill[] skills = PocketMonData.monsterInfo.get(UserData.pocketMonList.get(myp)).getSkill_list();
-        for (int i =0;i<4;i++){
-            jbt[i].setText(skills[i].getName() + "/" + skills[i].getPower());
-            int finalI = i;
-            jbt[i].addActionListener(e ->{
-                //스킬 패킷 전송
-                List<Integer> args = new ArrayList<>();
-                args.add(finalI);
-                UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ATTACK","OPPONENT",args);
-                UserSocket.getInstance().sendObject(userBattlePacket);
-                setBattleButtonDefaultState();
-            });
-        }
-    }
-    private void setBattleButtonItemState(){
-        for (JButton bt : jbt){
-            for(ActionListener al : bt.getActionListeners() ) {
-                bt.removeActionListener(al);
-            }
-        }
-        jbt[0].setText("라즈베리열매/30회복");
-        jbt[1].setText("베리베리열매/20회복");
-        jbt[2].setText("");
-        jbt[3].setText("");
-
-        jbt[0].addActionListener(e -> {
-            List<Integer> args = new ArrayList<>();
-            args.add(0);
-            UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ITEM","ME",args);
-            UserSocket.getInstance().sendObject(userBattlePacket);
-            setBattleButtonDefaultState();
-        });
-        jbt[1].addActionListener(e -> {
-            List<Integer> args = new ArrayList<>();
-            args.add(1);
-            UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"ITEM","ME",args);
-            UserSocket.getInstance().sendObject(userBattlePacket);
-            setBattleButtonDefaultState();
-        });
-    }
-    public void setBattleButtonChangeState(){
-        for (JButton bt : jbt){
-            for(ActionListener al : bt.getActionListeners() ) {
-                bt.removeActionListener(al);
-            }
-        }
-        int count = 0;
-        for (int i = 0; i<3;i++){
-            if (i==myp){
-                continue;
-            }
-            jbt[count].setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(i)).getName());
-            int current = i;
-            jbt[count].addActionListener(e ->{
-                myp=current;
-                List<Integer> args = new ArrayList<>();
-                args.add(current);
-                myPocketMonName.setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(current)).getName());
-                myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(current)).getBackPath());
-                UserBattlePacket userBattlePacket= new UserBattlePacket(UserData.id,UserData.username,"CHANGE",UserData.username,args);
-                UserSocket.getInstance().sendObject(userBattlePacket);
-                setBattleButtonDefaultState();
-            });
-            count++;
-        }
-        jbt[2].setText("");
-        jbt[3].setText("");
     }
     private void initSelectFirstPocketMonPanel(){
         firstPocketMonSelectPanel = new JPanel();
@@ -625,8 +351,6 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         text1.setBounds(choosePocketForBattlePanel.getX()+60, 150, 320,220);
         choosePocketForBattlePanel.add(text1,JLayeredPane.POPUP_LAYER);
 
-
-
         img1.addActionListener(e -> {
             choosePocketForBattlePanel.setVisible(false);
             //myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getBackPath());
@@ -640,9 +364,15 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                     args
             );
             UserSocket.getInstance().sendObject(userBattlePacket);
-            myPocketMonName.setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getName());
-            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getBackPath());
-            myp=0;
+            battleControlFrame.setPlayerImage(
+                    false,
+                    PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath()
+            );
+            battleControlFrame.setPlayerName(
+                    false,
+                    PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getName()
+            );
+            battleControlFrame.setCurrentPocketMon(0);
         });
 
         img2.addActionListener(e -> {
@@ -658,9 +388,15 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                     args
             );
             UserSocket.getInstance().sendObject(userBattlePacket);
-            myPocketMonName.setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(1)).getName());
-            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(1)).getBackPath());
-            myp=1;
+            battleControlFrame.setPlayerImage(
+                    false,
+                    PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath()
+            );
+            battleControlFrame.setPlayerName(
+                    false,
+                    PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getName()
+            );
+            battleControlFrame.setCurrentPocketMon(1);
         });
 
         img3.addActionListener(e -> {
@@ -676,16 +412,22 @@ public class GameFrame extends JFrame implements ListSelectionListener {
             );
             UserSocket.getInstance().sendObject(userBattlePacket);
             //myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath());
-            myPocketMonName.setText(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getName());
-            myPocketMonImage.setImage(PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath());
-            myp=2;
+            battleControlFrame.setPlayerImage(
+                    false,
+                    PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getBackPath()
+            );
+            battleControlFrame.setPlayerName(
+                    false,
+                    PocketMonData.monsterInfo.get(UserData.pocketMonList.get(2)).getName()
+            );
+            battleControlFrame.setCurrentPocketMon(2);
         });
 
         choosePocketForBattlePanel.setVisible(false);
-        gameLayer.add(choosePocketForBattlePanel,JLayeredPane.PALETTE_LAYER);
+        gameLayer.add(choosePocketForBattlePanel,JLayeredPane.DRAG_LAYER);
     }
     public void enableChoosePocketForBattlePanel(boolean isEnable){
-
+        System.out.println("Enable battle first choose");
         ImageIcon i=new ImageIcon(getClass().getResource("/"+PocketMonData.monsterInfo.get(UserData.pocketMonList.get(0)).getFrontPath()));
         Image i1=i.getImage();
         Image i2=i1.getScaledInstance(180,200,Image.SCALE_SMOOTH);
@@ -778,31 +520,9 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         int len = textArea.getDocument().getLength();
         textArea.setCaretPosition(len);
     }
-    //유저 체력 표시 변경
-    public void setPlayerHealth(boolean isOpponent,int health,int maxHealth)
-    {
-        int healthLength = 185;
-        if (isOpponent){
-            opponentPocketMonHealth.setSize(healthLength * health / maxHealth,13);
-            opponentPocketMonHealthText.setText(health + "/" + maxHealth);
-        }
-        else {
-            myPocketMonHealth.setSize(healthLength * health / maxHealth,12);
-            myPocketMonHealthText.setText(health + "/" + maxHealth);
-        }
-    }
-    public void setPlayerImage(boolean isOpponent,String path)
-    {
-        //System.out.println(path);
-        if (isOpponent){
-            opponentPocketMonImage.setImage(path);
-        }
-        else {
-            myPocketMonImage.setImage(path);
-        }
-    }
+
     public void enableBattleWindow(boolean isEnable){
-        battleLogPanel.setVisible(isEnable);
+        battleControlFrame.setVisible(isEnable);
     }
     //유저 채팅 패널 초기화
     private void initUserChatPanel() {
@@ -876,5 +596,9 @@ public class GameFrame extends JFrame implements ListSelectionListener {
                 txtInput.setText(""); // 메세지를 보내고 나면 메세지 쓰는창을 비운다.
             }
         }
+    }
+
+    public BattleControlFrame getBattleControlFrame() {
+        return battleControlFrame;
     }
 }

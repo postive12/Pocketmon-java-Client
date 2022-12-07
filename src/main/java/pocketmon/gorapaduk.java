@@ -1,14 +1,11 @@
 package pocketmon;
 
 
-import javax.swing.*;
-import java.awt.*;
-
 public class gorapaduk extends PocketMonster {
     public gorapaduk()
     {
-        setBackPath("Pocketmon/gorapaduk-back.png");
-        setFrontPath("Pocketmon/gorapaduk-front.png");
+        setBackPath("pocketmon/gorapaduk-back.png");
+        setFrontPath("pocketmon/gorapaduk-front.png");
 
         Skill s1 = new Skill("마구할퀴기",30);
         Skill s2 = new Skill("물의파동",40);

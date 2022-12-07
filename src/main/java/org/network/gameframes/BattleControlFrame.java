@@ -101,7 +101,7 @@ public class BattleControlFrame extends JLayeredPane {
         myPocketMonHealthText.setForeground(Color.WHITE);
         add(myPocketMonHealthText,JLayeredPane.POPUP_LAYER);
 
-        myPocketMonImage = new BackgroundPanel("Pocketmon/firi-back.png");
+        myPocketMonImage = new BackgroundPanel("pocketmon/firi-back.png");
         myPocketMonImage.setBounds(20,250,300,300);
         add(myPocketMonImage,JLayeredPane.DEFAULT_LAYER);
 
@@ -131,7 +131,7 @@ public class BattleControlFrame extends JLayeredPane {
         opponentPocketMonHealthText.setForeground(Color.WHITE);
         add(opponentPocketMonHealthText,JLayeredPane.POPUP_LAYER);
 
-        opponentPocketMonImage = new BackgroundPanel("Pocketmon/firi-front.png");
+        opponentPocketMonImage = new BackgroundPanel("pocketmon/firi-front.png");
         opponentPocketMonImage.setBounds(450,50,300,300);
         add(opponentPocketMonImage,JLayeredPane.DEFAULT_LAYER);
 

@@ -4,15 +4,11 @@ import org.network.UserData;
 import org.network.UserSocket;
 import org.network.WindowConfig;
 import org.network.data.PocketMonData;
-import org.network.gamecompnent.GameManager;
 import org.network.gamecore.*;
 import org.network.packet.ChoosePocketPacket;
 import org.network.packet.UserBattlePacket;
 import org.network.packet.UserChatPacket;
 import org.network.packet.UserListPacket;
-import org.network.panel.BackgroundPanel;
-import pocketmon.PocketMonster;
-import pocketmon.Skill;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -130,7 +126,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         firstPocketMonSelectPanel.setLocation(100,100);
         firstPocketMonSelectPanel.setLayout(null);
 
-        ImageIcon f= new ImageIcon(getClass().getResource("/Pocketmon/firi-front.png"));
+        ImageIcon f= new ImageIcon(getClass().getResource("/pocketmon/firi-front.png"));
         Image f1=f.getImage();
         Image f2=f1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
         ImageIcon f3=new ImageIcon(f2);
@@ -140,7 +136,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         firi.setBounds(firstPocketMonSelectPanel.getX()-90, firstPocketMonSelectPanel.getY()-100, 200,200);
         firstPocketMonSelectPanel.add(firi);
 
-        ImageIcon g= new ImageIcon(getClass().getResource("/Pocketmon/ggobugi-front.png"));
+        ImageIcon g= new ImageIcon(getClass().getResource("/pocketmon/ggobugi-front.png"));
         Image g1=g.getImage();
         Image g2=g1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
         ImageIcon g3=new ImageIcon(g2);
@@ -150,7 +146,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         ggobugi.setBounds(firstPocketMonSelectPanel.getX()+120, firstPocketMonSelectPanel.getY()-100, 200,200);
         firstPocketMonSelectPanel.add(ggobugi);
 
-        ImageIcon gg= new ImageIcon(getClass().getResource("/Pocketmon/ggomadol-front.png"));
+        ImageIcon gg= new ImageIcon(getClass().getResource("/pocketmon/ggomadol-front.png"));
         Image gg1=gg.getImage();
         Image gg2=gg1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
         ImageIcon gg3=new ImageIcon(gg2);
@@ -160,7 +156,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         ggomadol.setBounds(firstPocketMonSelectPanel.getX()+330, firstPocketMonSelectPanel.getY()-100, 200,200);
         firstPocketMonSelectPanel.add(ggomadol);
 
-        ImageIcon go= new ImageIcon(getClass().getResource("/Pocketmon/gorapaduk-front.png"));
+        ImageIcon go= new ImageIcon(getClass().getResource("/pocketmon/gorapaduk-front.png"));
         Image go1=go.getImage();
         Image go2=go1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
         ImageIcon go3=new ImageIcon(go2);
@@ -170,7 +166,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         gorapaduk.setBounds(firstPocketMonSelectPanel.getX()-90, firstPocketMonSelectPanel.getY()+100, 200,200);
         firstPocketMonSelectPanel.add(gorapaduk);
 
-        ImageIcon is= new ImageIcon(getClass().getResource("/Pocketmon/isanghessi-front.png"));
+        ImageIcon is= new ImageIcon(getClass().getResource("/pocketmon/isanghessi-front.png"));
         Image is1=is.getImage();
         Image is2=is1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
         ImageIcon is3=new ImageIcon(is2);
@@ -180,7 +176,7 @@ public class GameFrame extends JFrame implements ListSelectionListener {
         isanghessi.setBounds(firstPocketMonSelectPanel.getX()+120, firstPocketMonSelectPanel.getY()+100, 200,200);
         firstPocketMonSelectPanel.add(isanghessi);
 
-        ImageIcon p= new ImageIcon(getClass().getResource("/Pocketmon/pikachu-front.png"));
+        ImageIcon p= new ImageIcon(getClass().getResource("/pocketmon/pikachu-front.png"));
         Image p1=p.getImage();
         Image p2=p1.getScaledInstance(250,250,Image.SCALE_SMOOTH);
         ImageIcon p3=new ImageIcon(p2);

@@ -1,13 +1,10 @@
 package pocketmon;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class firi extends PocketMonster{
     public firi()
     {
-        setBackPath("Pocketmon/firi-back.png");
-        setFrontPath("Pocketmon/firi-front.png");
+        setBackPath("pocketmon/firi-back.png");
+        setFrontPath("pocketmon/firi-front.png");
 
         Skill s1 = new Skill("몸통박치기",30);
         Skill s2 = new Skill("화염방사",50);

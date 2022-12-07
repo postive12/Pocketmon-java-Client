@@ -1,13 +1,10 @@
 package pocketmon;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class ggomadol extends PocketMonster {
     public ggomadol()
     {
-        setBackPath("Pocketmon/ggomadol-back.png");
-        setFrontPath("Pocketmon/ggomadol-front.png");
+        setBackPath("pocketmon/ggomadol-back.png");
+        setFrontPath("pocketmon/ggomadol-front.png");
 
         Skill s1 = new Skill("몸통박치기",30);
         Skill s2 = new Skill("흙놀이",20);

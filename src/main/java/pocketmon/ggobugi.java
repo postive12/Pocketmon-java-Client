@@ -1,13 +1,10 @@
 package pocketmon;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class ggobugi extends PocketMonster {
     public ggobugi()
     {
-        setBackPath("Pocketmon/ggobugi-back.png");
-        setFrontPath("Pocketmon/ggobugi-front.png");
+        setBackPath("pocketmon/ggobugi-back.png");
+        setFrontPath("pocketmon/ggobugi-front.png");
 
         Skill s1 = new Skill("몸통박치기",30);
         Skill s2 = new Skill("물대포",40);

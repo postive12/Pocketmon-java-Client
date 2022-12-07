@@ -1,13 +1,10 @@
 package pocketmon;
 
-import javax.swing.*;
-import java.awt.*;
-
 public class isanghessi extends PocketMonster {
     public isanghessi()
     {
-        setBackPath("Pocketmon/isanghessi-back.png");
-        setFrontPath("Pocketmon/isanghessi-front.png");
+        setBackPath("pocketmon/isanghessi-back.png");
+        setFrontPath("pocketmon/isanghessi-front.png");
 
         Skill s1 = new Skill("몸통박치기",30);
         Skill s2 = new Skill("넝쿨채찍",40);
